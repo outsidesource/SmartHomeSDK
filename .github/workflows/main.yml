@@ -1,0 +1,65 @@
+name: test and deploy
+
+on: 
+  push:
+  workflow_dispatch:
+    inputs:
+      runMode:
+        description: 'Run Mode (test | deploy)'
+        required: true
+        default: 'test'
+
+jobs:
+  test:
+    defaults:
+      run:
+        working-directory: ./lambda/smarthome
+    runs-on: ubuntu-latest
+    if: ${{ (github.event_name != 'workflow_dispatch' && github.ref != 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'test') }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Run tests
+        run: npm run generate
+        env:
+          CI: true
+
+  deploy:
+    defaults:
+      run:
+        working-directory: ./lambda/smarthome
+    runs-on: ubuntu-latest
+    if: ${{ (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'deploy') }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - run: npm run generate
+        env:
+          CI: true
+
+      - name: Deploy app
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: air-purifier
+          zip_file: ./lambda/smarthome/deploy.zip
