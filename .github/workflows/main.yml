@@ -10,12 +10,11 @@ on:
         default: 'test'
 
 jobs:
-  test:
+  testAndDeploy:
     defaults:
       run:
         working-directory: ./lambda/smarthome
     runs-on: ubuntu-latest
-    if: ${{ (github.event_name != 'workflow_dispatch' && github.ref != 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'test') }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -27,35 +26,14 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-      
+
       - name: Run tests
         run: npm run generate
         env:
           CI: true
 
-  deploy:
-    defaults:
-      run:
-        working-directory: ./lambda/smarthome
-    runs-on: ubuntu-latest
-    if: ${{ (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'deploy') }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        run: npm install
-
-      - run: npm run generate
-        env:
-          CI: true
-
       - name: Deploy app
+        if: ${{ (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'deploy') }}
         uses: appleboy/lambda-action@master
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
