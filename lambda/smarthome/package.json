@@ -23,8 +23,6 @@
   "author": "Outside Source",
   "license": "UNLICENSED",
   "dependencies": {
-    "ask-sdk-core": "^2.10.2",
-    "ask-sdk-model": "^1.35.1",
     "aws-sdk": "^2.890.0",
     "axios": "^0.21.1",
     "indefinite": "2.3.2",
