@@ -1,0 +1,10 @@
+{
+  "callbackWaitsForEmptyEventLoop": true,
+  "functionVersion": "$LATEST",
+  "functionName": "lambda-name",
+  "memoryLimitInMB": "128",
+  "logGroupName": "/aws/lambda/log-group-name",
+  "logStreamName": "2021/04/28/[$LATEST]36168a556e8b4af58f683eaa4850abc7",
+  "invokedFunctionArn": "arn:aws:lambda:us-east-1:452668786747:function:air-purifier",
+  "awsRequestId": "00000000-0000-0000-0000-000000000000"
+}
