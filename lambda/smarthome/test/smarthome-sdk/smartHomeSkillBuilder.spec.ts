@@ -1,25 +1,31 @@
 import { expect } from 'chai'
+import _ from 'lodash'
 import 'mocha'
 import sinon from 'sinon'
 import { HandlerInput } from '../../lib/smarthome-sdk/dispatcher/request/handler/HandlerInput'
-import { Response } from '../../lib/smarthome-sdk/response/Response'
+import { AcceptGrantErrorTypes, ErrorTypes } from '../../lib/smarthome-sdk/response/ErrorTypes'
+import { Response, ResponsePayload } from '../../lib/smarthome-sdk/response/Response'
 import { SmartHomeSkillFactory } from '../../lib/smarthome-sdk/skill/factory/SmartHomeSkillFactory'
 import { getLambdaCallback, getLambdaContext } from './fixtures'
+import failResponse from './fixtures/acceptGrantError.json'
 import request from './fixtures/acceptGrantRequest.json'
+import succeedResponse from './fixtures/acceptGrantResponse.json'
 
 const successfulRequestHandler = {
   canHandle: (input: HandlerInput) => true,
-  handle: (input: HandlerInput) => { 
-    return { customValue: 3.14, } 
-  },
+  handle: (input: HandlerInput) => input.responseBuilder.succeed().getResponse(),
 }
 const failedRequestHandler = {
+  canHandle: (input: HandlerInput) => true,
+  handle: (input: HandlerInput) => input.responseBuilder.fail(AcceptGrantErrorTypes.AcceptGrantFailed, 'This is a test error').getResponse(),
+}
+const throwingRequestHandler = {
   canHandle: (input: HandlerInput) => true,
   handle: (input: HandlerInput) => { throw Error('This is a test error') },
 }
 const errorHandler = {
   canHandle: (input: HandlerInput, error: Error) => true,
-  handle: (input: HandlerInput, error: Error) => { return { errorMessage: error.message, } },
+  handle: (input: HandlerInput, error: Error) => input.responseBuilder.fail(ErrorTypes.InternalError, error.message).getResponse(),
 }
 const lambdaContext = getLambdaContext()
 
@@ -31,7 +37,7 @@ describe('smart home skill builder', function() {
     it('creates arbitrary handler when provided a PayloadSignature', function() {
       const builder = SmartHomeSkillFactory.init()
       const payloadSignature = {namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion'}
-      const executor = (input: HandlerInput) => { return {} }
+      const executor = (input: HandlerInput) => { return input.responseBuilder.succeed().getResponse() }
 
       builder.addRequestHandler(payloadSignature, executor)
   
@@ -43,9 +49,9 @@ describe('smart home skill builder', function() {
       const builder = SmartHomeSkillFactory.init()
       const requestHandlerSpy = sinon.spy(successfulRequestHandler, 'handle')
       builder.addRequestHandlers(successfulRequestHandler)
-      const test = (err?:Error, result?: Response) => {
+      const test = (err?:Error, result?: Response<ResponsePayload>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
-        expect(result).to.deep.equal({ customValue: 3.14, })
+        expect(result).to.deep.equal(succeedResponse)
       }
 
       builder.lambda()(request, lambdaContext, getLambdaCallback(done, test))
@@ -54,35 +60,52 @@ describe('smart home skill builder', function() {
       const builder = SmartHomeSkillFactory.init()
       const requestHandlerSpy = sinon.spy(successfulRequestHandler, 'handle')
       builder.addRequestHandlers(successfulRequestHandler, successfulRequestHandler)
-      const test = (err?:Error, result?: Response) => {
+      const test = (err?:Error, result?: Response<ResponsePayload>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
-        expect(result).to.deep.equal({ customValue: 3.14, })
       }
 
       builder.lambda()(request, lambdaContext, getLambdaCallback(done, test))
     })
-    it('catches unhandled errors', function(done) {
+    it('creates an error response when the error is handled', function(done) {
       const builder = SmartHomeSkillFactory.init()
       const requestHandlerSpy = sinon.spy(failedRequestHandler, 'handle')
+      const errorHandlerSpy = sinon.spy(errorHandler, 'handle')
       builder.addRequestHandlers(failedRequestHandler)
-      const test = (err?:Error, result?: Response) => {
+      builder.addErrorHandlers(errorHandler)
+      const test = (err?:Error, result?: Response<ResponsePayload>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
-        expect(err?.message).to.equal('This is a test error')
-        expect(result).to.be.undefined
+        expect(errorHandlerSpy.notCalled).to.be.true
+        expect(result).to.deep.equal(failResponse)
+        expect(err).to.be.undefined
       }
 
       builder.lambda()(request, lambdaContext, getLambdaCallback(done, test))
     })
     it('invokes the error handler for unhandled errors', function(done) {
       const builder = SmartHomeSkillFactory.init()
-      const requestHandlerSpy = sinon.spy(failedRequestHandler, 'handle')
+      const requestHandlerSpy = sinon.spy(throwingRequestHandler, 'handle')
       const errorHandlerSpy = sinon.spy(errorHandler, 'handle')
-      builder.addRequestHandlers(failedRequestHandler)
+      builder.addRequestHandlers(throwingRequestHandler)
       builder.addErrorHandlers(errorHandler)
-      const test = (err?:Error, result?: Response) => {
+      const expectedResult = _.cloneDeep(failResponse)
+      expectedResult.event.payload.type = ErrorTypes.InternalError
+      const test = (err?:Error, result?: Response<ResponsePayload>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
         expect(errorHandlerSpy.calledOnce).to.be.true
-        expect(result).to.deep.equal({ errorMessage: 'This is a test error', })
+        expect(result).to.deep.equal(expectedResult)
+        expect(err).to.be.undefined
+      }
+
+      builder.lambda()(request, lambdaContext, getLambdaCallback(done, test))
+    })
+    it('returns unhandled and uncaught errors to callback', function(done) {
+      const builder = SmartHomeSkillFactory.init()
+      const requestHandlerSpy = sinon.spy(throwingRequestHandler, 'handle')
+      builder.addRequestHandlers(throwingRequestHandler)
+      const test = (err?:Error, result?: Response<ResponsePayload>) => {
+        expect(requestHandlerSpy.calledOnce).to.be.true
+        expect(err?.message).to.equal('This is a test error')
+        expect(result).to.be.undefined
       }
 
       builder.lambda()(request, lambdaContext, getLambdaCallback(done, test))

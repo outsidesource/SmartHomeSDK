@@ -1,22 +1,22 @@
 import { ErrorHandler } from 'ask-sdk-runtime'
-import { Response } from '../../../response/Response'
+import { Response, ResponsePayload } from '../../../response/Response'
 import { HandlerInput } from '../../request/handler/HandlerInput'
 
 /**
  * An interface for user-created error handling logic.
  */
-export interface SmartHomeSkillErrorHandler extends ErrorHandler<HandlerInput, Response> {
+export interface SmartHomeSkillErrorHandler extends ErrorHandler<HandlerInput, Response<ResponsePayload>> {
   /**
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
-   * @param error: The unhandled error.
+   * @param error The unhandled error.
    */
   canHandle(input: HandlerInput, error: Error): Promise<boolean> | boolean
 
   /**
    * Fulfills the request and returns a valid response.
    * @param input Information about the request and executing context.
-   * @param error: The unhandled error.
+   * @param error The unhandled error.
    */
-  handle(input: HandlerInput, error: Error): Promise<Response> | Response
+  handle(input: HandlerInput, error: Error): Promise<Response<ResponsePayload>> | Response<ResponsePayload>
 }

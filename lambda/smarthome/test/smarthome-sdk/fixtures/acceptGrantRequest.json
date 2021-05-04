@@ -3,7 +3,7 @@
     "header": {
       "namespace": "Alexa.Authorization",
       "name": "AcceptGrant",
-      "messageId": "<message id>",
+      "messageId": "4b409868-dc4b-ce7f-5ec9-0d6410e74f20",
       "payloadVersion": "3"
     },
     "payload": {

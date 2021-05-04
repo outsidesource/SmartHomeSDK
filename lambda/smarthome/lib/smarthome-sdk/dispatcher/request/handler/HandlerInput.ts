@@ -1,3 +1,4 @@
+import { ResponseBuilder } from '../../../response/factory/ResponseBuilder'
 import { LambdaContext } from './LambdaContext'
 import { Request, RequestPayload } from './Request'
 
@@ -14,4 +15,9 @@ export interface HandlerInput {
    * The context that the lambda is running in.
    */
   context?: LambdaContext
+
+  /**
+   * The builder to create a response.
+   */
+  responseBuilder: ResponseBuilder,
 }

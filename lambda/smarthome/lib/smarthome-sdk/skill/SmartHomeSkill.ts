@@ -2,14 +2,15 @@ import { createAskSdkUserAgent, GenericRequestDispatcher, RequestDispatcher, Ski
 import { HandlerInput } from '../dispatcher/request/handler/HandlerInput'
 import { LambdaContext } from '../dispatcher/request/handler/LambdaContext'
 import { Request, RequestPayload } from '../dispatcher/request/handler/Request'
-import { Response } from '../response/Response'
+import { ResponseFactory } from '../response/factory/ResponseFactory'
+import { Response, ResponsePayload } from '../response/Response'
 import { SmartHomeSkillConfiguration } from './SmartHomeSkillConfiguration'
 
 /**
  * Top level container for request dispatcher.
  */
-export class SmartHomeSkill implements Skill<Request<RequestPayload>, Response> {
-  protected requestDispatcher: RequestDispatcher<HandlerInput, Response>
+export class SmartHomeSkill implements Skill<Request<RequestPayload>, Response<ResponsePayload>> {
+  protected requestDispatcher: RequestDispatcher<HandlerInput, Response<ResponsePayload>>
   // protected persistenceAdapter: PersistenceAdapter;
   // protected apiClient: ApiClient;
   protected customUserAgent?: string
@@ -21,7 +22,7 @@ export class SmartHomeSkill implements Skill<Request<RequestPayload>, Response> 
     this.customUserAgent = skillConfiguration.customUserAgent
     this.skillId = skillConfiguration.skillId
 
-    this.requestDispatcher = new GenericRequestDispatcher<HandlerInput, Response>({
+    this.requestDispatcher = new GenericRequestDispatcher<HandlerInput, Response<ResponsePayload>>({
         requestMappers: skillConfiguration.requestMappers,
         handlerAdapters: skillConfiguration.handlerAdapters,
         errorMapper: skillConfiguration.errorMapper,
@@ -41,10 +42,11 @@ export class SmartHomeSkill implements Skill<Request<RequestPayload>, Response> 
    * @param request
    * @param context
    */
-  async invoke(request: Request<RequestPayload>, context?: LambdaContext): Promise<Response> {
+  async invoke(request: Request<RequestPayload>, context?: LambdaContext): Promise<Response<ResponsePayload>> {
     const input: HandlerInput = {
       request,
       context,
+      responseBuilder: ResponseFactory.getResponseBuilder(request),
     }
 
     return this.requestDispatcher.dispatch(input)
