@@ -1,6 +1,3 @@
-import { EmptyResponsePayload } from './payloads/EmptyResponsePayload'
-import { ErrorResponsePayload } from './payloads/ErrorResponsePayload'
-
 /**
  * Contains the header and payload response.
  */
@@ -17,6 +14,7 @@ import { ErrorResponsePayload } from './payloads/ErrorResponsePayload'
 }
 
 /**
- * Base type for all response payloads.
+ * Base interface for all response payloads.
  */
- export type ResponsePayload = EmptyResponsePayload | ErrorResponsePayload | undefined
+ export interface ResponsePayload {
+ }

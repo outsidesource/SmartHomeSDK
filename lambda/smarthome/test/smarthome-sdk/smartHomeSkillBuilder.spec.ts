@@ -2,8 +2,9 @@ import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
 import sinon from 'sinon'
+import { AcceptGrantErrorTypes } from '../../lib/smarthome-sdk/directives/acceptGrant/AcceptGrantErrorTypes'
 import { HandlerInput } from '../../lib/smarthome-sdk/dispatcher/request/handler/HandlerInput'
-import { AcceptGrantErrorTypes, ErrorTypes } from '../../lib/smarthome-sdk/response/ErrorTypes'
+import { ErrorTypes } from '../../lib/smarthome-sdk/response/ErrorTypes'
 import { Response, ResponsePayload } from '../../lib/smarthome-sdk/response/Response'
 import { SmartHomeSkillFactory } from '../../lib/smarthome-sdk/skill/factory/SmartHomeSkillFactory'
 import { getLambdaCallback, getLambdaContext } from './fixtures'
@@ -13,11 +14,11 @@ import succeedResponse from './fixtures/acceptGrantResponse.json'
 
 const successfulRequestHandler = {
   canHandle: (input: HandlerInput) => true,
-  handle: (input: HandlerInput) => input.responseBuilder.succeed().getResponse(),
+  handle: (input: HandlerInput) => input.responseBuilder.getSucceedResponse(),
 }
 const failedRequestHandler = {
   canHandle: (input: HandlerInput) => true,
-  handle: (input: HandlerInput) => input.responseBuilder.fail(AcceptGrantErrorTypes.AcceptGrantFailed, 'This is a test error').getResponse(),
+  handle: (input: HandlerInput) => input.responseBuilder.getFailResponse(AcceptGrantErrorTypes.AcceptGrantFailed, 'This is a test error'),
 }
 const throwingRequestHandler = {
   canHandle: (input: HandlerInput) => true,
@@ -25,7 +26,7 @@ const throwingRequestHandler = {
 }
 const errorHandler = {
   canHandle: (input: HandlerInput, error: Error) => true,
-  handle: (input: HandlerInput, error: Error) => input.responseBuilder.fail(ErrorTypes.InternalError, error.message).getResponse(),
+  handle: (input: HandlerInput, error: Error) => input.responseBuilder.getFailResponse(ErrorTypes.InternalError, error.message),
 }
 const lambdaContext = getLambdaContext()
 
@@ -37,7 +38,7 @@ describe('smart home skill builder', function() {
     it('creates arbitrary handler when provided a PayloadSignature', function() {
       const builder = SmartHomeSkillFactory.init()
       const payloadSignature = {namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion'}
-      const executor = (input: HandlerInput) => { return input.responseBuilder.succeed().getResponse() }
+      const executor = (input: HandlerInput) => { return input.responseBuilder.getSucceedResponse() }
 
       builder.addRequestHandler(payloadSignature, executor)
   

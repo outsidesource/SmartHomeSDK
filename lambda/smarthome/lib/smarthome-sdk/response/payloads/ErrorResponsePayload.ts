@@ -1,7 +1,9 @@
+import { ResponsePayload } from '../Response'
+
 /**
  * A payload to describe a handled error.
  */
-export interface ErrorResponsePayload {
+export interface ErrorResponsePayload extends ResponsePayload {
   /**
    * The error type.
    */

@@ -1,8 +1,8 @@
 import { createAskSdkUserAgent, GenericRequestDispatcher, RequestDispatcher, Skill, UserAgentManager } from 'ask-sdk-runtime'
+import { HandlerInputFactoryRepository } from '../dispatcher/request/handler/factory/HandlerInputFactoryRepository'
 import { HandlerInput } from '../dispatcher/request/handler/HandlerInput'
 import { LambdaContext } from '../dispatcher/request/handler/LambdaContext'
 import { Request, RequestPayload } from '../dispatcher/request/handler/Request'
-import { ResponseFactory } from '../response/factory/ResponseFactory'
 import { Response, ResponsePayload } from '../response/Response'
 import { SmartHomeSkillConfiguration } from './SmartHomeSkillConfiguration'
 
@@ -15,12 +15,14 @@ export class SmartHomeSkill implements Skill<Request<RequestPayload>, Response<R
   // protected apiClient: ApiClient;
   protected customUserAgent?: string
   protected skillId?: string
+  protected handlerInputFactoryRepository: HandlerInputFactoryRepository
 
   constructor(skillConfiguration: SmartHomeSkillConfiguration) {
     // this.persistenceAdapter = skillConfiguration.persistenceAdapter;
     // this.apiClient = skillConfiguration.apiClient;
     this.customUserAgent = skillConfiguration.customUserAgent
     this.skillId = skillConfiguration.skillId
+    this.handlerInputFactoryRepository = new HandlerInputFactoryRepository(...skillConfiguration.handlerInputFactories)
 
     this.requestDispatcher = new GenericRequestDispatcher<HandlerInput, Response<ResponsePayload>>({
         requestMappers: skillConfiguration.requestMappers,
@@ -39,14 +41,20 @@ export class SmartHomeSkill implements Skill<Request<RequestPayload>, Response<R
 
   /**
    * Invokes the dispatcher to handler the request envelope and construct the handler input.
-   * @param request
-   * @param context
+   * @param request The directive and payload for the request.
+   * @param context The context that the lambda is running in.
    */
   async invoke(request: Request<RequestPayload>, context?: LambdaContext): Promise<Response<ResponsePayload>> {
-    const input: HandlerInput = {
-      request,
-      context,
-      responseBuilder: ResponseFactory.getResponseBuilder(request),
+    const handlerInputFactory = this.handlerInputFactoryRepository.getHandlerInputFactory(request, context)
+
+    if (!handlerInputFactory) {
+      throw Error(`No handler input factory for request: ${JSON.stringify(request.directive.header)}`)
+    }
+
+    const input = handlerInputFactory.create(request, context)
+
+    if (!input) {
+      throw Error(`Unable to create handler input for request: ${JSON.stringify(request.directive.header)}`)
     }
 
     return this.requestDispatcher.dispatch(input)
@@ -54,8 +62,8 @@ export class SmartHomeSkill implements Skill<Request<RequestPayload>, Response<R
 
   /**
    * Determines if the skill can support the specific request type.
-   * @param request
-   * @param context
+   * @param request The directive and payload for the request.
+   * @param context The context that the lambda is running in.
    */
   supports(request: Request<RequestPayload>, context?: LambdaContext): boolean {
     return !!request && !!context

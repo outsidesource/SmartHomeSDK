@@ -1,4 +1,4 @@
-import { ResponseBuilder } from '../../../response/factory/ResponseBuilder'
+import { ResponseBuilder } from '../../../response/ResponseBuilder'
 import { LambdaContext } from './LambdaContext'
 import { Request, RequestPayload } from './Request'
 

@@ -1,4 +1,5 @@
 import { RuntimeConfiguration } from 'ask-sdk-runtime'
+import { HandlerInputFactory } from '../dispatcher/request/handler/factory/HandlerInputFactory'
 import { HandlerInput } from '../dispatcher/request/handler/HandlerInput'
 import { Response, ResponsePayload } from '../response/Response'
 
@@ -10,4 +11,5 @@ export interface SmartHomeSkillConfiguration extends RuntimeConfiguration<Handle
   // apiClient?: services.ApiClient;
   customUserAgent?: string
   skillId?: string
+  handlerInputFactories: HandlerInputFactory[]
 }

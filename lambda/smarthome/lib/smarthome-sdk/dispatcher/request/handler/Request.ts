@@ -1,5 +1,3 @@
-import { AcceptGrantPayload as AcceptGrantRequestPayload } from './payloads/AcceptGrantRequestPayload'
-
 /**
  * Contains information about the request, specifically the header and payload.
  */
@@ -25,6 +23,7 @@ export interface PayloadSignature {
 }
 
 /**
- * Base type for all request payloads.
+ * Base interface for all request payloads.
  */
-export type RequestPayload = AcceptGrantRequestPayload | undefined
+export interface RequestPayload {
+}

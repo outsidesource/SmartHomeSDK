@@ -1,4 +1,5 @@
 import { SmartHomeSkillErrorHandler } from '../../dispatcher/error/handler/SmartHomeSkillErrorHandler'
+import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/HandlerInputFactory'
 import { HandlerInput } from '../../dispatcher/request/handler/HandlerInput'
 import { PayloadSignature } from '../../dispatcher/request/handler/Request'
 import { SmartHomeSkillRequestHandler } from '../../dispatcher/request/handler/SmartHomeSkillRequestHandler'
@@ -21,6 +22,7 @@ export interface SmartHomeSkillBuilder {
   addErrorHandlers(...errorHandlers: SmartHomeSkillErrorHandler[]): this
   withCustomUserAgent(customUserAgent: string): this
   withSkillId(skillId: string): this
+  withHandlerInputFactories(...handlerInputFactories: HandlerInputFactory[]): this
   getSkillConfiguration(): SmartHomeSkillConfiguration
   create(): SmartHomeSkill
   lambda(): LambdaHandler

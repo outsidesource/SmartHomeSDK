@@ -117,11 +117,3 @@ export enum ErrorTypes {
    */
   ValueOutOfRange = 'VALUE_OUT_OF_RANGE',
 }
-
-/**
- * Error types exclusive to AcceptGrant directives.
- */
-export enum AcceptGrantErrorTypes {
-  /** The AcceptGrant directive failed. */
-  AcceptGrantFailed = 'ACCEPT_GRANT_FAILED'
-}

@@ -1,5 +1,7 @@
 import { RuntimeConfigurationBuilder } from 'ask-sdk-runtime'
+import { AcceptGrantHandlerInputFactory } from '../../directives/acceptGrant/AcceptGrantHandlerInputFactory'
 import { SmartHomeSkillErrorHandler } from '../../dispatcher/error/handler/SmartHomeSkillErrorHandler'
+import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/HandlerInputFactory'
 import { HandlerInput } from '../../dispatcher/request/handler/HandlerInput'
 import { LambdaContext } from '../../dispatcher/request/handler/LambdaContext'
 import { PayloadSignature, Request, RequestPayload } from '../../dispatcher/request/handler/Request'
@@ -29,6 +31,9 @@ export class SmartHomeSkillFactory {
     const runtimeConfigurationBuilder = new RuntimeConfigurationBuilder<HandlerInput, Response<ResponsePayload>>()
     let thisCustomUserAgent: string
     let thisSkillId: string
+    let thisHandlerInputFactories: HandlerInputFactory[] = [
+      AcceptGrantHandlerInputFactory,
+    ]
 
     return {
       addRequestHandler(
@@ -81,6 +86,11 @@ export class SmartHomeSkillFactory {
 
         return this
       },
+      withHandlerInputFactories(...handlerInputFactories: HandlerInputFactory[]): SmartHomeSkillBuilder {
+        thisHandlerInputFactories = [...new Set([...thisHandlerInputFactories, ...handlerInputFactories])]
+
+        return this
+      },
       getSkillConfiguration(): SmartHomeSkillConfiguration {
         const runtimeConfiguration = runtimeConfigurationBuilder.getRuntimeConfiguration()
 
@@ -88,6 +98,7 @@ export class SmartHomeSkillFactory {
           ...runtimeConfiguration,
           customUserAgent: thisCustomUserAgent,
           skillId: thisSkillId,
+          handlerInputFactories: thisHandlerInputFactories,
         }
       },
       create(): SmartHomeSkill {
