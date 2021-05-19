@@ -14,18 +14,15 @@ const payloadVersion = '3'
  * Represents a {@link ResponseBuilder} for the AcceptGrant directive.
  */
 export class AcceptGrantResponseBuilder extends ResponseBuilder {
-  private request: Request<AcceptGrantRequestPayload>
-
   constructor(request: Request<AcceptGrantRequestPayload>) {
-    super()
-    this.request = request
+    super(request)
   }
 
   getSucceedResponse(): Response<EmptyResponsePayload> {
-    return this.getPayloadEnvelope(this.request.directive.header.messageId, namespace, succeedName, payloadVersion, {})
+    return this.getPayloadEnvelope(namespace, succeedName, payloadVersion, {})
   }
 
   getFailResponse(type: string, message: string): Response<ErrorResponsePayload> {
-    return this.getPayloadEnvelope(this.request.directive.header.messageId, namespace, failName, payloadVersion, { type, message, })
+    return this.getPayloadEnvelope(namespace, failName, payloadVersion, { type, message, })
   }
 }

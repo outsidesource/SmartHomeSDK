@@ -1,10 +1,16 @@
+import { Request, RequestPayload } from '../dispatcher/request/handler/Request'
 import { Endpoint, Response, ResponsePayload } from './Response'
 
 /**
  * Represents a fluent mechanism for building a response.
  */
 export abstract class ResponseBuilder {
+  protected request: Request<RequestPayload>
   private endpointBuilder?: EndpointBuilder
+
+  constructor(request: Request<RequestPayload>) {
+    this.request = request
+  }
 
   /**
    * Generates a response for a request that was successfully handled.
@@ -36,17 +42,21 @@ export abstract class ResponseBuilder {
    * @param payload The request payload.
    * @returns The {@link Response}.
    */
-  protected getPayloadEnvelope<TPayload>(messageId: string, namespace: string, name: string, payloadVersion: string, payload: TPayload): Response<TPayload> {
+  protected getPayloadEnvelope<TPayload>(namespace: string, name: string, payloadVersion: string, payload: TPayload): Response<TPayload> {
     const response: Response<TPayload> = {
       event: {
         header: {
           namespace,
           name,
           payloadVersion,
-          messageId,
+          messageId: this.request.directive.header.messageId,
         },
         payload,
       }
+    }
+
+    if (this.request.directive.header.correlationToken) {
+      response.event.header.correlationToken = this.request.directive.header.correlationToken
     }
 
     if (this.endpointBuilder) {

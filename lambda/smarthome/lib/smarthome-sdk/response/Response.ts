@@ -13,6 +13,9 @@ export interface Response<TPayload extends ResponsePayload> {
       /** A unique identifier for each message. The message ID is used for tracking purposes. You should log the message ID, but don't use the message ID to program business logic. Any string of alphanumeric characters and dashes of fewer than 128 characters is valid, but a version 4 UUID, which is a UUID generated from random numbers, is recommended. */
       messageId: string,
 
+      /** An opaque token from the sender. If a message you receive from Alexa includes a correlation token, include the correlation token in your response message. When you send a response asynchronously to the Alexa event gateway you must include the same correlation token that you received from Alexa. When you send a proactive message to the Alexa event gateway you must include a correlation token that you create. */
+      correlationToken?: string,
+
       /** The version of the interface specified in the namespace field. */
       payloadVersion: string,
     },

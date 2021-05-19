@@ -117,6 +117,18 @@ describe('response builder', function() {
 
     expect(response).to.deep.equal(expectedResponse)
   })
+  it('creates a successful response with a correlation token for a successful request', function() {
+    const correlationTokenRequest = _.cloneDeep(request)
+    correlationTokenRequest.directive.header.correlationToken = 'T3B0aW9uYWwgY29ycmVsYXRpb24gdG9rZW4='
+    const builder = new TestResponseBuilder(correlationTokenRequest)
+    const expectedResponse = _.cloneDeep(succeedResponse)
+    expectedResponse.event.header.correlationToken = 'T3B0aW9uYWwgY29ycmVsYXRpb24gdG9rZW4='
+    const response = builder
+      .setValue(6.28)
+      .getSucceedResponse()
+
+    expect(response).to.deep.equal(expectedResponse)
+  })
   it('creates an error response with an endpointId for a failed request', function() {
     const builder = new TestResponseBuilder(request)
     const expectedResponse = _.cloneDeep(failResponse)
@@ -162,13 +174,10 @@ interface TestResponsePayload extends ResponsePayload {
 }
 
 class TestResponseBuilder extends ResponseBuilder {
-  private request: Request<TestRequestPayload>
   private value = 0
-  private endpointId?: string = undefined
 
   constructor(request: Request<TestRequestPayload>) {
-    super()
-    this.request = request
+    super(request)
   }
 
   setValue(value: number): this {
@@ -177,10 +186,10 @@ class TestResponseBuilder extends ResponseBuilder {
   }
 
   getSucceedResponse(): Response<TestResponsePayload> {
-    return this.getPayloadEnvelope(this.request.directive.header.messageId, 'Testing', 'Test.Response', '3', { customOutput: this.value })
+    return this.getPayloadEnvelope('Testing', 'Test.Response', '3', { customOutput: this.value })
   }
 
   getFailResponse(type: string, message: string): Response<ErrorResponsePayload> {
-    return this.getPayloadEnvelope(this.request.directive.header.messageId, 'Testing', 'ErrorResponse', '3', { type, message, })
+    return this.getPayloadEnvelope('Testing', 'ErrorResponse', '3', { type, message, })
   }
 }
