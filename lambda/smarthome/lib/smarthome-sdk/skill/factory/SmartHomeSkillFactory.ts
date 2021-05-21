@@ -1,5 +1,6 @@
 import { RuntimeConfigurationBuilder } from 'ask-sdk-runtime'
 import { AcceptGrantHandlerInputFactory } from '../../directives/acceptGrant/AcceptGrantHandlerInputFactory'
+import { DiscoveryHandlerInputFactory } from '../../directives/discovery/DiscoveryHandlerInputFactory'
 import { SmartHomeSkillErrorHandler } from '../../dispatcher/error/handler/SmartHomeSkillErrorHandler'
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/HandlerInputFactory'
 import { HandlerInput } from '../../dispatcher/request/handler/HandlerInput'
@@ -33,6 +34,7 @@ export class SmartHomeSkillFactory {
     let thisSkillId: string
     let thisHandlerInputFactories: HandlerInputFactory[] = [
       AcceptGrantHandlerInputFactory,
+      DiscoveryHandlerInputFactory,
     ]
 
     return {
