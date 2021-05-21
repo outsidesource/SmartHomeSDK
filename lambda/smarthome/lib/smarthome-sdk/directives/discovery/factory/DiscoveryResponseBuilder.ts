@@ -4,7 +4,7 @@ import { ErrorResponsePayload } from '../../../response/payloads/ErrorResponsePa
 import { Response } from '../../../response/Response'
 import { ResponseBuilder } from '../../../response/ResponseBuilder'
 import { DiscoveryRequestPayload } from '../DiscoveryRequestPayload'
-import { DiscoveryResponsePayload } from '../DiscoveryResponsePayload'
+import { DiscoveryEndpoint, DiscoveryResponsePayload, SemanticActionNames } from '../DiscoveryResponsePayload'
 import { DiscoveryEndpointBuilder } from './DiscoveryEndpointBuilder'
 
 const succeedNamespace = 'Alexa.Discovery'
@@ -34,7 +34,39 @@ export class DiscoveryResponseBuilder extends ResponseBuilder {
     }
 
     const endpoints = this.endpointBuilders.map(builder => builder.getEndpoint())
+
+    const duplicateSematicActionNames = this.getDuplicateSematicActionNames(endpoints)
+
+    if (duplicateSematicActionNames.length > 0) {
+      throw Error(`Duplicate semantic action names found for the following: ${JSON.stringify(duplicateSematicActionNames)}`)
+    }
+
     return this.getPayloadEnvelope(succeedNamespace, succeedName, payloadVersion, { endpoints, })
+  }
+
+  private getDuplicateSematicActionNames(endpoints: DiscoveryEndpoint[]): SemanticActionNameUsage[] {
+    const histo: SemanticActionNameUsage[] = []
+    for (const endpoint of endpoints) {
+      for (const capability of endpoint.capabilities) {
+        for (const actionMapping of capability.semantics?.actionMappings ?? []) {
+          for (const actionName of actionMapping.actions) {
+            let item = histo.find(x => x.action === actionName)
+            if (!item) {
+              histo.push(item = {
+                action: actionName,
+                locations: [],
+              })
+            }
+            item.locations.push({
+              endpoint: endpoint.endpointId,
+              capability: capability.interface,
+              instance: capability.instance,
+            })
+          }
+        }
+      }
+    }
+    return histo.filter(x => x.locations.length > 1)
   }
 
   getFailResponse(type: ErrorTypes.BridgeUnreachable | ErrorTypes.ExpiredAuthorizationCredential | ErrorTypes.InsufficientPermissions | ErrorTypes.InternalError | ErrorTypes.InvalidAuthorizationCredential, message: string): Response<ErrorResponsePayload> {
@@ -54,4 +86,13 @@ export class DiscoveryResponseBuilder extends ResponseBuilder {
     this.endpointBuilders.push(endpointBuilder)
     return endpointBuilder
   }
+}
+
+interface SemanticActionNameUsage {
+  action: SemanticActionNames,
+  locations: Array<{
+    endpoint: string,
+    capability: string,
+    instance?: string,
+  }>,
 }

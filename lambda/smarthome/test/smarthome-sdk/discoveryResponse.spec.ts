@@ -96,6 +96,37 @@ describe('discovery response builder', function() {
 
     expect(function(){ builder.getSucceedResponse() }).to.throw('The number of endpoints cannot exceed 300.')
   })
+  it('throws if semantic action names are used more than once in a single endpoint', function() {
+    const builder = new DiscoveryResponseBuilder(request)
+    builder.addDiscoveryEndpoint('endpointId', 'manufacturerName', 'description', 'friendly name')
+      .withDisplayCategories(DisplayCategories.Other)
+      .addCapability('capability0', '3').addSemanticAction('directiveName').withActions(SemanticActionNames.Open).getCapabilityBuilder().getEndpointBuilder()
+      .addCapability('capability1', '3').withInstance('instanceName').addSemanticAction('directiveName').withActions(SemanticActionNames.Open).getCapabilityBuilder().getEndpointBuilder()
+      
+    expect(function(){ builder.getSucceedResponse() }).to.throw('Duplicate semantic action names found for the following: [{"action":"Alexa.Actions.Open","locations":[{"endpoint":"endpointId","capability":"capability0"},{"endpoint":"endpointId","capability":"capability1","instance":"instanceName"}]}]')
+  })
+  it('throws if semantic action names are used more than once across multiple endpoints', function() {
+    const builder = new DiscoveryResponseBuilder(request)
+    builder.addDiscoveryEndpoint('endpointId0', 'manufacturerName', 'description', 'friendly name 0')
+      .withDisplayCategories(DisplayCategories.Other)
+      .addCapability('capabilityName', '3').withInstance('instanceName').addSemanticAction('directiveName').withActions(SemanticActionNames.Lower).getCapabilityBuilder().getEndpointBuilder()
+    builder.addDiscoveryEndpoint('endpointId1', 'manufacturerName', 'description', 'friendly name 1')
+      .withDisplayCategories(DisplayCategories.Other)
+      .addCapability('capabilityName', '3').withInstance('instanceName').addSemanticAction('directiveName').withActions(SemanticActionNames.Lower).getCapabilityBuilder().getEndpointBuilder()
+      
+    expect(function(){ builder.getSucceedResponse() }).to.throw('Duplicate semantic action names found for the following: [{"action":"Alexa.Actions.Lower","locations":[{"endpoint":"endpointId0","capability":"capabilityName","instance":"instanceName"},{"endpoint":"endpointId1","capability":"capabilityName","instance":"instanceName"}]}]')
+  })
+  it('throws if multiple semantic action names are used more than once', function() {
+    const builder = new DiscoveryResponseBuilder(request)
+    builder.addDiscoveryEndpoint('endpointId0', 'manufacturerName', 'description', 'friendly name 0')
+      .withDisplayCategories(DisplayCategories.Other)
+      .addCapability('capabilityName', '3').withInstance('instanceName').addSemanticAction('directiveName').withActions(SemanticActionNames.Lower, SemanticActionNames.Close).getCapabilityBuilder().getEndpointBuilder()
+    builder.addDiscoveryEndpoint('endpointId1', 'manufacturerName', 'description', 'friendly name 1')
+      .withDisplayCategories(DisplayCategories.Other)
+      .addCapability('capabilityName', '3').withInstance('instanceName').addSemanticAction('directiveName').withActions(SemanticActionNames.Lower, SemanticActionNames.Close).getCapabilityBuilder().getEndpointBuilder()
+      
+    expect(function(){ builder.getSucceedResponse() }).to.throw('Duplicate semantic action names found for the following: [{"action":"Alexa.Actions.Lower","locations":[{"endpoint":"endpointId0","capability":"capabilityName","instance":"instanceName"},{"endpoint":"endpointId1","capability":"capabilityName","instance":"instanceName"}]},{"action":"Alexa.Actions.Close","locations":[{"endpoint":"endpointId0","capability":"capabilityName","instance":"instanceName"},{"endpoint":"endpointId1","capability":"capabilityName","instance":"instanceName"}]}]')
+  })
 })
 
 describe('discovery endpoint builder', function() {
