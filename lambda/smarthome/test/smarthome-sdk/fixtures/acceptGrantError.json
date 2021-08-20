@@ -2,6 +2,7 @@
   "event": {
     "header": {
       "messageId": "4b409868-dc4b-ce7f-5ec9-0d6410e74f20",
+      "correlationToken": "VGhpcyBpcyBhIGNvcnJlbGF0aW9uIHRva2Vu",
       "namespace": "Alexa.Authorization",
       "name": "ErrorResponse",
       "payloadVersion": "3"
