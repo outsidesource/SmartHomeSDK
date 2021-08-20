@@ -20,6 +20,26 @@ export interface Request<TPayload extends RequestPayload> {
       payloadVersion: string,
     },
 
+    /** Contains optional information about which endpoint the directive is targetting. */
+    endpoint?: {
+      /** The endpoint ID that is being targetted. */
+      endpointId: string,
+
+      /** Contains additional data associated with the endpoint. */
+      cookie?: {
+        [key: string]: string,
+      },
+
+      /** Contains credentials that can be used with the request. */
+      scope?: {
+        /** Should always be "BearerToken". */
+        type: 'BearerToken',
+    
+        /** An OAuth2 bearer token. */
+        token: string,
+      },
+    },
+
     /** The request payload. */
     payload?: TPayload,
   }

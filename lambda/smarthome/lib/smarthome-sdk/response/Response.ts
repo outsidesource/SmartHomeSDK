@@ -1,5 +1,5 @@
 /**
- * Contains the header and payload response.
+ * Contains the header, payload, and context for a response.
  */
 export interface Response<TPayload extends ResponsePayload> {
   event: {
@@ -25,7 +25,10 @@ export interface Response<TPayload extends ResponsePayload> {
 
     /** The response payload. */
     payload: TPayload,
-  }
+  },
+
+  /** Contains addition information pertinent to the request. */
+  context?: Context,
 }
 
 /**
@@ -65,4 +68,35 @@ export interface BearerTokenWithPartitionScope {
 
   /** A unique identifier for the user who made the request. Don't rely on {@link userId} to identify users, use {@link token} instead. */
   userId: string,
+}
+
+/** Represents addition information pertinent to the request. */
+export interface Context {
+  /** Contains information about an interface's property values. */
+  properties?: PropertyState[],
+}
+
+/** Represents an interface's property values. */
+export interface PropertyState {
+  /** 
+   * The type of controller. This should match the 
+   * `capabilities[i].interface` value given at discovery. 
+   */
+  namespace: string,
+
+  /**
+   * The name of the property. This should match the 
+   * `capabilities[i].properties.supported[j].name` value 
+   * given at discovery.
+   */
+  name: string,
+
+  /** The value of the property. */
+  value: unknown,
+
+  /** The date/time when the property was sampled. This should be an ISO-8601 string of the date/time with zero offset. */
+  timeOfSample: string,
+
+  /** The uncertainty of the value in milliseconds. */
+  uncertaintyInMilliseconds: number,
 }

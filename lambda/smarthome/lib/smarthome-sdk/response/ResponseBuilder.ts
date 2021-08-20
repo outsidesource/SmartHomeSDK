@@ -1,5 +1,5 @@
 import { Request, RequestPayload } from '../dispatcher/request/handler/Request'
-import { Endpoint, Response, ResponsePayload } from './Response'
+import { Context, Endpoint, PropertyState, Response, ResponsePayload } from './Response'
 
 /**
  * Represents a fluent mechanism for building a response.
@@ -7,6 +7,7 @@ import { Endpoint, Response, ResponsePayload } from './Response'
 export abstract class ResponseBuilder {
   protected request: Request<RequestPayload>
   private endpointBuilder?: EndpointBuilder
+  private contextBuilder?: ContextBuilder
 
   constructor(request: Request<RequestPayload>) {
     this.request = request
@@ -35,6 +36,17 @@ export abstract class ResponseBuilder {
   }
 
   /**
+   * Adds a builder for the context.
+   * @returns A fluent mechanism for building a context.
+   */
+  addContext(): ContextBuilder {
+    if (this.contextBuilder) {
+      return this.contextBuilder
+    }
+    return this.contextBuilder = new ContextBuilder(this)
+  }
+
+  /**
    * Generates a {@link Response} based on the current configuration.
    * @param namespace The namespace and interface for the operation.
    * @param name The name of the operation.
@@ -60,7 +72,17 @@ export abstract class ResponseBuilder {
     }
 
     if (this.endpointBuilder) {
-      response.event.endpoint = this.endpointBuilder.getEndpoint()
+      const endpoint = this.endpointBuilder.getEndpoint()
+      if (endpoint) {
+        response.event.endpoint = endpoint
+      }
+    }
+
+    if (this.contextBuilder) {
+      const context = this.contextBuilder.getContext()
+      if (context) {
+        response.context = context
+      }
     }
 
     return response
@@ -157,6 +179,62 @@ export class EndpointBuilder {
     this.token = token
     this.partition = partition
     this.userId = userId
+    return this
+  }
+}
+
+/**
+ * Represents a fluent mechanism for building a response context.
+ */
+export class ContextBuilder {
+  private parent: ResponseBuilder
+  private properties: PropertyState[] = []
+
+  constructor(parent: ResponseBuilder) {
+    this.parent = parent
+  }
+
+  /**
+   * Returns the {@link ResponseBuilder} that created this builder.
+   * @returns The {@link ResponseBuilder} that created this builder.
+   */
+  getResponseBuilder(): ResponseBuilder {
+    return this.parent
+  }
+
+  /**
+   * Generates a {@link Context} based on the current configuration.
+   * @returns The {@link Context}.
+   */
+  getContext(): Context | undefined {
+    const context: Context = {}
+
+    if (this.properties.length === 0) {
+      return undefined
+    }
+
+    context.properties = this.properties
+
+    return context
+  }
+
+  /**
+   * Adds a report of a property value
+   * @param namespace The type of controller. This should match the `capabilities[i].interface` value given at discovery.
+   * @param name The name of the property. This should match the `capabilities[i].properties.supported[j].name` value  given at discovery.
+   * @param value The value of the property.
+   * @param timeOfSample The date/time when the property was last updated.
+   * @param uncertaintyInMilliseconds The uncertainty of the value in milliseconds.
+   * @returns This builder.
+   */
+  withProperty(namespace: string, name: string, value: unknown, timeOfSample: Date, uncertaintyInMilliseconds: number): this {
+    this.properties.push({
+      namespace,
+      name,
+      value,
+      timeOfSample: timeOfSample.toISOString(),
+      uncertaintyInMilliseconds,
+    })
     return this
   }
 }
