@@ -98,6 +98,7 @@ export class EndpointBuilder {
   private token?: string
   private partition?: string
   private userId?: string
+  private cookie: { [key: string]: string } = {}
 
   constructor(parent: ResponseBuilder) {
     this.parent = parent
@@ -116,7 +117,7 @@ export class EndpointBuilder {
    * @returns The {@link Endpoint}.
    */
   getEndpoint(): Endpoint | undefined {
-    if (!this.endpointId && !this.token) {
+    if (!this.endpointId && !this.token && Object.keys(this.cookie).length === 0) {
       return undefined
     }
 
@@ -141,6 +142,10 @@ export class EndpointBuilder {
           token: this.token,
         }
       }
+    }
+
+    if (Object.keys(this.cookie).length > 0) {
+      endpoint.cookie = this.cookie
     }
 
     return endpoint
@@ -179,6 +184,17 @@ export class EndpointBuilder {
     this.token = token
     this.partition = partition
     this.userId = userId
+    return this
+  }
+
+  /**
+   * Adds additional information about the endpoint.
+   * @param name The key for the additional information.
+   * @param value The value for the additional information.
+   * @returns This builder.
+   */
+   withCookie(name: string, value: string): this {
+    this.cookie[name] = value
     return this
   }
 }

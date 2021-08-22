@@ -129,6 +129,18 @@ describe('response builder', function() {
 
     expect(response).to.deep.equal(expectedResponse)
   })
+  it('creates a successful response with a cookie for a successful request', function() {
+    const builder = new TestResponseBuilder(request)
+    const expectedResponse = _.cloneDeep(succeedResponse)
+    expectedResponse.event.endpoint = { cookie: { macAddress: '62:7B:51:61:D3:19', } }
+    builder
+      .setValue(6.28)
+      .addEndpoint()
+        .withCookie('macAddress', '62:7B:51:61:D3:19')
+    const response = builder.getSucceedResponse()
+
+    expect(response).to.deep.equal(expectedResponse)
+  })
   it('creates an error response with an endpointId for a failed request', function() {
     const builder = new TestResponseBuilder(request)
     const expectedResponse = _.cloneDeep(failResponse)

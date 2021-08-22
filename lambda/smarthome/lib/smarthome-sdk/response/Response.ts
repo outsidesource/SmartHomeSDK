@@ -43,6 +43,9 @@ export interface Endpoint {
 
   /** The ID of the endpoint that handled the request. */
   endpointId?: string,
+
+  /** Additional information about the endpoint. */
+  cookie?: { [key: string]: string },
 }
 
 /** Represents a Bearer token. */
