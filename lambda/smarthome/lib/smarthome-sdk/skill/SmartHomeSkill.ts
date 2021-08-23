@@ -4,13 +4,14 @@ import { HandlerInput } from '../dispatcher/request/handler/HandlerInput'
 import { LambdaContext } from '../dispatcher/request/handler/LambdaContext'
 import { Request, RequestPayload } from '../dispatcher/request/handler/Request'
 import { Response, ResponsePayload } from '../response/Response'
+import { ResponseBuilder } from '../response/ResponseBuilder'
 import { SmartHomeSkillConfiguration } from './SmartHomeSkillConfiguration'
 
 /**
  * Top level container for request dispatcher.
  */
 export class SmartHomeSkill implements Skill<Request<RequestPayload>, Response<ResponsePayload>> {
-  protected requestDispatcher: RequestDispatcher<HandlerInput, Response<ResponsePayload>>
+  protected requestDispatcher: RequestDispatcher<HandlerInput<ResponseBuilder>, Response<ResponsePayload>>
   // protected persistenceAdapter: PersistenceAdapter;
   // protected apiClient: ApiClient;
   protected customUserAgent?: string
@@ -24,7 +25,7 @@ export class SmartHomeSkill implements Skill<Request<RequestPayload>, Response<R
     this.skillId = skillConfiguration.skillId
     this.handlerInputFactoryRepository = new HandlerInputFactoryRepository(...skillConfiguration.handlerInputFactories)
 
-    this.requestDispatcher = new GenericRequestDispatcher<HandlerInput, Response<ResponsePayload>>({
+    this.requestDispatcher = new GenericRequestDispatcher<HandlerInput<ResponseBuilder>, Response<ResponsePayload>>({
         requestMappers: skillConfiguration.requestMappers,
         handlerAdapters: skillConfiguration.handlerAdapters,
         errorMapper: skillConfiguration.errorMapper,

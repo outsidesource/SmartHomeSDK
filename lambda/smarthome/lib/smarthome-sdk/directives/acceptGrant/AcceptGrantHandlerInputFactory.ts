@@ -8,11 +8,11 @@ import { AcceptGrantResponseBuilder } from './AcceptGrantResponseBuilder'
 /**
  * A factory for {@link HandlerInput} when the request is an AcceptGrant.
  */
-export const AcceptGrantHandlerInputFactory: HandlerInputFactory = {
+export const AcceptGrantHandlerInputFactory: HandlerInputFactory<AcceptGrantResponseBuilder> = {
   canCreate(request: Request<RequestPayload>, context?: LambdaContext) {
     return isAcceptGrantRequest(request)
   },
-  create(request: Request<RequestPayload>, context?: LambdaContext): HandlerInput | undefined {
+  create(request: Request<RequestPayload>, context?: LambdaContext): HandlerInput<AcceptGrantResponseBuilder> | undefined {
     if (!isAcceptGrantRequest(request)) {
       return undefined
     }

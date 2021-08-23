@@ -3,9 +3,9 @@ import { LambdaContext } from './LambdaContext'
 import { Request, RequestPayload } from './Request'
 
 /**
- * An interface that represents components passed into {@link SmartHomeSkillRequestHandler} and {@link SmartHomeSkillErrorHandler}.
+ * An interface that represents components passed into {@link RequestHandler} and {@link SmartHomeSkillErrorHandler}.
  */
-export interface HandlerInput {
+export interface HandlerInput<TResponseBuilder extends ResponseBuilder> {
   /**
    * The directive and payload for the request.
    */
@@ -19,5 +19,5 @@ export interface HandlerInput {
   /**
    * The builder to create a response.
    */
-  responseBuilder: ResponseBuilder,
+  responseBuilder: TResponseBuilder,
 }

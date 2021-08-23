@@ -8,11 +8,11 @@ import { DiscoveryResponseBuilder } from './factory/DiscoveryResponseBuilder'
 /**
  * A factory for {@link HandlerInput} when the request is a Discovery.
  */
-export const DiscoveryHandlerInputFactory: HandlerInputFactory = {
+export const DiscoveryHandlerInputFactory: HandlerInputFactory<DiscoveryResponseBuilder> = {
   canCreate(request: Request<RequestPayload>, context?: LambdaContext) {
     return isDiscoveryRequest(request)
   },
-  create(request: Request<RequestPayload>, context?: LambdaContext): HandlerInput | undefined {
+  create(request: Request<RequestPayload>, context?: LambdaContext): HandlerInput<DiscoveryResponseBuilder> | undefined {
     if (!isDiscoveryRequest(request)) {
       return undefined
     }

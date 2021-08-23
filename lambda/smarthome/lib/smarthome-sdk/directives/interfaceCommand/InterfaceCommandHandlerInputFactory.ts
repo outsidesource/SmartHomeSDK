@@ -7,11 +7,11 @@ import { InterfaceCommandResponseBuilder } from './InterfaceCommandResponseBuild
 /**
  * A factory for {@link HandlerInput} when the request is an interface command.
  */
-export const InterfaceCommandHandlerInputFactory: HandlerInputFactory = {
+export const InterfaceCommandHandlerInputFactory: HandlerInputFactory<InterfaceCommandResponseBuilder> = {
   canCreate(request: Request<RequestPayload>, context?: LambdaContext) {
     return true
   },
-  create(request: Request<RequestPayload>, context?: LambdaContext): HandlerInput | undefined {
+  create(request: Request<RequestPayload>, context?: LambdaContext): HandlerInput<InterfaceCommandResponseBuilder> | undefined {
     return {
       request,
       context,
