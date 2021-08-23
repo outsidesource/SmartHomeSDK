@@ -1,0 +1,56 @@
+{
+  "event": {
+    "header": {
+      "namespace": "Alexa",
+      "name": "ChangeReport",
+      "messageId": "4b409868-dc4b-ce7f-5ec9-0d6410e74f20",
+      "payloadVersion": "3"
+    },
+    "endpoint": {
+      "scope": {
+        "type": "BearerToken",
+        "token": "VGhpcyBpcyBhIEJlYXJlciB0b2tlbg=="
+      },
+      "endpointId": "endpointId",
+      "cookie": {
+        "macAddress": "62:7B:51:61:D3:19"
+      }
+    },
+    "payload": {
+      "change": {
+        "cause": {
+          "type": "PHYSICAL_INTERACTION"
+        },
+        "properties": [
+          {
+            "namespace": "Alexa.BrightnessController",
+            "name": "brightness",
+            "value": 85,
+            "timeOfSample": "2017-02-03T16:20:50.000Z",
+            "uncertaintyInMilliseconds": 0
+          }
+        ]
+      }
+    }
+  },
+  "context": {
+    "properties": [
+      {
+        "namespace": "Alexa.PowerController",
+        "name": "powerState",
+        "value": "ON",
+        "timeOfSample": "2017-02-03T16:20:50.000Z",
+        "uncertaintyInMilliseconds": 60000
+      },
+      {
+        "namespace": "Alexa.EndpointHealth",
+        "name": "connectivity",
+        "value": {
+          "value": "OK"
+        },
+        "timeOfSample": "2017-02-03T16:20:50.000Z",
+        "uncertaintyInMilliseconds": 0
+      }
+    ]
+  }
+}
