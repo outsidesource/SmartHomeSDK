@@ -6,6 +6,7 @@ export { DiscoveryRequestHandler } from './dispatcher/request/handler/DiscoveryR
 export { HandlerInput } from './dispatcher/request/handler/HandlerInput'
 export { InterfaceCommandRequestHandler } from './dispatcher/request/handler/InterfaceCommandRequestHandler'
 export { ReportStateRequestHandler } from './dispatcher/request/handler/ReportStateRequestHandler'
+export { SmartHomeSkillRequestHandler } from './dispatcher/request/handler/SmartHomeSkillRequestHandler'
 export { SmartHomeSkillRequestInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillRequestInterceptor'
 export { SmartHomeSkillResponseInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillResponseInterceptor'
 export { ErrorTypes } from './response/ErrorTypes'
