@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Alexa Smart Home Skill SDK",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "clean": "rimraf build",
     "compile": "tsc --build tsconfig.json --pretty",
