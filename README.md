@@ -1,1 +1,1 @@
-# Carrier Air Purifier Alexa Skill
+# Alexa Smart Home Skill SDK

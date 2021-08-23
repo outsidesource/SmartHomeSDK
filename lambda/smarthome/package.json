@@ -1,7 +1,7 @@
 {
-  "name": "carrier-airpurifier-alexa",
+  "name": "smart-home-sdk",
   "version": "0.0.0",
-  "description": "Carrier Air Purifier Alexa Skill",
+  "description": "Alexa Smart Home Skill SDK",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf build",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/outsidesource/Carrier-AirPurifier-Alexa.git"
+    "url": "https://github.com/outsidesource/SmartHomeSDK.git"
   },
   "author": "Outside Source",
   "license": "UNLICENSED",
@@ -64,9 +64,9 @@
     "all": true
   },
   "bugs": {
-    "url": "https://github.com/outsidesource/Carrier-AirPurifier-Alexa/issues"
+    "url": "https://github.com/outsidesource/SmartHomeSDK/issues"
   },
-  "homepage": "https://github.com/outsidesource/Carrier-AirPurifier-Alexa#readme",
+  "homepage": "https://github.com/outsidesource/SmartHomeSDK#readme",
   "directories": {
     "test": "test"
   }
