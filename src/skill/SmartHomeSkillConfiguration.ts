@@ -7,7 +7,11 @@ import { ResponseBuilder } from '../response/ResponseBuilder'
 /**
  * An interfaces that represents the standard components needed to build {@link SmartHomeSkill}.
  */
-export interface SmartHomeSkillConfiguration extends RuntimeConfiguration<HandlerInput<ResponseBuilder>, Response<ResponsePayload>> {
+export interface SmartHomeSkillConfiguration
+  extends RuntimeConfiguration<
+    HandlerInput<ResponseBuilder>,
+    Response<ResponsePayload>
+  > {
   // persistenceAdapter?: PersistenceAdapter;
   // apiClient?: services.ApiClient;
   customUserAgent?: string

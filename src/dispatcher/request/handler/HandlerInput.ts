@@ -19,5 +19,5 @@ export interface HandlerInput<TResponseBuilder extends ResponseBuilder> {
   /**
    * The builder to create a response.
    */
-  responseBuilder: TResponseBuilder,
+  responseBuilder: TResponseBuilder
 }

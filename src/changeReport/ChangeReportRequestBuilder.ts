@@ -14,7 +14,11 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
   private changedProperties: PropState[] = []
   private changeCause: ChangeCauseType
 
-  constructor(messageId: string, endpointId: string, changeCause: ChangeCauseType) {
+  constructor(
+    messageId: string,
+    endpointId: string,
+    changeCause: ChangeCauseType
+  ) {
     super(messageId, endpointId)
     this.changeCause = changeCause
   }
@@ -23,19 +27,33 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
     let duplicates = findDuplicates(this.unchangedProperties)
 
     if (duplicates.length > 0) {
-      throw Error(`The following unchanged properties are duplicated: ${JSON.stringify(duplicates)}`)
+      throw Error(
+        `The following unchanged properties are duplicated: ${JSON.stringify(
+          duplicates
+        )}`
+      )
     }
 
     duplicates = findDuplicates(this.changedProperties)
 
     if (duplicates.length > 0) {
-      throw Error(`The following changed properties are duplicated: ${JSON.stringify(duplicates)}`)
+      throw Error(
+        `The following changed properties are duplicated: ${JSON.stringify(
+          duplicates
+        )}`
+      )
     }
 
-    const intersection = this.unchangedProperties.filter(x => this.changedProperties.find(y => isSamePropState(x, y)))
+    const intersection = this.unchangedProperties.filter(x =>
+      this.changedProperties.find(y => isSamePropState(x, y))
+    )
 
     if (intersection.length > 0) {
-      throw Error(`The following properties cannot be both changed and unchanged: ${JSON.stringify(intersection)}`)
+      throw Error(
+        `The following properties cannot be both changed and unchanged: ${JSON.stringify(
+          intersection
+        )}`
+      )
     }
 
     if (this.changedProperties.length === 0) {
@@ -44,27 +62,30 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
 
     if (this.unchangedProperties.length > 0) {
       const contextBuilder = this.addContext()
-      this.unchangedProperties.map(prop => contextBuilder.withProperty(
-        prop.namespace, 
-        prop.name, 
-        prop.value,
-        prop.timeOfSample,
-        prop.uncertaintyInMilliseconds))
+      this.unchangedProperties.map(prop =>
+        contextBuilder.withProperty(
+          prop.namespace,
+          prop.name,
+          prop.value,
+          prop.timeOfSample,
+          prop.uncertaintyInMilliseconds
+        )
+      )
     }
 
     return this.getPayloadEnvelope(namespace, name, payloadVersion, {
       change: {
         cause: {
-          type: this.changeCause,
+          type: this.changeCause
         },
         properties: this.changedProperties.map(prop => ({
           namespace: prop.namespace,
           name: prop.name,
           value: prop.value,
           timeOfSample: prop.timeOfSample.toISOString(),
-          uncertaintyInMilliseconds: prop.uncertaintyInMilliseconds,
-        })),
-      },
+          uncertaintyInMilliseconds: prop.uncertaintyInMilliseconds
+        }))
+      }
     })
   }
 
@@ -77,13 +98,19 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
    * @param uncertaintyInMilliseconds The uncertainty of the value in milliseconds.
    * @returns This builder.
    */
-  withUnchangedProperty(namespace: string, name: string, value: unknown, timeOfSample: Date, uncertaintyInMilliseconds: number): this {
+  withUnchangedProperty(
+    namespace: string,
+    name: string,
+    value: unknown,
+    timeOfSample: Date,
+    uncertaintyInMilliseconds: number
+  ): this {
     this.unchangedProperties.push({
       namespace,
       name,
       value,
       timeOfSample,
-      uncertaintyInMilliseconds,
+      uncertaintyInMilliseconds
     })
     return this
   }
@@ -97,13 +124,19 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
    * @param uncertaintyInMilliseconds The uncertainty of the value in milliseconds.
    * @returns This builder.
    */
-   withChangedProperty(namespace: string, name: string, value: unknown, timeOfSample: Date, uncertaintyInMilliseconds: number): this {
+  withChangedProperty(
+    namespace: string,
+    name: string,
+    value: unknown,
+    timeOfSample: Date,
+    uncertaintyInMilliseconds: number
+  ): this {
     this.changedProperties.push({
       namespace,
       name,
       value,
       timeOfSample,
-      uncertaintyInMilliseconds,
+      uncertaintyInMilliseconds
     })
     return this
   }
@@ -111,32 +144,31 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
 
 /** Represents a PropertyState with a Date timestamp. */
 interface PropState {
-  /** 
-   * The type of controller. This should match the 
-   * `capabilities[i].interface` value given at discovery. 
+  /**
+   * The type of controller. This should match the
+   * `capabilities[i].interface` value given at discovery.
    */
-  namespace: string,
+  namespace: string
 
   /**
-   * The name of the property. This should match the 
-   * `capabilities[i].properties.supported[j].name` value 
+   * The name of the property. This should match the
+   * `capabilities[i].properties.supported[j].name` value
    * given at discovery.
    */
-  name: string,
+  name: string
 
   /** The value of the property. */
-  value: unknown,
+  value: unknown
 
   /** The date/time when the property was sampled. */
-  timeOfSample: Date,
+  timeOfSample: Date
 
   /** The uncertainty of the value in milliseconds. */
-  uncertaintyInMilliseconds: number,
+  uncertaintyInMilliseconds: number
 }
 
 const isSamePropState = (x: PropState, y: PropState) => {
-  return x.namespace === y.namespace
-    && x.name === y.name
+  return x.namespace === y.namespace && x.name === y.name
 }
 
 const findDuplicates = (arr: PropState[]) => {
@@ -145,7 +177,7 @@ const findDuplicates = (arr: PropState[]) => {
 }
 
 const histogram = (arr: PropState[]) => {
-  return arr.reduce((histo: {[key: string]: number}, prop) => {
+  return arr.reduce((histo: { [key: string]: number }, prop) => {
     const key = JSON.stringify(prop)
     return { ...histo, [key]: (histo[key] || 0) + 1 }
   }, {})

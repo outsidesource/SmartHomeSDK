@@ -1,4 +1,7 @@
-import { Request, RequestPayload } from '../../dispatcher/request/handler/Request'
+import {
+  Request,
+  RequestPayload
+} from '../../dispatcher/request/handler/Request'
 import { ErrorResponsePayload } from '../../response/payloads/ErrorResponsePayload'
 import { Response, ResponsePayload } from '../../response/Response'
 import { ResponseBuilder } from '../../response/ResponseBuilder'
@@ -21,7 +24,12 @@ export class InterfaceCommandResponseBuilder extends ResponseBuilder {
   }
 
   getSucceedResponse(): Response<ResponsePayload> {
-    const envelope = this.getPayloadEnvelope(this.namespace, this.name, payloadVersion, this.payload)
+    const envelope = this.getPayloadEnvelope(
+      this.namespace,
+      this.name,
+      payloadVersion,
+      this.payload
+    )
 
     if (!envelope.event.endpoint?.endpointId) {
       throw Error('An endpoint ID is required.')
@@ -30,8 +38,14 @@ export class InterfaceCommandResponseBuilder extends ResponseBuilder {
     return envelope
   }
 
-  getFailResponse(type: string, message: string): Response<ErrorResponsePayload> {
-    return this.getPayloadEnvelope(this.namespace, failName, payloadVersion, { type, message, })
+  getFailResponse(
+    type: string,
+    message: string
+  ): Response<ErrorResponsePayload> {
+    return this.getPayloadEnvelope(this.namespace, failName, payloadVersion, {
+      type,
+      message
+    })
   }
 
   /**

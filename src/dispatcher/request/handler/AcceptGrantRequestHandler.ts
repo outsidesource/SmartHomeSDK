@@ -7,12 +7,19 @@ import { HandlerInput } from './HandlerInput'
 /**
  * A base implementation for user-created handler logic for accept grant requests.
  */
-export abstract class AcceptGrantRequestHandler implements RequestHandler<HandlerInput<AcceptGrantResponseBuilder>, Response<ResponsePayload>> {
+export abstract class AcceptGrantRequestHandler
+  implements
+    RequestHandler<
+      HandlerInput<AcceptGrantResponseBuilder>,
+      Response<ResponsePayload>
+    > {
   /**
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
    */
-  canHandle(input: HandlerInput<AcceptGrantResponseBuilder>): boolean | Promise<boolean> {
+  canHandle(
+    input: HandlerInput<AcceptGrantResponseBuilder>
+  ): boolean | Promise<boolean> {
     return isAcceptGrantRequest(input.request)
   }
 
@@ -20,5 +27,7 @@ export abstract class AcceptGrantRequestHandler implements RequestHandler<Handle
    * Fulfills the request and returns a valid response.
    * @param input Information about the request and executing context.
    */
-  abstract handle(input: HandlerInput<AcceptGrantResponseBuilder>): Response<ResponsePayload> | Promise<Response<ResponsePayload>>
+  abstract handle(
+    input: HandlerInput<AcceptGrantResponseBuilder>
+  ): Response<ResponsePayload> | Promise<Response<ResponsePayload>>
 }

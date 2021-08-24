@@ -4,7 +4,11 @@ import { ErrorResponsePayload } from '../../../response/payloads/ErrorResponsePa
 import { Response } from '../../../response/Response'
 import { ResponseBuilder } from '../../../response/ResponseBuilder'
 import { DiscoveryRequestPayload } from '../DiscoveryRequestPayload'
-import { DiscoveryEndpoint, DiscoveryResponsePayload, SemanticActionNames } from '../DiscoveryResponsePayload'
+import {
+  DiscoveryEndpoint,
+  DiscoveryResponsePayload,
+  SemanticActionNames
+} from '../DiscoveryResponsePayload'
 import { DiscoveryEndpointBuilder } from './DiscoveryEndpointBuilder'
 
 const succeedNamespace = 'Alexa.Discovery'
@@ -33,34 +37,52 @@ export class DiscoveryResponseBuilder extends ResponseBuilder {
       throw Error(`The number of endpoints cannot exceed ${maxEndpoints}.`)
     }
 
-    const endpoints = this.endpointBuilders.map(builder => builder.getEndpoint())
+    const endpoints = this.endpointBuilders.map(builder =>
+      builder.getEndpoint()
+    )
 
-    const duplicateSematicActionNames = this.getDuplicateSematicActionNames(endpoints)
+    const duplicateSematicActionNames = this.getDuplicateSematicActionNames(
+      endpoints
+    )
 
     if (duplicateSematicActionNames.length > 0) {
-      throw Error(`Duplicate semantic action names found for the following: ${JSON.stringify(duplicateSematicActionNames)}`)
+      throw Error(
+        `Duplicate semantic action names found for the following: ${JSON.stringify(
+          duplicateSematicActionNames
+        )}`
+      )
     }
 
-    return this.getPayloadEnvelope(succeedNamespace, succeedName, payloadVersion, { endpoints, })
+    return this.getPayloadEnvelope(
+      succeedNamespace,
+      succeedName,
+      payloadVersion,
+      { endpoints }
+    )
   }
 
-  private getDuplicateSematicActionNames(endpoints: DiscoveryEndpoint[]): SemanticActionNameUsage[] {
+  private getDuplicateSematicActionNames(
+    endpoints: DiscoveryEndpoint[]
+  ): SemanticActionNameUsage[] {
     const histo: SemanticActionNameUsage[] = []
     for (const endpoint of endpoints) {
       for (const capability of endpoint.capabilities) {
-        for (const actionMapping of capability.semantics?.actionMappings ?? []) {
+        for (const actionMapping of capability.semantics?.actionMappings ??
+          []) {
           for (const actionName of actionMapping.actions) {
             let item = histo.find(x => x.action === actionName)
             if (!item) {
-              histo.push(item = {
-                action: actionName,
-                locations: [],
-              })
+              histo.push(
+                (item = {
+                  action: actionName,
+                  locations: []
+                })
+              )
             }
             item.locations.push({
               endpoint: endpoint.endpointId,
               capability: capability.interface,
-              instance: capability.instance,
+              instance: capability.instance
             })
           }
         }
@@ -69,8 +91,19 @@ export class DiscoveryResponseBuilder extends ResponseBuilder {
     return histo.filter(x => x.locations.length > 1)
   }
 
-  getFailResponse(type: ErrorTypes.BridgeUnreachable | ErrorTypes.ExpiredAuthorizationCredential | ErrorTypes.InsufficientPermissions | ErrorTypes.InternalError | ErrorTypes.InvalidAuthorizationCredential, message: string): Response<ErrorResponsePayload> {
-    return this.getPayloadEnvelope(failNamespace, failName, payloadVersion, { type, message, })
+  getFailResponse(
+    type:
+      | ErrorTypes.BridgeUnreachable
+      | ErrorTypes.ExpiredAuthorizationCredential
+      | ErrorTypes.InsufficientPermissions
+      | ErrorTypes.InternalError
+      | ErrorTypes.InvalidAuthorizationCredential,
+    message: string
+  ): Response<ErrorResponsePayload> {
+    return this.getPayloadEnvelope(failNamespace, failName, payloadVersion, {
+      type,
+      message
+    })
   }
 
   /**
@@ -81,18 +114,29 @@ export class DiscoveryResponseBuilder extends ResponseBuilder {
    * @param friendlyName The name used by the user to identify the device. You set an initial value, and later the user can change the friendly name by using the Alexa app. This value can contain up to 128 characters, and shouldn't contain special characters or punctuation.
    * @returns A builder for a {@link DiscoveryEndpoint}.
    */
-  addDiscoveryEndpoint(endpointId: string, manufacturerName: string, description: string, friendlyName: string): DiscoveryEndpointBuilder {
-    const endpointBuilder = new DiscoveryEndpointBuilder(this, endpointId, manufacturerName, description, friendlyName)
+  addDiscoveryEndpoint(
+    endpointId: string,
+    manufacturerName: string,
+    description: string,
+    friendlyName: string
+  ): DiscoveryEndpointBuilder {
+    const endpointBuilder = new DiscoveryEndpointBuilder(
+      this,
+      endpointId,
+      manufacturerName,
+      description,
+      friendlyName
+    )
     this.endpointBuilders.push(endpointBuilder)
     return endpointBuilder
   }
 }
 
 interface SemanticActionNameUsage {
-  action: SemanticActionNames,
+  action: SemanticActionNames
   locations: Array<{
-    endpoint: string,
-    capability: string,
-    instance?: string,
-  }>,
+    endpoint: string
+    capability: string
+    instance?: string
+  }>
 }

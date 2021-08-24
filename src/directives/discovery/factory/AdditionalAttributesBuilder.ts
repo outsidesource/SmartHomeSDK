@@ -30,11 +30,21 @@ export class AdditionalAttributesBuilder {
    * @returns The {@link AdditionalAttributes}.
    */
   getAdditionalAttributes(): AdditionalAttributes | undefined {
-    if (!this.manufacturer && !this.model && !this.serialNumber && !this.firmwareVersion && !this.softwareVersion && !this.customIdentifier) {
+    if (
+      !this.manufacturer &&
+      !this.model &&
+      !this.serialNumber &&
+      !this.firmwareVersion &&
+      !this.softwareVersion &&
+      !this.customIdentifier
+    ) {
       return undefined
     }
 
-    if (this.manufacturer && this.manufacturer.length > additionalAttributesFieldMaxSize) {
+    if (
+      this.manufacturer &&
+      this.manufacturer.length > additionalAttributesFieldMaxSize
+    ) {
       throw Error(`The manufacturer "${this.manufacturer}" is too long.`)
     }
 
@@ -42,29 +52,43 @@ export class AdditionalAttributesBuilder {
       throw Error(`The model "${this.model}" is too long.`)
     }
 
-    if (this.serialNumber && this.serialNumber.length > additionalAttributesFieldMaxSize) {
+    if (
+      this.serialNumber &&
+      this.serialNumber.length > additionalAttributesFieldMaxSize
+    ) {
       throw Error(`The serial number "${this.serialNumber}" is too long.`)
     }
 
-    if (this.firmwareVersion && this.firmwareVersion.length > additionalAttributesFieldMaxSize) {
+    if (
+      this.firmwareVersion &&
+      this.firmwareVersion.length > additionalAttributesFieldMaxSize
+    ) {
       throw Error(`The firmware version "${this.firmwareVersion}" is too long.`)
     }
 
-    if (this.softwareVersion && this.softwareVersion.length > additionalAttributesFieldMaxSize) {
+    if (
+      this.softwareVersion &&
+      this.softwareVersion.length > additionalAttributesFieldMaxSize
+    ) {
       throw Error(`The software version "${this.softwareVersion}" is too long.`)
     }
 
-    if (this.customIdentifier && this.customIdentifier.length > additionalAttributesFieldMaxSize) {
-      throw Error(`The custom identifier "${this.customIdentifier}" is too long.`)
+    if (
+      this.customIdentifier &&
+      this.customIdentifier.length > additionalAttributesFieldMaxSize
+    ) {
+      throw Error(
+        `The custom identifier "${this.customIdentifier}" is too long.`
+      )
     }
 
-    const result = { 
+    const result = {
       manufacturer: this.manufacturer,
       model: this.model,
       serialNumber: this.serialNumber,
       firmwareVersion: this.firmwareVersion,
       softwareVersion: this.softwareVersion,
-      customIdentifier: this.customIdentifier,
+      customIdentifier: this.customIdentifier
     }
 
     if (!this.manufacturer) {

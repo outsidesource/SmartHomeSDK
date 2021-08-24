@@ -7,10 +7,10 @@ export interface ErrorResponsePayload extends ResponsePayload {
   /**
    * The error type.
    */
-  type: string,
+  type: string
 
   /**
    * The friendly error message.
    */
-  message: string,
+  message: string
 }

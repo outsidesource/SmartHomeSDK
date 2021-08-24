@@ -1,4 +1,8 @@
-import { DiscoveryConnection, DiscoveryEndpoint, DisplayCategories } from '../DiscoveryResponsePayload'
+import {
+  DiscoveryConnection,
+  DiscoveryEndpoint,
+  DisplayCategories
+} from '../DiscoveryResponsePayload'
 import { AdditionalAttributesBuilder } from './AdditionalAttributesBuilder'
 import { CapabilityBuilder } from './CapabilityBuilder'
 import { DiscoveryResponseBuilder } from './DiscoveryResponseBuilder'
@@ -25,10 +29,16 @@ export class DiscoveryEndpointBuilder {
   private capabilityBuilders: CapabilityBuilder[] = []
   private additionalAttributesBuilder?: AdditionalAttributesBuilder
   private connections: DiscoveryConnection[] = []
-  private relationships: Record<string, { endpointId: string, }> = {}
+  private relationships: Record<string, { endpointId: string }> = {}
   private cookies: Record<string, string> = {}
 
-  constructor(parent: DiscoveryResponseBuilder, endpointId: string, manufacturerName: string, description: string, friendlyName: string) {
+  constructor(
+    parent: DiscoveryResponseBuilder,
+    endpointId: string,
+    manufacturerName: string,
+    description: string,
+    friendlyName: string
+  ) {
     this.parent = parent
     this.endpointId = endpointId
     this.manufacturerName = manufacturerName
@@ -50,7 +60,9 @@ export class DiscoveryEndpointBuilder {
    */
   getEndpoint(): DiscoveryEndpoint {
     if (!endpointIdRegex.test(this.endpointId)) {
-      throw Error(`The endpoint ID "${this.endpointId}" does not match the expected format.`)
+      throw Error(
+        `The endpoint ID "${this.endpointId}" does not match the expected format.`
+      )
     }
 
     if (this.manufacturerName.length === 0) {
@@ -58,7 +70,9 @@ export class DiscoveryEndpointBuilder {
     }
 
     if (this.manufacturerName.length > manufacturerNameMaxSize) {
-      throw Error(`The manufacturer name "${this.manufacturerName}" is too long.`)
+      throw Error(
+        `The manufacturer name "${this.manufacturerName}" is too long.`
+      )
     }
 
     if (this.description.length === 0) {
@@ -70,7 +84,9 @@ export class DiscoveryEndpointBuilder {
     }
 
     if (!friendlyNameRegex.test(this.friendlyName)) {
-      throw Error(`The friendly name "${this.friendlyName}" does not match the expected format.`)
+      throw Error(
+        `The friendly name "${this.friendlyName}" does not match the expected format.`
+      )
     }
 
     if (this.displayCategories.length === 0) {
@@ -82,24 +98,25 @@ export class DiscoveryEndpointBuilder {
     }
 
     if (this.capabilityBuilders.length > maxCapabilitiesPerEndpoint) {
-      throw Error(`The number of capabilities cannot exceed ${maxCapabilitiesPerEndpoint}.`)
+      throw Error(
+        `The number of capabilities cannot exceed ${maxCapabilitiesPerEndpoint}.`
+      )
     }
 
     if (JSON.stringify(this.cookies).length > maxCookiesSize) {
       throw Error(`The cookie cannot be larger than ${maxCookiesSize} bytes.`)
     }
 
-    const connections = this.connections.length === 0
-      ? undefined
-      : this.connections
+    const connections =
+      this.connections.length === 0 ? undefined : this.connections
 
-    const relationships = Object.keys(this.relationships).length === 0
-      ? undefined
-      : this.relationships
+    const relationships =
+      Object.keys(this.relationships).length === 0
+        ? undefined
+        : this.relationships
 
-    const cookie = Object.keys(this.cookies).length === 0
-      ? undefined
-      : this.cookies
+    const cookie =
+      Object.keys(this.cookies).length === 0 ? undefined : this.cookies
 
     const result = {
       endpointId: this.endpointId,
@@ -108,10 +125,12 @@ export class DiscoveryEndpointBuilder {
       friendlyName: this.friendlyName,
       displayCategories: this.displayCategories,
       additionalAttributes: this.additionalAttributesBuilder?.getAdditionalAttributes(),
-      capabilities: this.capabilityBuilders.map(builder => builder.getCapability()),
+      capabilities: this.capabilityBuilders.map(builder =>
+        builder.getCapability()
+      ),
       connections,
       relationships,
-      cookie,
+      cookie
     }
 
     if (!this.additionalAttributesBuilder) {
@@ -129,7 +148,7 @@ export class DiscoveryEndpointBuilder {
     if (!cookie) {
       delete result.cookie
     }
-    
+
     return result
   }
 
@@ -139,7 +158,9 @@ export class DiscoveryEndpointBuilder {
    * @returns This builder.
    */
   withDisplayCategories(...displayCategories: DisplayCategories[]): this {
-    this.displayCategories = [...new Set([...this.displayCategories, ...displayCategories])]
+    this.displayCategories = [
+      ...new Set([...this.displayCategories, ...displayCategories])
+    ]
     return this
   }
 
@@ -150,11 +171,15 @@ export class DiscoveryEndpointBuilder {
    * @returns A builder for an {@link EndpointCapability}.
    */
   addCapability(interfaceName: string, version: string): CapabilityBuilder {
-    const capabilityBuilder = new CapabilityBuilder(this, interfaceName, version)
+    const capabilityBuilder = new CapabilityBuilder(
+      this,
+      interfaceName,
+      version
+    )
     this.capabilityBuilders.push(capabilityBuilder)
     return capabilityBuilder
   }
-  
+
   /**
    * Adds additional details about the device to this endpoint.
    * @returns A builder for an {@link AdditionalAttributes}.
@@ -172,7 +197,7 @@ export class DiscoveryEndpointBuilder {
    * @returns This builder.
    */
   withTcpIpConnection(macAddress?: string): this {
-    this.connections.push({ type: 'TCP_IP', macAddress, })
+    this.connections.push({ type: 'TCP_IP', macAddress })
     return this
   }
 
@@ -182,7 +207,7 @@ export class DiscoveryEndpointBuilder {
    * @returns This builder.
    */
   withZigbeeConnection(macAddress?: string): this {
-    this.connections.push({ type: 'ZIGBEE', macAddress, })
+    this.connections.push({ type: 'ZIGBEE', macAddress })
     return this
   }
 
@@ -194,14 +219,18 @@ export class DiscoveryEndpointBuilder {
    */
   withZWaveConnection(homeId?: string, nodeId?: string): this {
     if (homeId && !zwaveHomeIdRegex.test(homeId)) {
-      throw Error(`The ZWave home ID "${homeId}" does not match the expected format.`)
+      throw Error(
+        `The ZWave home ID "${homeId}" does not match the expected format.`
+      )
     }
 
     if (nodeId && !zwaveNodeIdRegex.test(nodeId)) {
-      throw Error(`The ZWave node ID "${nodeId}" does not match the expected format.`)
+      throw Error(
+        `The ZWave node ID "${nodeId}" does not match the expected format.`
+      )
     }
 
-    this.connections.push({ type: 'ZWAVE', homeId, nodeId, })
+    this.connections.push({ type: 'ZWAVE', homeId, nodeId })
     return this
   }
 
@@ -212,10 +241,12 @@ export class DiscoveryEndpointBuilder {
    */
   withUnknownConnection(value: string): this {
     if (!unknownConnectionRegex.test(value)) {
-      throw Error(`The unknown connection value "${value}" does not match the expected format.`)
+      throw Error(
+        `The unknown connection value "${value}" does not match the expected format.`
+      )
     }
 
-    this.connections.push({ type: 'UNKNOWN', value, })
+    this.connections.push({ type: 'UNKNOWN', value })
     return this
   }
 
@@ -226,7 +257,7 @@ export class DiscoveryEndpointBuilder {
    * @returns This builder.
    */
   withRelationship(name: string, endpointId: string): this {
-    this.relationships[name] = { endpointId, }
+    this.relationships[name] = { endpointId }
     return this
   }
 

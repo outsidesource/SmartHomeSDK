@@ -1,5 +1,11 @@
 import { Request, RequestPayload } from '../dispatcher/request/handler/Request'
-import { Context, Endpoint, PropertyState, Response, ResponsePayload } from './Response'
+import {
+  Context,
+  Endpoint,
+  PropertyState,
+  Response,
+  ResponsePayload
+} from './Response'
 
 /**
  * Represents a fluent mechanism for building a response.
@@ -25,14 +31,17 @@ export abstract class ResponseBuilder {
    * @param message The friendly error message.
    * @returns The compiled response.
    */
-  abstract getFailResponse(type: string, message: string): Response<ResponsePayload>
+  abstract getFailResponse(
+    type: string,
+    message: string
+  ): Response<ResponsePayload>
 
   /**
    * Adds a builder for the endpoint.
    * @returns A fluent mechanism for building an endpoint.
    */
   addEndpoint(): EndpointBuilder {
-    return this.endpointBuilder = new EndpointBuilder(this)
+    return (this.endpointBuilder = new EndpointBuilder(this))
   }
 
   /**
@@ -43,7 +52,7 @@ export abstract class ResponseBuilder {
     if (this.contextBuilder) {
       return this.contextBuilder
     }
-    return this.contextBuilder = new ContextBuilder(this)
+    return (this.contextBuilder = new ContextBuilder(this))
   }
 
   /**
@@ -54,16 +63,21 @@ export abstract class ResponseBuilder {
    * @param payload The request payload.
    * @returns The {@link Response}.
    */
-  protected getPayloadEnvelope<TPayload>(namespace: string, name: string, payloadVersion: string, payload: TPayload): Response<TPayload> {
+  protected getPayloadEnvelope<TPayload>(
+    namespace: string,
+    name: string,
+    payloadVersion: string,
+    payload: TPayload
+  ): Response<TPayload> {
     const response: Response<TPayload> = {
       event: {
         header: {
           namespace,
           name,
           payloadVersion,
-          messageId: this.request.directive.header.messageId,
+          messageId: this.request.directive.header.messageId
         },
-        payload,
+        payload
       }
     }
 
@@ -117,7 +131,11 @@ export class EndpointBuilder {
    * @returns The {@link Endpoint}.
    */
   getEndpoint(): Endpoint | undefined {
-    if (!this.endpointId && !this.token && Object.keys(this.cookie).length === 0) {
+    if (
+      !this.endpointId &&
+      !this.token &&
+      Object.keys(this.cookie).length === 0
+    ) {
       return undefined
     }
 
@@ -133,13 +151,12 @@ export class EndpointBuilder {
           type: 'BearerTokenWithPartition',
           token: this.token,
           partition: this.partition,
-          userId: this.userId,
+          userId: this.userId
         }
-      }
-      else {
+      } else {
         endpoint.scope = {
           type: 'BearerToken',
-          token: this.token,
+          token: this.token
         }
       }
     }
@@ -193,7 +210,7 @@ export class EndpointBuilder {
    * @param value The value for the additional information.
    * @returns This builder.
    */
-   withCookie(name: string, value: string): this {
+  withCookie(name: string, value: string): this {
     this.cookie[name] = value
     return this
   }
@@ -243,13 +260,19 @@ export class ContextBuilder {
    * @param uncertaintyInMilliseconds The uncertainty of the value in milliseconds.
    * @returns This builder.
    */
-  withProperty(namespace: string, name: string, value: unknown, timeOfSample: Date, uncertaintyInMilliseconds: number): this {
+  withProperty(
+    namespace: string,
+    name: string,
+    value: unknown,
+    timeOfSample: Date,
+    uncertaintyInMilliseconds: number
+  ): this {
     this.properties.push({
       namespace,
       name,
       value,
       timeOfSample: timeOfSample.toISOString(),
-      uncertaintyInMilliseconds,
+      uncertaintyInMilliseconds
     })
     return this
   }

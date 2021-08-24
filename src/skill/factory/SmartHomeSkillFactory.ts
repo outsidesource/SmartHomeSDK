@@ -7,7 +7,11 @@ import { SmartHomeSkillErrorHandler } from '../../dispatcher/error/handler/Smart
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/HandlerInputFactory'
 import { HandlerInput } from '../../dispatcher/request/handler/HandlerInput'
 import { LambdaContext } from '../../dispatcher/request/handler/LambdaContext'
-import { PayloadSignature, Request, RequestPayload } from '../../dispatcher/request/handler/Request'
+import {
+  PayloadSignature,
+  Request,
+  RequestPayload
+} from '../../dispatcher/request/handler/Request'
 import { SmartHomeSkillRequestInterceptor } from '../../dispatcher/request/interceptor/SmartHomeSkillRequestInterceptor'
 import { SmartHomeSkillResponseInterceptor } from '../../dispatcher/request/interceptor/SmartHomeSkillResponseInterceptor'
 import { Response, ResponsePayload } from '../../response/Response'
@@ -31,53 +35,96 @@ export type LambdaHandler = (
  */
 export class SmartHomeSkillFactory {
   static init(): SmartHomeSkillBuilder {
-    const runtimeConfigurationBuilder = new RuntimeConfigurationBuilder<HandlerInput<ResponseBuilder>, Response<ResponsePayload>>()
+    const runtimeConfigurationBuilder = new RuntimeConfigurationBuilder<
+      HandlerInput<ResponseBuilder>,
+      Response<ResponsePayload>
+    >()
     let thisCustomUserAgent: string
     let thisSkillId: string
-    let thisHandlerInputFactories: Array<HandlerInputFactory<ResponseBuilder>> = [
+    let thisHandlerInputFactories: Array<HandlerInputFactory<
+      ResponseBuilder
+    >> = [
       AcceptGrantHandlerInputFactory,
       DiscoveryHandlerInputFactory,
       ReportStateHandlerInputFactory,
-      InterfaceCommandHandlerInputFactory,
+      InterfaceCommandHandlerInputFactory
     ]
 
     return {
       addRequestHandler(
-        matcher: ((input: HandlerInput<ResponseBuilder>) => Promise<boolean> | boolean) | PayloadSignature, 
-        executor: (input: HandlerInput<ResponseBuilder>) => Promise<Response<ResponsePayload>> | Response<ResponsePayload>
+        matcher:
+          | ((
+              input: HandlerInput<ResponseBuilder>
+            ) => Promise<boolean> | boolean)
+          | PayloadSignature,
+        executor: (
+          input: HandlerInput<ResponseBuilder>
+        ) => Promise<Response<ResponsePayload>> | Response<ResponsePayload>
       ): SmartHomeSkillBuilder {
         const canHandle = isPayloadSignature(matcher)
-          ? (input: HandlerInput<ResponseBuilder>) => input.request.directive.header.namespace === matcher.namespace && input.request.directive.header.name === matcher.name && input.request.directive.header.payloadVersion === matcher.payloadVersion
+          ? (input: HandlerInput<ResponseBuilder>) =>
+              input.request.directive.header.namespace === matcher.namespace &&
+              input.request.directive.header.name === matcher.name &&
+              input.request.directive.header.payloadVersion ===
+                matcher.payloadVersion
           : matcher
 
         runtimeConfigurationBuilder.addRequestHandler(canHandle, executor)
 
         return this
       },
-      addRequestHandlers(...requestHandlers: Array<RequestHandler<HandlerInput<ResponseBuilder>, Response<ResponsePayload>>>): SmartHomeSkillBuilder {
+      addRequestHandlers(
+        ...requestHandlers: Array<
+          RequestHandler<
+            HandlerInput<ResponseBuilder>,
+            Response<ResponsePayload>
+          >
+        >
+      ): SmartHomeSkillBuilder {
         runtimeConfigurationBuilder.addRequestHandlers(...requestHandlers)
 
         return this
       },
-      addRequestInterceptors(...executors: Array<SmartHomeSkillRequestInterceptor | ((input: HandlerInput<ResponseBuilder>) => Promise<void> | void)>): SmartHomeSkillBuilder {
+      addRequestInterceptors(
+        ...executors: Array<
+          | SmartHomeSkillRequestInterceptor
+          | ((input: HandlerInput<ResponseBuilder>) => Promise<void> | void)
+        >
+      ): SmartHomeSkillBuilder {
         runtimeConfigurationBuilder.addRequestInterceptors(...executors)
 
         return this
       },
-      addResponseInterceptors(...executors: Array<SmartHomeSkillResponseInterceptor | ((input: HandlerInput<ResponseBuilder>, response?: Response<ResponsePayload>) => Promise<void> | void)>): SmartHomeSkillBuilder {
+      addResponseInterceptors(
+        ...executors: Array<
+          | SmartHomeSkillResponseInterceptor
+          | ((
+              input: HandlerInput<ResponseBuilder>,
+              response?: Response<ResponsePayload>
+            ) => Promise<void> | void)
+        >
+      ): SmartHomeSkillBuilder {
         runtimeConfigurationBuilder.addResponseInterceptors(...executors)
 
         return this
       },
       addErrorHandler(
-        matcher: (input: HandlerInput<ResponseBuilder>, error: Error) => Promise<boolean> | boolean,
-        executor: (input: HandlerInput<ResponseBuilder>, error: Error) => Promise<Response<ResponsePayload>> | Response<ResponsePayload>
+        matcher: (
+          input: HandlerInput<ResponseBuilder>,
+          error: Error
+        ) => Promise<boolean> | boolean,
+        executor: (
+          input: HandlerInput<ResponseBuilder>,
+          error: Error
+        ) => Promise<Response<ResponsePayload>> | Response<ResponsePayload>
       ): SmartHomeSkillBuilder {
         runtimeConfigurationBuilder.addErrorHandler(matcher, executor)
 
         return this
       },
-      addErrorHandlers(...errorHandlers: SmartHomeSkillErrorHandler[]): SmartHomeSkillBuilder {
+      addErrorHandlers(
+        ...errorHandlers: SmartHomeSkillErrorHandler[]
+      ): SmartHomeSkillBuilder {
         runtimeConfigurationBuilder.addErrorHandlers(...errorHandlers)
 
         return this
@@ -92,8 +139,12 @@ export class SmartHomeSkillFactory {
 
         return this
       },
-      withHandlerInputFactories(...handlerInputFactories: Array<HandlerInputFactory<ResponseBuilder>>): SmartHomeSkillBuilder {
-        thisHandlerInputFactories = [...new Set([...thisHandlerInputFactories, ...handlerInputFactories])]
+      withHandlerInputFactories(
+        ...handlerInputFactories: Array<HandlerInputFactory<ResponseBuilder>>
+      ): SmartHomeSkillBuilder {
+        thisHandlerInputFactories = [
+          ...new Set([...thisHandlerInputFactories, ...handlerInputFactories])
+        ]
 
         return this
       },
@@ -104,7 +155,7 @@ export class SmartHomeSkillFactory {
           ...runtimeConfiguration,
           customUserAgent: thisCustomUserAgent,
           skillId: thisSkillId,
-          handlerInputFactories: thisHandlerInputFactories,
+          handlerInputFactories: thisHandlerInputFactories
         }
       },
       create(): SmartHomeSkill {
@@ -113,22 +164,31 @@ export class SmartHomeSkillFactory {
       lambda(): LambdaHandler {
         const skill = new SmartHomeSkill(this.getSkillConfiguration())
 
-        return (request: Request<RequestPayload>, context: LambdaContext | undefined, callback: (err?: Error, result?: Response<ResponsePayload>) => void) => {
-          skill.invoke(request, context)
-            .then((response) => {
+        return (
+          request: Request<RequestPayload>,
+          context: LambdaContext | undefined,
+          callback: (err?: Error, result?: Response<ResponsePayload>) => void
+        ) => {
+          skill
+            .invoke(request, context)
+            .then(response => {
               callback(undefined, response)
             })
-            .catch((err) => {
+            .catch(err => {
               callback(err)
             })
         }
-      },
+      }
     }
   }
 
   private constructor() {}
 }
 
-function isPayloadSignature(x: ((input: HandlerInput<ResponseBuilder>) => Promise<boolean> | boolean) | PayloadSignature): x is PayloadSignature {
+function isPayloadSignature(
+  x:
+    | ((input: HandlerInput<ResponseBuilder>) => Promise<boolean> | boolean)
+    | PayloadSignature
+): x is PayloadSignature {
   return 'namespace' in x && 'name' in x && 'payloadVersion' in x
 }

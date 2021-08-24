@@ -8,8 +8,10 @@ import { HandlerInputFactory } from './HandlerInputFactory'
  */
 export class HandlerInputFactoryRepository {
   private factories: Array<HandlerInputFactory<ResponseBuilder>>
-  
-  constructor(...handlerInputFactories: Array<HandlerInputFactory<ResponseBuilder>>) {
+
+  constructor(
+    ...handlerInputFactories: Array<HandlerInputFactory<ResponseBuilder>>
+  ) {
     this.factories = handlerInputFactories
   }
 
@@ -19,7 +21,10 @@ export class HandlerInputFactoryRepository {
    * @param context The context that the lambda is running in.
    * @returns The first registered {@link HandlerInputFactory} that can create a {@link HandlerInput} or {@code undefined}.
    */
-  getHandlerInputFactory(request: Request<RequestPayload>, context?: LambdaContext): HandlerInputFactory<ResponseBuilder> | undefined {
-    return this.factories.find((f) => f.canCreate(request, context))
+  getHandlerInputFactory(
+    request: Request<RequestPayload>,
+    context?: LambdaContext
+  ): HandlerInputFactory<ResponseBuilder> | undefined {
+    return this.factories.find(f => f.canCreate(request, context))
   }
 }

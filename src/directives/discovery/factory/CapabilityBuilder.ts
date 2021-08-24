@@ -18,7 +18,11 @@ export class CapabilityBuilder {
   private semanticStateBuilders: SemanticStateBuilder[] = []
   private verifications: string[] = []
 
-  constructor(parent: DiscoveryEndpointBuilder, interfaceName: string, version: string) {
+  constructor(
+    parent: DiscoveryEndpointBuilder,
+    interfaceName: string,
+    version: string
+  ) {
     this.parent = parent
     this.interfaceName = interfaceName
     this.version = version
@@ -39,36 +43,44 @@ export class CapabilityBuilder {
   getCapability(): EndpointCapability {
     const properties = this.propertiesBuilder?.getProperties()
 
-    const capabilityResources = this.resourceFriendlyNames.length === 0
-      ? undefined
-      : { friendlyNames: this.resourceFriendlyNames, }
+    const capabilityResources =
+      this.resourceFriendlyNames.length === 0
+        ? undefined
+        : { friendlyNames: this.resourceFriendlyNames }
 
-    const semantics = this.semanticActionBuilders.length === 0 && this.semanticStateBuilders.length === 0
-      ? undefined
-      : {
-        actionMappings: this.semanticActionBuilders.map(builder => builder.getMapping()),
-        stateMappings: this.semanticStateBuilders.map(builder => builder.getMapping()),
-      }
+    const semantics =
+      this.semanticActionBuilders.length === 0 &&
+      this.semanticStateBuilders.length === 0
+        ? undefined
+        : {
+            actionMappings: this.semanticActionBuilders.map(builder =>
+              builder.getMapping()
+            ),
+            stateMappings: this.semanticStateBuilders.map(builder =>
+              builder.getMapping()
+            )
+          }
 
-    const verificationsRequired = this.verifications.length === 0
-      ? undefined
-      : this.verifications.map(directive => {
-        return {
-          directive,
-          methods: [{ '@type': 'Confirmation' as const, }, ]
-        }
-      })
+    const verificationsRequired =
+      this.verifications.length === 0
+        ? undefined
+        : this.verifications.map(directive => {
+            return {
+              directive,
+              methods: [{ '@type': 'Confirmation' as const }]
+            }
+          })
 
     const result = {
       type: 'AlexaInterface' as const,
-      'interface': this.interfaceName,
+      interface: this.interfaceName,
       instance: this.instance,
       version: this.version,
       properties,
       capabilityResources,
       configuration: this.configuration,
       semantics,
-      verificationsRequired,
+      verificationsRequired
     }
 
     if (!this.instance) {
@@ -128,8 +140,8 @@ export class CapabilityBuilder {
     this.resourceFriendlyNames.push({
       '@type': 'asset',
       value: {
-        assetId,
-      },
+        assetId
+      }
     })
     return this
   }
@@ -145,8 +157,8 @@ export class CapabilityBuilder {
       '@type': 'text',
       value: {
         text,
-        locale,
-      },
+        locale
+      }
     })
     return this
   }

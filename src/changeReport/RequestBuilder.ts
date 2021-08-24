@@ -33,7 +33,7 @@ export abstract class RequestBuilder {
     if (this.contextBuilder) {
       return this.contextBuilder
     }
-    return this.contextBuilder = new ContextBuilder(this)
+    return (this.contextBuilder = new ContextBuilder(this))
   }
 
   /**
@@ -44,17 +44,22 @@ export abstract class RequestBuilder {
    * @param payload The request payload.
    * @returns The {@link Request}.
    */
-  protected getPayloadEnvelope<TPayload>(namespace: string, name: string, payloadVersion: string, payload: TPayload): Request<TPayload> {
+  protected getPayloadEnvelope<TPayload>(
+    namespace: string,
+    name: string,
+    payloadVersion: string,
+    payload: TPayload
+  ): Request<TPayload> {
     const request: Request<TPayload> = {
       event: {
         header: {
           namespace,
           name,
           payloadVersion,
-          messageId: this.messageId,
+          messageId: this.messageId
         },
         endpoint: this.endpointBuilder.getEndpoint(),
-        payload,
+        payload
       }
     }
 
@@ -99,7 +104,7 @@ export class EndpointBuilder {
    */
   getEndpoint(): RequestEndpoint {
     const endpoint: RequestEndpoint = {
-      endpointId: this.endpointId,
+      endpointId: this.endpointId
     }
 
     if (this.token) {
@@ -108,13 +113,12 @@ export class EndpointBuilder {
           type: 'BearerTokenWithPartition',
           token: this.token,
           partition: this.partition,
-          userId: this.userId,
+          userId: this.userId
         }
-      }
-      else {
+      } else {
         endpoint.scope = {
           type: 'BearerToken',
-          token: this.token,
+          token: this.token
         }
       }
     }
@@ -208,13 +212,19 @@ export class ContextBuilder {
    * @param uncertaintyInMilliseconds The uncertainty of the value in milliseconds.
    * @returns This builder.
    */
-  withProperty(namespace: string, name: string, value: unknown, timeOfSample: Date, uncertaintyInMilliseconds: number): this {
+  withProperty(
+    namespace: string,
+    name: string,
+    value: unknown,
+    timeOfSample: Date,
+    uncertaintyInMilliseconds: number
+  ): this {
     this.properties.push({
       namespace,
       name,
       value,
       timeOfSample: timeOfSample.toISOString(),
-      uncertaintyInMilliseconds,
+      uncertaintyInMilliseconds
     })
     return this
   }

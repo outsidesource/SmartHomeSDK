@@ -19,5 +19,8 @@ export interface HandlerInputFactory<TResponseBuilder extends ResponseBuilder> {
    * @param request The directive and payload for the request.
    * @param context The context that the lambda is running in.
    */
-  create(request: Request<RequestPayload>, context?: LambdaContext): HandlerInput<TResponseBuilder> | undefined
- }
+  create(
+    request: Request<RequestPayload>,
+    context?: LambdaContext
+  ): HandlerInput<TResponseBuilder> | undefined
+}

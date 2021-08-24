@@ -1,4 +1,7 @@
-import { SemanticStateMapping, SemanticStateNames } from '../DiscoveryResponsePayload'
+import {
+  SemanticStateMapping,
+  SemanticStateNames
+} from '../DiscoveryResponsePayload'
 import { CapabilityBuilder } from './CapabilityBuilder'
 
 const semanticStateValueType = 'StatesToValue'
@@ -34,7 +37,10 @@ export class SemanticStateBuilder {
       throw Error('At least one semantic state must be specified.')
     }
 
-    if (this.type !== semanticStateValueType && this.type !== semanticStateRangeType) {
+    if (
+      this.type !== semanticStateValueType &&
+      this.type !== semanticStateRangeType
+    ) {
       throw Error('Either a value or range must be specified.')
     }
 
@@ -46,7 +52,7 @@ export class SemanticStateBuilder {
       return {
         '@type': semanticStateValueType,
         states: this.states,
-        value: this.value,
+        value: this.value
       }
     }
 
@@ -64,8 +70,8 @@ export class SemanticStateBuilder {
         states: this.states,
         range: {
           minimumValue: this.minimum,
-          maximumValue: this.maximum,
-        },
+          maximumValue: this.maximum
+        }
       }
     }
 

@@ -3,22 +3,22 @@ export type ResourceLabel = AssetResourceLabel | TextResourceLabel
 
 /** Represents a pre-defined resource label. */
 export interface AssetResourceLabel {
-  '@type': 'asset',
+  '@type': 'asset'
   value: {
     /** The asset ID. */
-    assetId: string,
+    assetId: string
   }
 }
 
 /** Represents a custom/in-line resource label. */
 export interface TextResourceLabel {
-  '@type': 'text',
+  '@type': 'text'
   value: {
     /** The localized text. */
-    text: string,
+    text: string
 
     /** Which locale this resource label represents.  */
-    locale: Locales,
+    locale: Locales
   }
 }
 
@@ -38,5 +38,5 @@ export enum Locales {
   Hindi_India = 'hi-IN',
   Italian_Italy = 'it-IT',
   Japanese_Japan = 'ja-JP',
-  Portuguese_Brazil = 'pt_BR',
+  Portuguese_Brazil = 'pt_BR'
 }

@@ -22,7 +22,13 @@ export class AcceptGrantResponseBuilder extends ResponseBuilder {
     return this.getPayloadEnvelope(namespace, succeedName, payloadVersion, {})
   }
 
-  getFailResponse(type: string, message: string): Response<ErrorResponsePayload> {
-    return this.getPayloadEnvelope(namespace, failName, payloadVersion, { type, message, })
+  getFailResponse(
+    type: string,
+    message: string
+  ): Response<ErrorResponsePayload> {
+    return this.getPayloadEnvelope(namespace, failName, payloadVersion, {
+      type,
+      message
+    })
   }
 }

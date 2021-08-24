@@ -1,7 +1,10 @@
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/HandlerInputFactory'
 import { HandlerInput } from '../../dispatcher/request/handler/HandlerInput'
 import { LambdaContext } from '../../dispatcher/request/handler/LambdaContext'
-import { Request, RequestPayload } from '../../dispatcher/request/handler/Request'
+import {
+  Request,
+  RequestPayload
+} from '../../dispatcher/request/handler/Request'
 import { AcceptGrantRequestPayload } from './AcceptGrantRequestPayload'
 import { AcceptGrantResponseBuilder } from './AcceptGrantResponseBuilder'
 
@@ -12,7 +15,10 @@ export const AcceptGrantHandlerInputFactory: HandlerInputFactory<AcceptGrantResp
   canCreate(request: Request<RequestPayload>, context?: LambdaContext) {
     return isAcceptGrantRequest(request)
   },
-  create(request: Request<RequestPayload>, context?: LambdaContext): HandlerInput<AcceptGrantResponseBuilder> | undefined {
+  create(
+    request: Request<RequestPayload>,
+    context?: LambdaContext
+  ): HandlerInput<AcceptGrantResponseBuilder> | undefined {
     if (!isAcceptGrantRequest(request)) {
       return undefined
     }
@@ -20,7 +26,7 @@ export const AcceptGrantHandlerInputFactory: HandlerInputFactory<AcceptGrantResp
     return {
       request,
       context,
-      responseBuilder: new AcceptGrantResponseBuilder(request),
+      responseBuilder: new AcceptGrantResponseBuilder(request)
     }
   }
 }
@@ -30,8 +36,12 @@ export const AcceptGrantHandlerInputFactory: HandlerInputFactory<AcceptGrantResp
  * @param request The request to examine.
  * @returns True if the request payload is a {@link AcceptGrantRequestPayload}; otherwise, false.
  */
-export function isAcceptGrantRequest(request: Request<RequestPayload>): request is Request<AcceptGrantRequestPayload> {
-  return request.directive.header.namespace === 'Alexa.Authorization'
-    && request.directive.header.name === 'AcceptGrant'
-    && request.directive.header.payloadVersion === '3'
+export function isAcceptGrantRequest(
+  request: Request<RequestPayload>
+): request is Request<AcceptGrantRequestPayload> {
+  return (
+    request.directive.header.namespace === 'Alexa.Authorization' &&
+    request.directive.header.name === 'AcceptGrant' &&
+    request.directive.header.payloadVersion === '3'
+  )
 }

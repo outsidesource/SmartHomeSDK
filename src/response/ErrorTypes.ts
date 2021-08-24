@@ -115,5 +115,5 @@ export enum ErrorTypes {
   /**
    * The endpoint can't be set to the specified value because it's outside the acceptable range. For example, you can use this error when a customer requests a percentage value over 100. For temperature values, use TEMPERATURE_VALUE_OUT_OF_RANGE instead. When you send this error response, optionally include a validRange object in the payload that indicates the acceptable range. See an example here.
    */
-  ValueOutOfRange = 'VALUE_OUT_OF_RANGE',
+  ValueOutOfRange = 'VALUE_OUT_OF_RANGE'
 }

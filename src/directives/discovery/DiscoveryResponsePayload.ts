@@ -7,91 +7,91 @@ export interface DiscoveryResponsePayload extends ResponsePayload {
 }
 
 /**
- * Represents a connected device or component. This can be a physical device, 
- * a virtual device, a group or cluster of devices (such as in a scene), 
+ * Represents a connected device or component. This can be a physical device,
+ * a virtual device, a group or cluster of devices (such as in a scene),
  * or a software component.
  * {@see https://developer.amazon.com/en-US/docs/alexa/device-apis/alexa-discovery-objects.html#endpoint-object}
  */
 export interface DiscoveryEndpoint {
-  /** 
-   * The identifier for the endpoint. The identifier must be unique 
-   * across all devices for the skill. The identifier must be consistent 
-   * for all discovery requests for the same device. 
+  /**
+   * The identifier for the endpoint. The identifier must be unique
+   * across all devices for the skill. The identifier must be consistent
+   * for all discovery requests for the same device.
    */
-  endpointId: string,
+  endpointId: string
 
   /** The name of the manufacturer of the device. */
-  manufacturerName: string,
+  manufacturerName: string
 
-  /** 
-   * The description of the device. The description should contain 
-   * the manufacturer name or how the device connects. 
+  /**
+   * The description of the device. The description should contain
+   * the manufacturer name or how the device connects.
    */
-  description: string,
+  description: string
 
-  /** 
-   * The name used by the user to identify the device. You set 
-   * an initial value, and later the user can change the friendly name 
-   * by using the Alexa app. 
+  /**
+   * The name used by the user to identify the device. You set
+   * an initial value, and later the user can change the friendly name
+   * by using the Alexa app.
    */
-  friendlyName: string,
+  friendlyName: string
 
   /** In the Alexa app, the category that your device is displayed in. */
-  displayCategories: DisplayCategories[],
+  displayCategories: DisplayCategories[]
 
   /** Additional information to identify very similar devices. */
-  additionalAttributes?: AdditionalAttributes,
+  additionalAttributes?: AdditionalAttributes
 
   /** The capability interfaces that your skill supports for the endpoint. */
-  capabilities: EndpointCapability[],
+  capabilities: EndpointCapability[]
 
-  /** 
-   * Information about the methods that the device uses to connect 
-   * to the internet and smart home hubs. 
+  /**
+   * Information about the methods that the device uses to connect
+   * to the internet and smart home hubs.
    */
-  connections?: DiscoveryConnection[],
+  connections?: DiscoveryConnection[]
 
-  /** 
-   * The endpoints that an endpoint is connected to. For example, 
-   * a computer endpoint might be connected to a home network endpoint. 
+  /**
+   * The endpoints that an endpoint is connected to. For example,
+   * a computer endpoint might be connected to a home network endpoint.
    */
   relationships?: {
     [key: string]: {
-      endpointId: string,
-    },
-  },
+      endpointId: string
+    }
+  }
 
   /** Information about the device that your skill uses. */
   cookie?: {
     [key: string]: string
-  },
+  }
 }
 
 /** Additional information to identify very similar devices. */
 export interface AdditionalAttributes {
   /** The name of the manufacturer of the device. */
-  manufacturer?: string,
+  manufacturer?: string
 
-  /** 
-   * The name of the model of the device as advertised to customers. 
-   * The model should uniquely identify the specific variant of a product. 
+  /**
+   * The name of the model of the device as advertised to customers.
+   * The model should uniquely identify the specific variant of a product.
    */
-  model?: string,
+  model?: string
 
   /** The serial number of the device. */
-  serialNumber?: string,
+  serialNumber?: string
 
   /** The firmware version of the device. */
-  firmwareVersion?: string,
+  firmwareVersion?: string
 
   /** The software version of the device. */
-  softwareVersion?: string,
+  softwareVersion?: string
 
-  /** 
-   * Your custom identifier for the device. This identifier should be 
-   * globally unique across different user accounts. 
+  /**
+   * Your custom identifier for the device. This identifier should be
+   * globally unique across different user accounts.
    */
-  customIdentifier?: string,
+  customIdentifier?: string
 }
 
 /**
@@ -336,99 +336,99 @@ export enum DisplayCategories {
   /**
    * A network-connected wearable device, such as an Apple Watch, Fitbit, or Samsung Gear.
    */
-  Wearable = 'WEARABLE',
+  Wearable = 'WEARABLE'
 }
 
 /** Represents an interface that the device/endpoint supports. */
 export interface EndpointCapability {
   /** The type of capability. Currently, the only available type is AlexaInterface. */
-  type: 'AlexaInterface',
+  type: 'AlexaInterface'
 
   /** The name of the capability interface. */
-  interface: string,
+  interface: string
 
-  /** 
-   * You can implement multiple instances of some interfaces. In that case, 
-   * you give each instance of the interface a unique name. 
+  /**
+   * You can implement multiple instances of some interfaces. In that case,
+   * you give each instance of the interface a unique name.
    */
-  instance?: string,
+  instance?: string
 
-  /** 
-   * The version of the interface. Different interfaces have different versions 
-   * from each other. 
+  /**
+   * The version of the interface. Different interfaces have different versions
+   * from each other.
    */
-  version: string,
+  version: string
 
   /** The properties of the interface that your skill supports. */
-  properties?: CapabilityProperties,
+  properties?: CapabilityProperties
 
   /** Friendly names that users can use to interact with some interfaces. */
   capabilityResources?: {
-    friendlyNames: ResourceLabel[],
-  },
+    friendlyNames: ResourceLabel[]
+  }
 
   /** A configuration object that contains information about how you are using an interface. */
-  configuration?: unknown,
+  configuration?: unknown
 
   /** You can optionally map the words open, close, raise, and lower to existing directives, for some interfaces. */
   semantics?: {
     /** The mappings used when the user is changing what the interface represents. */
-    actionMappings: SemanticActionMapping[],
+    actionMappings: SemanticActionMapping[]
 
     /** The mappings used when the user is inquiring the state of an interface. */
-    stateMappings: SemanticStateMapping[],
-  },
+    stateMappings: SemanticStateMapping[]
+  }
 
   /** You can optionally require the user to verify an action before Alexa performs it, for some interfaces and locales. */
   verificationsRequired?: Array<{
-    /** 
-     * The name of the directive to require verification for. The directive must 
-     * be a directive of the interface in the capability object that the 
+    /**
+     * The name of the directive to require verification for. The directive must
+     * be a directive of the interface in the capability object that the
      * verificationsRequired object is included in.
      */
-    directive: string,
+    directive: string
 
-    /** 
-     * The methods for obtaining user verification. Currently the only 
-     * supported verification method is Confirmation. 
+    /**
+     * The methods for obtaining user verification. Currently the only
+     * supported verification method is Confirmation.
      */
     methods: Array<{
-      '@type': 'Confirmation',
-    }>,
-  }>,
+      '@type': 'Confirmation'
+    }>
+  }>
 }
 
 /** The properties of the interface that the skill supports. */
 export interface CapabilityProperties {
   /** The properties of the interface that the skill supports. */
-  supported?: Array<{ name: string }>,
+  supported?: Array<{ name: string }>
 
   /** True if the skill sends change reports when the properties change. The default is false. */
-  proactivelyReported?: boolean,
+  proactivelyReported?: boolean
 
   /** True if the skill responds to state report requests and reports the values of the properties. The default is false. */
-  retrievable?: boolean,
+  retrievable?: boolean
 
   /** True if the interface's properties are readonly. The default is false. */
-  nonControllable?: boolean,
+  nonControllable?: boolean
 }
 
 /** Represents an action mapping. */
 export interface SemanticActionMapping {
-  '@type': 'ActionsToDirective',
+  '@type': 'ActionsToDirective'
   /** The actions that map to this semantic. */
-  actions: SemanticActionNames[],
+  actions: SemanticActionNames[]
   directive: {
-    /** 
-     * The name of the directive. The directive must be a directive 
-     * of the interface in the capability object that the semantics 
-     * object is included in. 
+    /**
+     * The name of the directive. The directive must be a directive
+     * of the interface in the capability object that the semantics
+     * object is included in.
      */
-    name: string,
+    name: string
 
     /** The payload appropriate for the directive. */
-    payload?: unknown,
-  },
+    payload?: unknown
+  }
 }
 
 /** Predefined semantic names for action mappings. */
@@ -440,35 +440,37 @@ export enum SemanticActionNames {
   SetEcoOn = 'Alexa.Actions.SetEcoOn',
   SetEcoOff = 'Alexa.Actions.SetEcoOff',
   EcoOn = 'Alexa.Actions.EcoOn',
-  EcoOff = 'Alexa.Actions.EcoOff',
+  EcoOff = 'Alexa.Actions.EcoOff'
 }
 
 /** Represents a state mapping. */
-export type SemanticStateMapping = SemanticStateValueMapping | SemanticStateRangeMapping
+export type SemanticStateMapping =
+  | SemanticStateValueMapping
+  | SemanticStateRangeMapping
 
 /** Represents a state value mapping. */
 export interface SemanticStateValueMapping {
-  '@type': 'StatesToValue',
+  '@type': 'StatesToValue'
 
   /** The states that map to this semantic. */
-  states: SemanticStateNames[],
+  states: SemanticStateNames[]
 
   /** The value that maps to this semantic. */
-  value: number | string,
+  value: number | string
 }
 
 /** Represents a state range mapping. */
 export interface SemanticStateRangeMapping {
-  '@type': 'StatesToRange',
+  '@type': 'StatesToRange'
 
   /** The states that map to this semantic. */
-  states: SemanticStateNames[],
+  states: SemanticStateNames[]
 
   /** The range of values that map to this semantic. */
   range: {
-    minimumValue: number,
-    maximumValue: number,
-  },
+    minimumValue: number
+    maximumValue: number
+  }
 }
 
 /** Predefined semantic names for state mappings. */
@@ -476,27 +478,30 @@ export enum SemanticStateNames {
   Open = 'Alexa.States.Open',
   Closed = 'Alexa.States.Closed',
   EcoOn = 'Alexa.States.EcoOn',
-  EcoOff = 'Alexa.States.EcoOff',
+  EcoOff = 'Alexa.States.EcoOff'
 }
 
 /** Represents a connection method for the device(s) represented. */
-export type DiscoveryConnection = StandardDiscoveryConnection | ZWaveDiscoverConnection | UnknownDiscoveryConnection
+export type DiscoveryConnection =
+  | StandardDiscoveryConnection
+  | ZWaveDiscoverConnection
+  | UnknownDiscoveryConnection
 
 /** Represents a standard NIC or Zigbee. */
 export interface StandardDiscoveryConnection {
-  type: 'TCP_IP' | 'ZIGBEE',
-  macAddress?: string,
+  type: 'TCP_IP' | 'ZIGBEE'
+  macAddress?: string
 }
 
 /** Represents a Z-Wave network. */
 export interface ZWaveDiscoverConnection {
-  type: 'ZWAVE',
-  homeId?: string,
-  nodeId?: string,
+  type: 'ZWAVE'
+  homeId?: string
+  nodeId?: string
 }
 
 /** Represents an unknown or non-standard connection. */
 export interface UnknownDiscoveryConnection {
-  type: 'UNKNOWN',
-  value: string,
+  type: 'UNKNOWN'
+  value: string
 }

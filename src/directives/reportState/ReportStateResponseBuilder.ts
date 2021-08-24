@@ -1,4 +1,7 @@
-import { Request, RequestPayload } from '../../dispatcher/request/handler/Request'
+import {
+  Request,
+  RequestPayload
+} from '../../dispatcher/request/handler/Request'
 import { EmptyResponsePayload } from '../../response/payloads/EmptyResponsePayload'
 import { ErrorResponsePayload } from '../../response/payloads/ErrorResponsePayload'
 import { Response } from '../../response/Response'
@@ -22,15 +25,23 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
   getSucceedResponse(): Response<EmptyResponsePayload> {
     if (this.properties.length > 0) {
       const contextBuilder = this.addContext()
-      this.properties.map(prop => contextBuilder.withProperty(
-        prop.namespace, 
-        prop.name, 
-        prop.value,
-        prop.timeOfSample,
-        prop.uncertaintyInMilliseconds))
+      this.properties.map(prop =>
+        contextBuilder.withProperty(
+          prop.namespace,
+          prop.name,
+          prop.value,
+          prop.timeOfSample,
+          prop.uncertaintyInMilliseconds
+        )
+      )
     }
 
-    const envelope = this.getPayloadEnvelope(namespace, succeedName, payloadVersion, {})
+    const envelope = this.getPayloadEnvelope(
+      namespace,
+      succeedName,
+      payloadVersion,
+      {}
+    )
 
     if (!envelope.event.endpoint?.endpointId) {
       throw Error('An endpoint ID is required.')
@@ -39,8 +50,14 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
     return envelope
   }
 
-  getFailResponse(type: string, message: string): Response<ErrorResponsePayload> {
-    return this.getPayloadEnvelope(namespace, failName, payloadVersion, { type, message, })
+  getFailResponse(
+    type: string,
+    message: string
+  ): Response<ErrorResponsePayload> {
+    return this.getPayloadEnvelope(namespace, failName, payloadVersion, {
+      type,
+      message
+    })
   }
 
   /**
@@ -52,13 +69,19 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
    * @param uncertaintyInMilliseconds The uncertainty of the value in milliseconds.
    * @returns This builder.
    */
-  withProperty(namespace: string, name: string, value: unknown, timeOfSample: Date, uncertaintyInMilliseconds: number): this {
+  withProperty(
+    namespace: string,
+    name: string,
+    value: unknown,
+    timeOfSample: Date,
+    uncertaintyInMilliseconds: number
+  ): this {
     this.properties.push({
       namespace,
       name,
       value,
       timeOfSample,
-      uncertaintyInMilliseconds,
+      uncertaintyInMilliseconds
     })
     return this
   }
@@ -66,25 +89,25 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
 
 /** Represents a PropertyState with a Date timestamp. */
 interface PropState {
-  /** 
-   * The type of controller. This should match the 
-   * `capabilities[i].interface` value given at discovery. 
+  /**
+   * The type of controller. This should match the
+   * `capabilities[i].interface` value given at discovery.
    */
-  namespace: string,
+  namespace: string
 
   /**
-   * The name of the property. This should match the 
-   * `capabilities[i].properties.supported[j].name` value 
+   * The name of the property. This should match the
+   * `capabilities[i].properties.supported[j].name` value
    * given at discovery.
    */
-  name: string,
+  name: string
 
   /** The value of the property. */
-  value: unknown,
+  value: unknown
 
   /** The date/time when the property was sampled. */
-  timeOfSample: Date,
+  timeOfSample: Date
 
   /** The uncertainty of the value in milliseconds. */
-  uncertaintyInMilliseconds: number,
+  uncertaintyInMilliseconds: number
 }

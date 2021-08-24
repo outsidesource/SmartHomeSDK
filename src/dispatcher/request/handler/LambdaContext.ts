@@ -31,7 +31,7 @@ export interface LambdaContext {
       model: string
       locale: string
     }
-  
+
     /** Custom values that are set by the client application. */
     Custom?: unknown
   }
@@ -40,7 +40,7 @@ export interface LambdaContext {
   identity?: {
     /** The authenticated Amazon Cognito identity. */
     cognitoIdentityId: string
-  
+
     /** The Amazon Cognito identity pool that authorized the invocation. */
     cognitoIdentityPoolId: string
   }

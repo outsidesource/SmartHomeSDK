@@ -1,4 +1,7 @@
-import { SemanticActionMapping, SemanticActionNames } from '../DiscoveryResponsePayload'
+import {
+  SemanticActionMapping,
+  SemanticActionNames
+} from '../DiscoveryResponsePayload'
 import { CapabilityBuilder } from './CapabilityBuilder'
 
 /** Represents a builder for a {@link SemanticActionMapping}. */
@@ -35,8 +38,8 @@ export class SemanticActionBuilder {
       actions: this.actions,
       directive: {
         name: this.directiveName,
-        payload: this.payload,
-      },
+        payload: this.payload
+      }
     }
 
     if (!this.payload) {

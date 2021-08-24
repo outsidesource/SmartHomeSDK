@@ -7,9 +7,9 @@ import { RequestPayload } from '../../dispatcher/request/handler/Request'
 export interface DiscoveryRequestPayload extends RequestPayload {
   scope: {
     /** Should always be "BearerToken". */
-    type: 'BearerToken',
+    type: 'BearerToken'
 
     /** An OAuth2 bearer token. */
-    token: string,
-  },
+    token: string
+  }
 }

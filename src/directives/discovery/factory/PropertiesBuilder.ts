@@ -26,21 +26,27 @@ export class PropertiesBuilder {
    * @returns The {@link CapabilityProperties}.
    */
   getProperties(): CapabilityProperties | undefined {
-    if (this.supported.length === 0 && this.proactivelyReported === undefined && this.retrievable === undefined && this.nonControllable === undefined) {
+    if (
+      this.supported.length === 0 &&
+      this.proactivelyReported === undefined &&
+      this.retrievable === undefined &&
+      this.nonControllable === undefined
+    ) {
       return undefined
     }
 
-    const supported = this.supported.length === 0 
-      ? undefined 
-      : this.supported.map(name => { 
-        return { name, }
-      })
+    const supported =
+      this.supported.length === 0
+        ? undefined
+        : this.supported.map(name => {
+            return { name }
+          })
 
     const result = {
       supported,
       proactivelyReported: this.proactivelyReported,
       retrievable: this.retrievable,
-      nonControllable: this.nonControllable,
+      nonControllable: this.nonControllable
     }
 
     if (!supported) {

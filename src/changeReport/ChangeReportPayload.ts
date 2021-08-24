@@ -5,10 +5,10 @@ import { RequestPayload } from './Request'
 export interface ChangeReportPayload extends RequestPayload {
   change: {
     cause: {
-      type: ChangeCauseType,
-    },
-    properties: PropertyState[],
-  },
+      type: ChangeCauseType
+    }
+    properties: PropertyState[]
+  }
 }
 
 /**
@@ -28,5 +28,5 @@ export enum ChangeCauseType {
   RuleTrigger = 'RULE_TRIGGER',
 
   /** Voice interaction. For example, a user turns on a light by speaking to their Echo device. */
-  VoiceInteraction = 'VOICE_INTERACTION',
+  VoiceInteraction = 'VOICE_INTERACTION'
 }
