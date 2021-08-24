@@ -1,5 +1,5 @@
 {
-  "name": "smart-home-sdk",
+  "name": "@outsidesource/smart-home-sdk",
   "version": "0.0.0",
   "description": "Alexa Smart Home Skill SDK",
   "main": "index.js",

@@ -1,28 +1,26 @@
-name: test and deploy
+name: build
 
 on: 
   push:
   workflow_dispatch:
     inputs:
       runMode:
-        description: 'Run Mode (test | deploy)'
+        description: 'Run Mode (test | publish)'
         required: true
         default: 'test'
 
 jobs:
-  testAndDeploy:
-    defaults:
-      run:
-        working-directory: ./lambda/smarthome
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: 'https://npm.pkg.github.com'
 
       - name: Install dependencies
         run: npm install
@@ -32,12 +30,8 @@ jobs:
         env:
           CI: true
 
-      - name: Deploy app
-        if: ${{ (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'deploy') }}
-        uses: appleboy/lambda-action@master
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: us-east-1
-          function_name: air-purifier
-          zip_file: ./lambda/smarthome/deploy.zip
+      - name: Publish
+        if: ${{ (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'publish') }}
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
