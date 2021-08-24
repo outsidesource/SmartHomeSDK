@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
-import { Request, RequestPayload } from '../../lib/smarthome-sdk/dispatcher/request/handler/Request'
-import { ErrorResponsePayload } from '../../lib/smarthome-sdk/response/payloads/ErrorResponsePayload'
-import { Response, ResponsePayload } from '../../lib/smarthome-sdk/response/Response'
-import { ResponseBuilder } from '../../lib/smarthome-sdk/response/ResponseBuilder'
+import { Request, RequestPayload } from '../src/dispatcher/request/handler/Request'
+import { ErrorResponsePayload } from '../src/response/payloads/ErrorResponsePayload'
+import { Response, ResponsePayload } from '../src/response/Response'
+import { ResponseBuilder } from '../src/response/ResponseBuilder'
 
 const request: Request<TestRequestPayload> = {
   directive: {

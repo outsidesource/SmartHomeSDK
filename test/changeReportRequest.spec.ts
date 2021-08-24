@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
-import { ChangeCauseType, ChangeReportPayload } from '../../lib/smarthome-sdk/changeReport/ChangeReportPayload'
-import { ChangeReportRequestBuilder } from '../../lib/smarthome-sdk/changeReport/ChangeReportRequestBuilder'
-import { Request } from '../../lib/smarthome-sdk/changeReport/Request'
+import { ChangeCauseType, ChangeReportPayload } from '../src/changeReport/ChangeReportPayload'
+import { ChangeReportRequestBuilder } from '../src/changeReport/ChangeReportRequestBuilder'
+import { Request } from '../src/changeReport/Request'
 
 const request: Request<ChangeReportPayload> = require('./fixtures/changeReportRequest.json')
 

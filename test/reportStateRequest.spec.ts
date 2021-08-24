@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
-import { isReportStateRequest } from '../../lib/smarthome-sdk/directives/reportState/ReportStateHandlerInputFactory'
-import { Request, RequestPayload } from '../../lib/smarthome-sdk/dispatcher/request/handler/Request'
+import { isReportStateRequest } from '../src/directives/reportState/ReportStateHandlerInputFactory'
+import { Request, RequestPayload } from '../src/dispatcher/request/handler/Request'
 
 const request: Request<RequestPayload> = require('./fixtures/reportStateRequest.json')
 

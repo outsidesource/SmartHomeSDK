@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import 'mocha'
-import { ReportStateResponseBuilder } from '../../lib/smarthome-sdk/directives/reportState/ReportStateResponseBuilder'
-import { Request, RequestPayload } from '../../lib/smarthome-sdk/dispatcher/request/handler/Request'
-import { ErrorTypes } from '../../lib/smarthome-sdk/response/ErrorTypes'
+import { ReportStateResponseBuilder } from '../src/directives/reportState/ReportStateResponseBuilder'
+import { Request, RequestPayload } from '../src/dispatcher/request/handler/Request'
+import { ErrorTypes } from '../src/response/ErrorTypes'
 import failResponse from './fixtures/errorResponse.json'
 import succeedResponse from './fixtures/reportStateResponse.json'
 

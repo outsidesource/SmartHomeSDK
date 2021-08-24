@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import 'mocha'
-import { HandlerInputFactoryRepository } from '../../lib/smarthome-sdk/dispatcher/request/handler/factory/HandlerInputFactoryRepository'
-import { LambdaContext } from '../../lib/smarthome-sdk/dispatcher/request/handler/LambdaContext'
-import { Request, RequestPayload } from '../../lib/smarthome-sdk/dispatcher/request/handler/Request'
+import { HandlerInputFactoryRepository } from '../src/dispatcher/request/handler/factory/HandlerInputFactoryRepository'
+import { LambdaContext } from '../src/dispatcher/request/handler/LambdaContext'
+import { Request, RequestPayload } from '../src/dispatcher/request/handler/Request'
 import { getLambdaContext } from './fixtures'
 import request from './fixtures/acceptGrantRequest.json'
 

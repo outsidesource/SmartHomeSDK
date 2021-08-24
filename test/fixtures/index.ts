@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { LambdaContext } from '../../../lib/smarthome-sdk/dispatcher/request/handler/LambdaContext'
-import { Response, ResponsePayload } from '../../../lib/smarthome-sdk/response/Response'
+import { LambdaContext } from '../../src/dispatcher/request/handler/LambdaContext'
+import { Response, ResponsePayload } from '../../src/response/Response'
 
 export function getLambdaContext(): LambdaContext {
   return _.merge({ }, require('./lambdaContext.json'), { getRemainingTimeInMillis: (() => 0) })

@@ -33,8 +33,8 @@ export class SmartHomeSkill implements Skill<Request<RequestPayload>, Response<R
         responseInterceptors: skillConfiguration.responseInterceptors,
     })
 
-    const packageInfo = require('../../../package.json')
     UserAgentManager.registerComponent(createAskSdkUserAgent(packageInfo.version))
+    const packageInfo = require('../../package.json')
     if (this.customUserAgent) {
         UserAgentManager.registerComponent(this.customUserAgent)
     }

@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
-import { InterfaceCommandResponseBuilder } from '../../lib/smarthome-sdk/directives/interfaceCommand/InterfaceCommandResponseBuilder'
-import { Request, RequestPayload } from '../../lib/smarthome-sdk/dispatcher/request/handler/Request'
-import { ErrorTypes } from '../../lib/smarthome-sdk/response/ErrorTypes'
+import { InterfaceCommandResponseBuilder } from '../src/directives/interfaceCommand/InterfaceCommandResponseBuilder'
+import { Request, RequestPayload } from '../src/dispatcher/request/handler/Request'
+import { ErrorTypes } from '../src/response/ErrorTypes'
 import failResponse from './fixtures/errorResponse.json'
 import succeedResponse from './fixtures/interfaceCommandResponse.json'
 
