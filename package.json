@@ -1,0 +1,74 @@
+{
+  "name": "@outsidesource/smart-home-sdk",
+  "version": "1.0.0",
+  "description": "Alexa Smart Home Skill SDK",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "clean": "rimraf build",
+    "compile": "tsc --build tsconfig.json --pretty",
+    "build-final": "cpy package.json build && cd build/ && npm install --production",
+    "test": "npm run compile && NODE_ENV=test nyc mocha -r ts-node/register 'test/**/*.spec.ts'",
+    "lint-check": "gts check",
+    "lint-clean": "gts clean",
+    "lint-fix": "gts fix",
+    "qb": "npm run compile && npm run build-final",
+    "build": "npm run clean && npm run test && npm run lint-check && npm run compile && npm run build-final",
+    "archive": "rm -f deploy.zip && cd build && zip -r -X \"../deploy.zip\" * ",
+    "generate": "npm run build && npm run archive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/outsidesource/SmartHomeSDK.git"
+  },
+  "author": "Outside Source",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "ask-sdk-runtime": "^2.10.2",
+    "aws-sdk": "^2.890.0",
+    "axios": "^0.21.1",
+    "indefinite": "2.3.2",
+    "js-levenshtein": "1.1.6",
+    "lodash": "^4.17.19",
+    "moment": "^2.27.0",
+    "util": "^0.12.3"
+  },
+  "devDependencies": {
+    "@types/chai": "4.2.12",
+    "@types/js-levenshtein": "^1.1.0",
+    "@types/lodash": "^4.14.159",
+    "@types/mocha": "8.0.1",
+    "@types/node": "^14.0.27",
+    "@types/sinon": "^10.0.0",
+    "chai": "4.2.0",
+    "check-error": "^1.0.2",
+    "cpy-cli": "3.1.1",
+    "gts": "^1.1.2",
+    "mocha": "8.1.1",
+    "nyc": "15.1.0",
+    "rimraf": "3.0.2",
+    "sinon": "^10.0.0",
+    "ts-node": "8.10.2",
+    "typescript": "3.9.7"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "reporter": [
+      "text"
+    ],
+    "all": true
+  },
+  "bugs": {
+    "url": "https://github.com/outsidesource/SmartHomeSDK/issues"
+  },
+  "homepage": "https://github.com/outsidesource/SmartHomeSDK#readme",
+  "directories": {
+    "test": "test"
+  }
+}

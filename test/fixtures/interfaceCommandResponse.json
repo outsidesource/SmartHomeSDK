@@ -1,0 +1,46 @@
+{
+  "event": {
+    "header": {
+      "namespace": "Alexa",
+      "name": "Response",
+      "messageId": "4b409868-dc4b-ce7f-5ec9-0d6410e74f20",
+      "correlationToken": "VGhpcyBpcyBhIGNvcnJlbGF0aW9uIHRva2Vu",
+      "payloadVersion": "3"
+    },
+    "endpoint": {
+      "endpointId": "endpointId"
+    },
+    "payload": {}
+  },
+  "context": {
+    "properties": [
+      {
+        "namespace": "Alexa.ThermostatController",
+        "name": "thermostatMode",
+        "value": "HEAT",
+        "timeOfSample": "2017-02-03T16:20:50.520Z",
+        "uncertaintyInMilliseconds": 500
+      },
+      {
+        "namespace": "Alexa.ThermostatController",
+        "name": "targetSetpoint",
+        "value": {
+          "value": 20.0,
+          "scale": "CELSIUS"
+        },
+        "timeOfSample": "2017-02-03T16:20:50.520Z",
+        "uncertaintyInMilliseconds": 500
+      },
+      {
+        "namespace": "Alexa.TemperatureSensor",
+        "name": "temperature",
+        "value": {
+          "value": 19.3,
+          "scale": "CELSIUS"
+        },
+        "timeOfSample": "2017-02-03T16:20:50.520Z",
+        "uncertaintyInMilliseconds": 1000
+      } 
+    ]
+  }
+}
