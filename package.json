@@ -11,6 +11,7 @@
     "lint-check": "gts check",
     "lint-clean": "gts clean",
     "lint-fix": "gts fix",
+    "version": "npm version -no-git-tag-version",
     "test-check": "npm run clean && npm run test && npm run lint-check && npm run compile",
     "build": "npm run clean && npm run compile && cpy package.json dist && cd dist/ && npm install --production"
   },
