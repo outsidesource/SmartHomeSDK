@@ -1,25 +1,26 @@
 {
   "name": "@outsidesource/smart-home-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Alexa Smart Home Skill SDK",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "clean": "rimraf build",
+    "clean": "rimraf dist",
     "compile": "tsc --build tsconfig.json --pretty",
-    "build-final": "cpy package.json build && cd build/ && npm install --production",
     "test": "npm run compile && NODE_ENV=test nyc mocha -r ts-node/register 'test/**/*.spec.ts'",
     "lint-check": "gts check",
     "lint-clean": "gts clean",
     "lint-fix": "gts fix",
-    "qb": "npm run compile && npm run build-final",
-    "build": "npm run clean && npm run test && npm run lint-check && npm run compile && npm run build-final",
-    "archive": "rm -f deploy.zip && cd build && zip -r -X \"../deploy.zip\" * ",
-    "generate": "npm run build && npm run archive"
+    "version": "npm version -no-git-tag-version",
+    "test-check": "npm run clean && npm run test && npm run lint-check && npm run compile",
+    "build": "npm run clean && npm run compile && cpy package.json dist && cd dist/ && npm install --production"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/outsidesource/SmartHomeSDK.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "author": "Outside Source",
   "license": "UNLICENSED",

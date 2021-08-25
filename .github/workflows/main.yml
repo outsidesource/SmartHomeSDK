@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v2
 
       - name: Use Node.js ${{ matrix.node-version }}
@@ -22,16 +22,21 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://npm.pkg.github.com'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm run generate
+      - name: Run Tests
+        run: npm run test-check
         env:
           CI: true
+
+      - name: Build
+        if: ${{ (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'publish') }}
+        run: npm run build
 
       - name: Publish
         if: ${{ (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'publish') }}
         run: npm publish
+        working-directory: ./dist
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
