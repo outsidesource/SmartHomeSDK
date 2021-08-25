@@ -21,6 +21,9 @@
     "type": "git",
     "url": "https://github.com/outsidesource/SmartHomeSDK.git"
   },
+  "publishConfig":{
+    "registry": "https://npm.pkg.github.com/"
+  },
   "author": "Outside Source",
   "license": "UNLICENSED",
   "dependencies": {
