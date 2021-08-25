@@ -66,5 +66,5 @@ typings/
 .vscode
 
 # builds
-build/
+dist/
 *.zip
