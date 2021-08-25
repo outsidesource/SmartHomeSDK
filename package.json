@@ -1,6 +1,6 @@
 {
   "name": "@outsidesource/smart-home-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Alexa Smart Home Skill SDK",
   "main": "index.js",
   "types": "index.d.ts",
@@ -18,7 +18,7 @@
     "type": "git",
     "url": "https://github.com/outsidesource/SmartHomeSDK.git"
   },
-  "publishConfig":{
+  "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
   "author": "Outside Source",
