@@ -1,5 +1,9 @@
 import { Context, PropertyState } from '../response/Response'
-import { Request, RequestEndpoint, RequestPayload } from './Request'
+import {
+  ChangeReportRequest,
+  ChangeReportRequestEndpoint,
+  ChangeReportRequestPayload
+} from './ChangeReportRequest'
 
 export abstract class RequestBuilder {
   private endpointBuilder: EndpointBuilder
@@ -15,7 +19,7 @@ export abstract class RequestBuilder {
    * Generates a request body to send to the event gateway.
    * @returns The compiled request body.
    */
-  abstract getRequestBody(): Request<RequestPayload>
+  abstract getRequestBody(): ChangeReportRequest<ChangeReportRequestPayload>
 
   /**
    * Adds a builder for the endpoint.
@@ -49,8 +53,8 @@ export abstract class RequestBuilder {
     name: string,
     payloadVersion: string,
     payload: TPayload
-  ): Request<TPayload> {
-    const request: Request<TPayload> = {
+  ): ChangeReportRequest<TPayload> {
+    const request: ChangeReportRequest<TPayload> = {
       event: {
         header: {
           namespace,
@@ -102,8 +106,8 @@ export class EndpointBuilder {
    * Generates a {@link RequestEndpoint} based on the current configuration.
    * @returns The {@link RequestEndpoint}.
    */
-  getEndpoint(): RequestEndpoint {
-    const endpoint: RequestEndpoint = {
+  getEndpoint(): ChangeReportRequestEndpoint {
+    const endpoint: ChangeReportRequestEndpoint = {
       endpointId: this.endpointId
     }
 

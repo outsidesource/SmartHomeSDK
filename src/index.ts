@@ -1,4 +1,8 @@
-export { Request, RequestPayload } from './changeReport/Request'
+export {
+  ChangeReportRequest,
+  ChangeReportRequestPayload
+} from './changeReport/ChangeReportRequest'
+export { ChangeReportRequestBuilder } from './changeReport/ChangeReportRequestBuilder'
 export { AcceptGrantErrorTypes } from './directives/acceptGrant/AcceptGrantErrorTypes'
 export { SmartHomeSkillErrorHandler } from './dispatcher/error/handler/SmartHomeSkillErrorHandler'
 export { AcceptGrantRequestHandler } from './dispatcher/request/handler/AcceptGrantRequestHandler'
