@@ -1,5 +1,5 @@
 import { ChangeCauseType, ChangeReportPayload } from './ChangeReportPayload'
-import { Request } from './Request'
+import { ChangeReportRequest } from './ChangeReportRequest'
 import { RequestBuilder } from './RequestBuilder'
 
 const namespace = 'Alexa'
@@ -23,7 +23,7 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
     this.changeCause = changeCause
   }
 
-  getRequestBody(): Request<ChangeReportPayload> {
+  getRequestBody(): ChangeReportRequest<ChangeReportPayload> {
     let duplicates = findDuplicates(this.unchangedProperties)
 
     if (duplicates.length > 0) {
