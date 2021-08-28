@@ -48,7 +48,10 @@ export class SmartHomeSkill
       responseInterceptors: skillConfiguration.responseInterceptors
     })
 
-    const packageInfo = require('../../package.json')
+    const packageInfo =
+      process.env.NODE_ENV === 'test'
+        ? require('../../package.json')
+        : require('../package.json')
     UserAgentManager.registerComponent(
       createAskSdkUserAgent(packageInfo.version)
     )
