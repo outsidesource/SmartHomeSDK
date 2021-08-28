@@ -35,6 +35,13 @@ describe('smart home skill builder', function() {
   afterEach(function(){
     sinon.restore()
   })
+  it('creates a skill', function() {
+    const builder = SmartHomeSkillFactory.init()
+    const skill = builder.create()
+
+    expect(skill).to.not.be.undefined
+    expect(skill).to.not.be.null
+  })
   describe('adding a single request handler', function() {
     it('creates arbitrary handler when provided a PayloadSignature', function() {
       const builder = SmartHomeSkillFactory.init()
