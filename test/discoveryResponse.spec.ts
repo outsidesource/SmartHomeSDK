@@ -80,10 +80,11 @@ describe('discovery response builder', function() {
 
     expect(response).to.deep.equal(failResponse)
   })
-  it('throws if no endpoints are added', function() {
+  it('creates a successful response with no endpoints when none are present', function() {
     const builder = new DiscoveryResponseBuilder(request)
+    const response = builder.getSucceedResponse()
 
-    expect(function(){ builder.getSucceedResponse() }).to.throw('At least one endpoint is required.')
+    expect(response.event.payload.endpoints).to.be.empty
   })
   it('throws if too many endpoints are added', function() {
     const builder = new DiscoveryResponseBuilder(request)

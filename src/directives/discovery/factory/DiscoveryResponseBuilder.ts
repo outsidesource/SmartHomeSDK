@@ -29,10 +29,6 @@ export class DiscoveryResponseBuilder extends ResponseBuilder {
   }
 
   getSucceedResponse(): Response<DiscoveryResponsePayload> {
-    if (this.endpointBuilders.length === 0) {
-      throw Error('At least one endpoint is required.')
-    }
-
     if (this.endpointBuilders.length > maxEndpoints) {
       throw Error(`The number of endpoints cannot exceed ${maxEndpoints}.`)
     }
