@@ -43,6 +43,17 @@
         },
         "timeOfSample": "2017-02-03T16:20:50.000Z",
         "uncertaintyInMilliseconds": 0
+      },
+      {
+        "namespace": "Alexa.InventoryLevelSensor",
+        "instance": "air filter",
+        "name": "level",
+        "value": {
+          "@type": "Percentage",
+          "value": 74
+        },
+        "timeOfSample": "2017-02-03T16:20:50.000Z",
+        "uncertaintyInMilliseconds": 6000
       }
     ]
   }

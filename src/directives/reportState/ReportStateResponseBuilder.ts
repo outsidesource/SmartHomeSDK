@@ -4,7 +4,7 @@ import {
 } from '../../dispatcher/request/handler/Request'
 import { EmptyResponsePayload } from '../../response/payloads/EmptyResponsePayload'
 import { ErrorResponsePayload } from '../../response/payloads/ErrorResponsePayload'
-import { Response } from '../../response/Response'
+import { PropState, Response } from '../../response/Response'
 import { ResponseBuilder } from '../../response/ResponseBuilder'
 
 const namespace = 'Alexa'
@@ -28,6 +28,7 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
       this.properties.map(prop =>
         contextBuilder.withProperty(
           prop.namespace,
+          prop.instance,
           prop.name,
           prop.value,
           prop.timeOfSample,
@@ -63,6 +64,7 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
   /**
    * Adds a report of a property value.
    * @param namespace The type of controller. This should match the `capabilities[i].interface` value given at discovery.
+   * @param instance The name of the controller instance. This should match the `capabilities[i].instance` value given at discovery.
    * @param name The name of the property. This should match the `capabilities[i].properties.supported[j].name` value  given at discovery.
    * @param value The value of the property.
    * @param timeOfSample The date/time when the property was last updated.
@@ -71,6 +73,7 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
    */
   withProperty(
     namespace: string,
+    instance: string | undefined,
     name: string,
     value: unknown,
     timeOfSample: Date,
@@ -78,6 +81,7 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
   ): this {
     this.properties.push({
       namespace,
+      instance,
       name,
       value,
       timeOfSample,
@@ -85,29 +89,4 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
     })
     return this
   }
-}
-
-/** Represents a PropertyState with a Date timestamp. */
-interface PropState {
-  /**
-   * The type of controller. This should match the
-   * `capabilities[i].interface` value given at discovery.
-   */
-  namespace: string
-
-  /**
-   * The name of the property. This should match the
-   * `capabilities[i].properties.supported[j].name` value
-   * given at discovery.
-   */
-  name: string
-
-  /** The value of the property. */
-  value: unknown
-
-  /** The date/time when the property was sampled. */
-  timeOfSample: Date
-
-  /** The uncertainty of the value in milliseconds. */
-  uncertaintyInMilliseconds: number
 }

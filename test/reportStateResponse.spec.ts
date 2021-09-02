@@ -12,9 +12,10 @@ describe('report state response builder', function() {
   it('creates a successful response for a successful request', function() {
     const builder = new ReportStateResponseBuilder(request)
     builder
-      .withProperty('Alexa.ThermostatController', 'targetSetpoint', { value: 25.0, scale: 'CELSIUS' }, new Date('2017-02-03T16:20:50Z'), 6000)
-      .withProperty('Alexa.ThermostatController', 'thermostatMode', 'HEAT', new Date('2017-02-03T16:20:50Z'), 6000)
-      .withProperty('Alexa.EndpointHealth', 'connectivity', { value: 'OK' }, new Date('2017-02-03T16:20:50Z'), 0)
+      .withProperty('Alexa.ThermostatController', undefined, 'targetSetpoint', { value: 25.0, scale: 'CELSIUS' }, new Date('2017-02-03T16:20:50Z'), 6000)
+      .withProperty('Alexa.ThermostatController', undefined, 'thermostatMode', 'HEAT', new Date('2017-02-03T16:20:50Z'), 6000)
+      .withProperty('Alexa.EndpointHealth', undefined, 'connectivity', { value: 'OK' }, new Date('2017-02-03T16:20:50Z'), 0)
+      .withProperty('Alexa.InventoryLevelSensor', 'air filter', 'level', { '@type': 'Percentage', 'value': 74 }, new Date('2017-02-03T16:20:50Z'), 6000)
       .addEndpoint().withEndpointId('endpointId').withSimpleToken('VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==')
 
     const response = builder

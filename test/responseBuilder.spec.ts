@@ -3,7 +3,7 @@ import _ from 'lodash'
 import 'mocha'
 import { Request, RequestPayload } from '../src/dispatcher/request/handler/Request'
 import { ErrorResponsePayload } from '../src/response/payloads/ErrorResponsePayload'
-import { Response, ResponsePayload } from '../src/response/Response'
+import { findPropStateDuplicates, getPropertyState, isSamePropState, Response, ResponsePayload } from '../src/response/Response'
 import { ResponseBuilder } from '../src/response/ResponseBuilder'
 
 const request: Request<TestRequestPayload> = {
@@ -174,6 +174,199 @@ describe('response builder', function() {
       .getSucceedResponse()
 
     expect(response).to.deep.equal(succeedPartitionedTokenResponse)
+  })
+})
+
+describe('property states', function() {
+  describe('when comparing prop states', function() {
+    it('returns true when namespace, instance, and name are the same', function() {
+      const x = {
+        namespace: 'namespace',
+        instance: 'instance',
+        name: 'name',
+        value: { value: 'value', },
+        timeOfSample: new Date('2017-02-03T16:20:50Z'),
+        uncertaintyInMilliseconds: 0,
+      }
+      const y = {
+        namespace: 'namespace',
+        instance: 'instance',
+        name: 'name',
+        value: { value: 'value', },
+        timeOfSample: new Date('2017-02-03T16:20:50Z'),
+        uncertaintyInMilliseconds: 0,
+      }
+
+      expect(isSamePropState(x, y)).to.be.true
+    })
+    it('returns false when namespace is different', function() {
+      const x = {
+        namespace: 'namespace1',
+        instance: 'instance',
+        name: 'name',
+        value: { value: 'value', },
+        timeOfSample: new Date('2017-02-03T16:20:50Z'),
+        uncertaintyInMilliseconds: 0,
+      }
+      const y = {
+        namespace: 'namespace2',
+        instance: 'instance',
+        name: 'name',
+        value: { value: 'value', },
+        timeOfSample: new Date('2017-02-03T16:20:50Z'),
+        uncertaintyInMilliseconds: 0,
+      }
+
+      expect(isSamePropState(x, y)).to.be.false
+    })
+    it('returns false when instance is different', function() {
+      const x = {
+        namespace: 'namespace',
+        instance: undefined,
+        name: 'name',
+        value: { value: 'value', },
+        timeOfSample: new Date('2017-02-03T16:20:50Z'),
+        uncertaintyInMilliseconds: 0,
+      }
+      const y = {
+        namespace: 'namespace',
+        instance: 'instance',
+        name: 'name',
+        value: { value: 'value', },
+        timeOfSample: new Date('2017-02-03T16:20:50Z'),
+        uncertaintyInMilliseconds: 0,
+      }
+
+      expect(isSamePropState(x, y)).to.be.false
+    })
+    it('returns false when name is different', function() {
+      const x = {
+        namespace: 'namespace',
+        instance: 'instance',
+        name: 'name1',
+        value: { value: 'value', },
+        timeOfSample: new Date('2017-02-03T16:20:50Z'),
+        uncertaintyInMilliseconds: 0,
+      }
+      const y = {
+        namespace: 'namespace',
+        instance: 'instance',
+        name: 'name2',
+        value: { value: 'value', },
+        timeOfSample: new Date('2017-02-03T16:20:50Z'),
+        uncertaintyInMilliseconds: 0,
+      }
+
+      expect(isSamePropState(x, y)).to.be.false
+    })
+  })
+  describe('when getting duplicate prop states', function() {
+    it('returns none when all are unique', function() {
+      const props = [
+        {
+          namespace: 'namespace1',
+          instance: 'instance',
+          name: 'name',
+          value: { value: 'value', },
+          timeOfSample: new Date('2017-02-03T16:20:50Z'),
+          uncertaintyInMilliseconds: 0,
+        },
+        {
+          namespace: 'namespace2',
+          instance: 'instance',
+          name: 'name',
+          value: { value: 'value', },
+          timeOfSample: new Date('2017-02-03T16:20:50Z'),
+          uncertaintyInMilliseconds: 0,
+        },
+      ]
+
+      expect(findPropStateDuplicates(props).length).to.equal(0)
+    })
+    it('returns duplicates when duplicates exist', function() {
+      const props = [
+        {
+          namespace: 'namespace',
+          instance: 'instance',
+          name: 'name',
+          value: { value: 'value', },
+          timeOfSample: new Date('2017-02-03T16:20:50Z'),
+          uncertaintyInMilliseconds: 0,
+        },
+        {
+          namespace: 'namespace',
+          instance: 'instance',
+          name: 'name',
+          value: { value: 'value', },
+          timeOfSample: new Date('2017-02-03T16:20:50Z'),
+          uncertaintyInMilliseconds: 0,
+        },
+      ]
+
+      expect(findPropStateDuplicates(props).length).to.equal(1)
+    })
+    it('returns duplicates when namespace, instance, and name are the same', function() {
+      const props = [
+        {
+          namespace: 'namespace',
+          instance: 'instance',
+          name: 'name',
+          value: { value: 'value1', },
+          timeOfSample: new Date('2017-02-03T16:20:51Z'),
+          uncertaintyInMilliseconds: 1,
+        },
+        {
+          namespace: 'namespace',
+          instance: 'instance',
+          name: 'name',
+          value: { value: 'value2', },
+          timeOfSample: new Date('2017-02-03T16:20:52Z'),
+          uncertaintyInMilliseconds: 2,
+        },
+      ]
+
+      expect(findPropStateDuplicates(props).length).to.equal(1)
+    })
+  })
+  describe('when converting prop states to property states', function() {
+    it('returns a property state with no instance', function() {
+      const propState = {
+        namespace: 'namespace',
+        name: 'name',
+        value: { value: 'value', },
+        timeOfSample: new Date('2017-02-03T16:20:50Z'),
+        uncertaintyInMilliseconds: 0,
+      }
+      const expected = {
+        namespace: 'namespace',
+        name: 'name',
+        value: { value: 'value', },
+        timeOfSample: '2017-02-03T16:20:50.000Z',
+        uncertaintyInMilliseconds: 0,
+      }
+      
+      expect(getPropertyState(propState)).to.deep.equal(expected)
+    })
+    it('returns a property state with an instance', function() {
+      const propState = {
+        namespace: 'namespace',
+        instance: 'instance',
+        name: 'name',
+        value: { value: 'value', },
+        timeOfSample: new Date('2017-02-03T16:20:50Z'),
+        uncertaintyInMilliseconds: 0,
+      }
+      const expected = {
+        namespace: 'namespace',
+        instance: 'instance',
+        name: 'name',
+        value: { value: 'value', },
+        timeOfSample: '2017-02-03T16:20:50.000Z',
+        uncertaintyInMilliseconds: 0,
+      }
+      
+      expect(getPropertyState(propState)).to.deep.equal(expected)
+    })
   })
 })
 
