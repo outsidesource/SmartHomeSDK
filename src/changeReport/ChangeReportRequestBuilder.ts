@@ -1,4 +1,9 @@
-import { PropertyState } from '../response/Response'
+import {
+  findPropStateDuplicates,
+  getPropertyState,
+  isSamePropState,
+  PropState
+} from '../response/Response'
 import { ChangeCauseType, ChangeReportPayload } from './ChangeReportPayload'
 import { ChangeReportRequest } from './ChangeReportRequest'
 import { RequestBuilder } from './RequestBuilder'
@@ -25,23 +30,25 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
   }
 
   getRequestBody(): ChangeReportRequest<ChangeReportPayload> {
-    let duplicates = findDuplicates(this.unchangedProperties)
-
-    if (duplicates.length > 0) {
-      throw Error(
-        `The following unchanged properties are duplicated: ${JSON.stringify(
-          duplicates
-        )}`
+    if (this.unchangedProperties.length > 0) {
+      const contextBuilder = this.addContext()
+      this.unchangedProperties.map(prop =>
+        contextBuilder.withProperty(
+          prop.namespace,
+          prop.instance,
+          prop.name,
+          prop.value,
+          prop.timeOfSample,
+          prop.uncertaintyInMilliseconds
+        )
       )
     }
 
-    duplicates = findDuplicates(this.changedProperties)
+    const duplicates = findPropStateDuplicates(this.changedProperties)
 
     if (duplicates.length > 0) {
       throw Error(
-        `The following changed properties are duplicated: ${JSON.stringify(
-          duplicates
-        )}`
+        `The following changed properties are duplicated: ${duplicates}`
       )
     }
 
@@ -61,40 +68,12 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
       throw Error('At least one property must have changed.')
     }
 
-    if (this.unchangedProperties.length > 0) {
-      const contextBuilder = this.addContext()
-      this.unchangedProperties.map(prop =>
-        contextBuilder.withProperty(
-          prop.namespace,
-          prop.instance,
-          prop.name,
-          prop.value,
-          prop.timeOfSample,
-          prop.uncertaintyInMilliseconds
-        )
-      )
-    }
-
     return this.getPayloadEnvelope(namespace, name, payloadVersion, {
       change: {
         cause: {
           type: this.changeCause
         },
-        properties: this.changedProperties.map(prop => {
-          const result: PropertyState = {
-            namespace: prop.namespace,
-            name: prop.name,
-            value: prop.value,
-            timeOfSample: prop.timeOfSample.toISOString(),
-            uncertaintyInMilliseconds: prop.uncertaintyInMilliseconds
-          }
-
-          if (prop.instance) {
-            result.instance = prop.instance
-          }
-
-          return result
-        })
+        properties: this.changedProperties.map(prop => getPropertyState(prop))
       }
     })
   }
@@ -156,51 +135,4 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
     })
     return this
   }
-}
-
-/** Represents a PropertyState with a Date timestamp. */
-interface PropState {
-  /**
-   * The type of controller. This should match the
-   * `capabilities[i].interface` value given at discovery.
-   */
-  namespace: string
-
-  /**
-   * The name of the instance. This should match the
-   * `capabilities[i].instance` value given at discovery.
-   */
-  instance?: string
-
-  /**
-   * The name of the property. This should match the
-   * `capabilities[i].properties.supported[j].name` value
-   * given at discovery.
-   */
-  name: string
-
-  /** The value of the property. */
-  value: unknown
-
-  /** The date/time when the property was sampled. */
-  timeOfSample: Date
-
-  /** The uncertainty of the value in milliseconds. */
-  uncertaintyInMilliseconds: number
-}
-
-const isSamePropState = (x: PropState, y: PropState) => {
-  return x.namespace === y.namespace && x.instance === y.instance && x.name === y.name
-}
-
-const findDuplicates = (arr: PropState[]) => {
-  const histo = histogram(arr)
-  return Object.keys(histo).filter(key => histo[key] > 1)
-}
-
-const histogram = (arr: PropState[]) => {
-  return arr.reduce((histo: { [key: string]: number }, prop) => {
-    const key = JSON.stringify(prop)
-    return { ...histo, [key]: (histo[key] || 0) + 1 }
-  }, {})
 }

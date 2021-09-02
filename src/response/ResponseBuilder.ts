@@ -2,7 +2,9 @@ import { Request, RequestPayload } from '../dispatcher/request/handler/Request'
 import {
   Context,
   Endpoint,
-  PropertyState,
+  findPropStateDuplicates,
+  getPropertyState,
+  PropState,
   Response,
   ResponsePayload
 } from './Response'
@@ -221,7 +223,7 @@ export class EndpointBuilder {
  */
 export class ContextBuilder {
   private parent: ResponseBuilder
-  private properties: PropertyState[] = []
+  private properties: PropState[] = []
 
   constructor(parent: ResponseBuilder) {
     this.parent = parent
@@ -246,7 +248,15 @@ export class ContextBuilder {
       return undefined
     }
 
-    context.properties = this.properties
+    const duplicates = findPropStateDuplicates(this.properties)
+
+    if (duplicates.length > 0) {
+      throw Error(
+        `The following unchanged properties are duplicated: ${duplicates}`
+      )
+    }
+
+    context.properties = this.properties.map(prop => getPropertyState(prop))
 
     return context
   }
@@ -269,19 +279,15 @@ export class ContextBuilder {
     timeOfSample: Date,
     uncertaintyInMilliseconds: number
   ): this {
-    const prop: PropertyState = {
+    this.properties.push({
       namespace,
+      instance,
       name,
       value,
-      timeOfSample: timeOfSample.toISOString(),
+      timeOfSample,
       uncertaintyInMilliseconds
-    }
+    })
 
-    if (instance) {
-      prop.instance = instance
-    }
-
-    this.properties.push(prop)
     return this
   }
 }

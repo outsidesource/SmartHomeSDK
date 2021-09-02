@@ -108,3 +108,48 @@ export interface PropertyState {
   /** The uncertainty of the value in milliseconds. */
   uncertaintyInMilliseconds: number
 }
+
+export interface PropState extends Omit<PropertyState, 'timeOfSample'> {
+  /** The date/time when the property was sampled. */
+  timeOfSample: Date
+}
+
+export const isSamePropState = (x: PropState, y: PropState) => {
+  return (
+    x.namespace === y.namespace &&
+    x.instance === y.instance &&
+    x.name === y.name
+  )
+}
+
+export const findPropStateDuplicates = (arr: PropState[]) => {
+  const histo = histogram(arr)
+  return Object.keys(histo).filter(key => histo[key] > 1)
+}
+
+const histogram = (arr: PropState[]) => {
+  return arr.reduce((histo: { [key: string]: number }, prop) => {
+    const key = JSON.stringify({
+      namespace: prop.namespace,
+      instance: prop.instance,
+      name: prop.name
+    })
+    return { ...histo, [key]: (histo[key] || 0) + 1 }
+  }, {})
+}
+
+export const getPropertyState = (prop: PropState): PropertyState => {
+  const result: PropertyState = {
+    namespace: prop.namespace,
+    name: prop.name,
+    value: prop.value,
+    timeOfSample: prop.timeOfSample.toISOString(),
+    uncertaintyInMilliseconds: prop.uncertaintyInMilliseconds
+  }
+
+  if (prop.instance) {
+    result.instance = prop.instance
+  }
+
+  return result
+}

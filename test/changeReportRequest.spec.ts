@@ -118,7 +118,7 @@ describe('change report request builder', function() {
       .withUnchangedProperty('Alexa.PowerController', undefined, 'powerState', 'ON', new Date('2017-02-03T16:20:50Z'), 60000)
       .withUnchangedProperty('Alexa.PowerController', undefined, 'powerState', 'ON', new Date('2017-02-03T16:20:50Z'), 60000)
 
-    expect(function(){ builder.getRequestBody() }).to.throw('The following unchanged properties are duplicated: ["{\\"namespace\\":\\"Alexa.PowerController\\",\\"name\\":\\"powerState\\",\\"value\\":\\"ON\\",\\"timeOfSample\\":\\"2017-02-03T16:20:50.000Z\\",\\"uncertaintyInMilliseconds\\":60000}"]')
+    expect(function(){ builder.getRequestBody() }).to.throw('The following properties are duplicated: {\"namespace\":\"Alexa.PowerController\",\"name\":\"powerState\"}')
   })
   it('throws an exception if duplicate changed properties are added', function() {
     const builder = new ChangeReportRequestBuilder(
@@ -130,7 +130,7 @@ describe('change report request builder', function() {
       .withChangedProperty('Alexa.BrightnessController', undefined, 'brightness', 85, new Date('2017-02-03T16:20:50Z'), 0)
       .withUnchangedProperty('Alexa.PowerController', undefined, 'powerState', 'ON', new Date('2017-02-03T16:20:50Z'), 60000)
 
-    expect(function(){ builder.getRequestBody() }).to.throw('The following changed properties are duplicated: ["{\\"namespace\\":\\"Alexa.BrightnessController\\",\\"name\\":\\"brightness\\",\\"value\\":85,\\"timeOfSample\\":\\"2017-02-03T16:20:50.000Z\\",\\"uncertaintyInMilliseconds\\":0}"]')
+    expect(function(){ builder.getRequestBody() }).to.throw('The following changed properties are duplicated: {\"namespace\":\"Alexa.BrightnessController\",\"name\":\"brightness\"}')
   })
   it('throws an exception if a property is both changed and unchanged', function() {
     const builder = new ChangeReportRequestBuilder(
