@@ -1,3 +1,4 @@
+import { PropertyState } from '../response/Response'
 import { ChangeCauseType, ChangeReportPayload } from './ChangeReportPayload'
 import { ChangeReportRequest } from './ChangeReportRequest'
 import { RequestBuilder } from './RequestBuilder'
@@ -65,6 +66,7 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
       this.unchangedProperties.map(prop =>
         contextBuilder.withProperty(
           prop.namespace,
+          prop.instance,
           prop.name,
           prop.value,
           prop.timeOfSample,
@@ -78,13 +80,21 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
         cause: {
           type: this.changeCause
         },
-        properties: this.changedProperties.map(prop => ({
-          namespace: prop.namespace,
-          name: prop.name,
-          value: prop.value,
-          timeOfSample: prop.timeOfSample.toISOString(),
-          uncertaintyInMilliseconds: prop.uncertaintyInMilliseconds
-        }))
+        properties: this.changedProperties.map(prop => {
+          const result: PropertyState = {
+            namespace: prop.namespace,
+            name: prop.name,
+            value: prop.value,
+            timeOfSample: prop.timeOfSample.toISOString(),
+            uncertaintyInMilliseconds: prop.uncertaintyInMilliseconds
+          }
+
+          if (prop.instance) {
+            result.instance = prop.instance
+          }
+
+          return result
+        })
       }
     })
   }
@@ -92,6 +102,7 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
   /**
    * Adds a report of an unchanged property value
    * @param namespace The type of controller. This should match the `capabilities[i].interface` value given at discovery.
+   * @param instance The name of the controller instance. This should match the `capabilities[i].instance` value given at discovery.
    * @param name The name of the property. This should match the `capabilities[i].properties.supported[j].name` value  given at discovery.
    * @param value The value of the property.
    * @param timeOfSample The date/time when the property was last updated.
@@ -100,6 +111,7 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
    */
   withUnchangedProperty(
     namespace: string,
+    instance: string | undefined,
     name: string,
     value: unknown,
     timeOfSample: Date,
@@ -107,6 +119,7 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
   ): this {
     this.unchangedProperties.push({
       namespace,
+      instance,
       name,
       value,
       timeOfSample,
@@ -118,6 +131,7 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
   /**
    * Adds a report of a changed property value
    * @param namespace The type of controller. This should match the `capabilities[i].interface` value given at discovery.
+   * @param instance The name of the controller instance. This should match the `capabilities[i].instance` value given at discovery.
    * @param name The name of the property. This should match the `capabilities[i].properties.supported[j].name` value  given at discovery.
    * @param value The value of the property.
    * @param timeOfSample The date/time when the property was last updated.
@@ -126,6 +140,7 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
    */
   withChangedProperty(
     namespace: string,
+    instance: string | undefined,
     name: string,
     value: unknown,
     timeOfSample: Date,
@@ -133,6 +148,7 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
   ): this {
     this.changedProperties.push({
       namespace,
+      instance,
       name,
       value,
       timeOfSample,
@@ -149,6 +165,12 @@ interface PropState {
    * `capabilities[i].interface` value given at discovery.
    */
   namespace: string
+
+  /**
+   * The name of the instance. This should match the
+   * `capabilities[i].instance` value given at discovery.
+   */
+  instance?: string
 
   /**
    * The name of the property. This should match the
@@ -168,7 +190,7 @@ interface PropState {
 }
 
 const isSamePropState = (x: PropState, y: PropState) => {
-  return x.namespace === y.namespace && x.name === y.name
+  return x.namespace === y.namespace && x.instance === y.instance && x.name === y.name
 }
 
 const findDuplicates = (arr: PropState[]) => {

@@ -210,6 +210,7 @@ export class ContextBuilder {
   /**
    * Adds a report of a property value
    * @param namespace The type of controller. This should match the `capabilities[i].interface` value given at discovery.
+   * @param instance The name of the controller instance. This should match the `capabilities[i].instance` value given at discovery.
    * @param name The name of the property. This should match the `capabilities[i].properties.supported[j].name` value  given at discovery.
    * @param value The value of the property.
    * @param timeOfSample The date/time when the property was last updated.
@@ -218,18 +219,25 @@ export class ContextBuilder {
    */
   withProperty(
     namespace: string,
+    instance: string | undefined,
     name: string,
     value: unknown,
     timeOfSample: Date,
     uncertaintyInMilliseconds: number
   ): this {
-    this.properties.push({
+    const prop: PropertyState = {
       namespace,
       name,
       value,
       timeOfSample: timeOfSample.toISOString(),
       uncertaintyInMilliseconds
-    })
+    }
+
+    if (instance) {
+      prop.instance = instance
+    }
+
+    this.properties.push(prop)
     return this
   }
 }

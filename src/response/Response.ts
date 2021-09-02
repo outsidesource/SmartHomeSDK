@@ -87,6 +87,12 @@ export interface PropertyState {
   namespace: string
 
   /**
+   * The name of the instance. This should match the
+   * `capabilities[i].instance` value given at discovery.
+   */
+  instance?: string
+
+  /**
    * The name of the property. This should match the
    * `capabilities[i].properties.supported[j].name` value
    * given at discovery.

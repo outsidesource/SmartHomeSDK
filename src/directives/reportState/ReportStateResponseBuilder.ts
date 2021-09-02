@@ -28,6 +28,7 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
       this.properties.map(prop =>
         contextBuilder.withProperty(
           prop.namespace,
+          prop.instance,
           prop.name,
           prop.value,
           prop.timeOfSample,
@@ -63,6 +64,7 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
   /**
    * Adds a report of a property value.
    * @param namespace The type of controller. This should match the `capabilities[i].interface` value given at discovery.
+   * @param instance The name of the controller instance. This should match the `capabilities[i].instance` value given at discovery.
    * @param name The name of the property. This should match the `capabilities[i].properties.supported[j].name` value  given at discovery.
    * @param value The value of the property.
    * @param timeOfSample The date/time when the property was last updated.
@@ -71,6 +73,7 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
    */
   withProperty(
     namespace: string,
+    instance: string | undefined,
     name: string,
     value: unknown,
     timeOfSample: Date,
@@ -78,6 +81,7 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
   ): this {
     this.properties.push({
       namespace,
+      instance,
       name,
       value,
       timeOfSample,
@@ -94,6 +98,12 @@ interface PropState {
    * `capabilities[i].interface` value given at discovery.
    */
   namespace: string
+
+  /**
+   * The name of the instance. This should match the
+   * `capabilities[i].instance` value given at discovery.
+   */
+  instance?: string
 
   /**
    * The name of the property. This should match the
