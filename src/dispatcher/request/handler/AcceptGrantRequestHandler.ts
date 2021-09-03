@@ -1,8 +1,11 @@
 import { RequestHandler } from 'ask-sdk-runtime'
 import { isAcceptGrantRequest } from '../../../directives/acceptGrant/AcceptGrantHandlerInputFactory'
+import { AcceptGrantRequestPayload } from '../../../directives/acceptGrant/AcceptGrantRequestPayload'
 import { AcceptGrantResponseBuilder } from '../../../directives/acceptGrant/AcceptGrantResponseBuilder'
-import { Response, ResponsePayload } from '../../../response/Response'
+import { EmptyResponsePayload } from '../../../response/payloads/EmptyResponsePayload'
+import { Response } from '../../../response/Response'
 import { HandlerInput } from './HandlerInput'
+import { RequestPayload } from './Request'
 
 /**
  * A base implementation for user-created handler logic for accept grant requests.
@@ -10,15 +13,15 @@ import { HandlerInput } from './HandlerInput'
 export abstract class AcceptGrantRequestHandler
   implements
     RequestHandler<
-      HandlerInput<AcceptGrantResponseBuilder>,
-      Response<ResponsePayload>
+      HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder>,
+      Response<EmptyResponsePayload>
     > {
   /**
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
    */
   canHandle(
-    input: HandlerInput<AcceptGrantResponseBuilder>
+    input: HandlerInput<RequestPayload, AcceptGrantResponseBuilder>
   ): boolean | Promise<boolean> {
     return isAcceptGrantRequest(input.request)
   }
@@ -28,6 +31,6 @@ export abstract class AcceptGrantRequestHandler
    * @param input Information about the request and executing context.
    */
   abstract handle(
-    input: HandlerInput<AcceptGrantResponseBuilder>
-  ): Response<ResponsePayload> | Promise<Response<ResponsePayload>>
+    input: HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder>
+  ): Response<EmptyResponsePayload> | Promise<Response<EmptyResponsePayload>>
 }

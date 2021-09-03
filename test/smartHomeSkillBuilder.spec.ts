@@ -4,6 +4,7 @@ import 'mocha'
 import sinon from 'sinon'
 import { AcceptGrantErrorTypes } from '../src/directives/acceptGrant/AcceptGrantErrorTypes'
 import { HandlerInput } from '../src/dispatcher/request/handler/HandlerInput'
+import { RequestPayload } from '../src/dispatcher/request/handler/Request'
 import { ErrorTypes } from '../src/response/ErrorTypes'
 import { Response, ResponsePayload } from '../src/response/Response'
 import { ResponseBuilder } from '../src/response/ResponseBuilder'
@@ -14,20 +15,20 @@ import request from './fixtures/acceptGrantRequest.json'
 import succeedResponse from './fixtures/acceptGrantResponse.json'
 
 const successfulRequestHandler = {
-  canHandle: (input: HandlerInput<ResponseBuilder>) => true,
-  handle: (input: HandlerInput<ResponseBuilder>) => input.responseBuilder.getSucceedResponse(),
+  canHandle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => true,
+  handle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => input.responseBuilder.getSucceedResponse(),
 }
 const failedRequestHandler = {
-  canHandle: (input: HandlerInput<ResponseBuilder>) => true,
-  handle: (input: HandlerInput<ResponseBuilder>) => input.responseBuilder.getFailResponse(AcceptGrantErrorTypes.AcceptGrantFailed, 'This is a test error'),
+  canHandle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => true,
+  handle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => input.responseBuilder.getFailResponse(AcceptGrantErrorTypes.AcceptGrantFailed, 'This is a test error'),
 }
 const throwingRequestHandler = {
-  canHandle: (input: HandlerInput<ResponseBuilder>) => true,
-  handle: (input: HandlerInput<ResponseBuilder>) => { throw Error('This is a test error') },
+  canHandle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => true,
+  handle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => { throw Error('This is a test error') },
 }
 const errorHandler = {
-  canHandle: (input: HandlerInput<ResponseBuilder>, error: Error) => true,
-  handle: (input: HandlerInput<ResponseBuilder>, error: Error) => input.responseBuilder.getFailResponse(ErrorTypes.InternalError, error.message),
+  canHandle: (input: HandlerInput<RequestPayload, ResponseBuilder>, error: Error) => true,
+  handle: (input: HandlerInput<RequestPayload, ResponseBuilder>, error: Error) => input.responseBuilder.getFailResponse(ErrorTypes.InternalError, error.message),
 }
 const lambdaContext = getLambdaContext()
 
@@ -46,7 +47,7 @@ describe('smart home skill builder', function() {
     it('creates arbitrary handler when provided a PayloadSignature', function() {
       const builder = SmartHomeSkillFactory.init()
       const payloadSignature = {namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion'}
-      const executor = (input: HandlerInput<ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
+      const executor = (input: HandlerInput<RequestPayload, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
 
       builder.addRequestHandler(payloadSignature, executor)
   

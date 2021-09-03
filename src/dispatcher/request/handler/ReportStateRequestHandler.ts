@@ -3,6 +3,7 @@ import { isReportStateRequest } from '../../../directives/reportState/ReportStat
 import { ReportStateResponseBuilder } from '../../../directives/reportState/ReportStateResponseBuilder'
 import { Response, ResponsePayload } from '../../../response/Response'
 import { HandlerInput } from './HandlerInput'
+import { RequestPayload } from './Request'
 
 /**
  * A base implementation for user-created handler logic for report state requests.
@@ -10,7 +11,7 @@ import { HandlerInput } from './HandlerInput'
 export abstract class ReportStateRequestHandler
   implements
     RequestHandler<
-      HandlerInput<ReportStateResponseBuilder>,
+      HandlerInput<RequestPayload, ReportStateResponseBuilder>,
       Response<ResponsePayload>
     > {
   /**
@@ -18,7 +19,7 @@ export abstract class ReportStateRequestHandler
    * @param input Information about the request and executing context.
    */
   canHandle(
-    input: HandlerInput<ReportStateResponseBuilder>
+    input: HandlerInput<RequestPayload, ReportStateResponseBuilder>
   ): boolean | Promise<boolean> {
     return isReportStateRequest(input.request)
   }
@@ -28,6 +29,6 @@ export abstract class ReportStateRequestHandler
    * @param input Information about the request and executing context.
    */
   abstract handle(
-    input: HandlerInput<ReportStateResponseBuilder>
+    input: HandlerInput<RequestPayload, ReportStateResponseBuilder>
   ): Response<ResponsePayload> | Promise<Response<ResponsePayload>>
 }

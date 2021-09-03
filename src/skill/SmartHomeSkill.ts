@@ -19,7 +19,7 @@ import { SmartHomeSkillConfiguration } from './SmartHomeSkillConfiguration'
 export class SmartHomeSkill
   implements Skill<Request<RequestPayload>, Response<ResponsePayload>> {
   protected requestDispatcher: RequestDispatcher<
-    HandlerInput<ResponseBuilder>,
+    HandlerInput<RequestPayload, ResponseBuilder>,
     Response<ResponsePayload>
   >
   // protected persistenceAdapter: PersistenceAdapter;
@@ -38,7 +38,7 @@ export class SmartHomeSkill
     )
 
     this.requestDispatcher = new GenericRequestDispatcher<
-      HandlerInput<ResponseBuilder>,
+      HandlerInput<RequestPayload, ResponseBuilder>,
       Response<ResponsePayload>
     >({
       requestMappers: skillConfiguration.requestMappers,
