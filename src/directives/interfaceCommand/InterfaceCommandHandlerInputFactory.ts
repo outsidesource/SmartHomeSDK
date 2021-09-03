@@ -10,14 +10,17 @@ import { InterfaceCommandResponseBuilder } from './InterfaceCommandResponseBuild
 /**
  * A factory for {@link HandlerInput} when the request is an interface command.
  */
-export const InterfaceCommandHandlerInputFactory: HandlerInputFactory<InterfaceCommandResponseBuilder> = {
+export const InterfaceCommandHandlerInputFactory: HandlerInputFactory<
+  RequestPayload,
+  InterfaceCommandResponseBuilder
+> = {
   canCreate(request: Request<RequestPayload>, context?: LambdaContext) {
     return true
   },
   create(
     request: Request<RequestPayload>,
     context?: LambdaContext
-  ): HandlerInput<InterfaceCommandResponseBuilder> | undefined {
+  ): HandlerInput<RequestPayload, InterfaceCommandResponseBuilder> | undefined {
     return {
       request,
       context,

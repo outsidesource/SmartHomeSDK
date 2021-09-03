@@ -10,14 +10,17 @@ import { ReportStateResponseBuilder } from './ReportStateResponseBuilder'
 /**
  * A factory for {@link HandlerInput} when the request is a ReportState.
  */
-export const ReportStateHandlerInputFactory: HandlerInputFactory<ReportStateResponseBuilder> = {
+export const ReportStateHandlerInputFactory: HandlerInputFactory<
+  RequestPayload,
+  ReportStateResponseBuilder
+> = {
   canCreate(request: Request<RequestPayload>, context?: LambdaContext) {
     return isReportStateRequest(request)
   },
   create(
     request: Request<RequestPayload>,
     context?: LambdaContext
-  ): HandlerInput<ReportStateResponseBuilder> | undefined {
+  ): HandlerInput<RequestPayload, ReportStateResponseBuilder> | undefined {
     if (!isReportStateRequest(request)) {
       return undefined
     }
