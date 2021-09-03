@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import {
   Context,
   findPropStateDuplicates,
@@ -15,9 +16,9 @@ export abstract class RequestBuilder {
   private contextBuilder?: ContextBuilder
   private messageId: string
 
-  constructor(messageId: string, endpointId: string) {
+  constructor(endpointId: string) {
     this.endpointBuilder = new EndpointBuilder(this, endpointId)
-    this.messageId = messageId
+    this.messageId = uuidv4()
   }
 
   /**
@@ -43,6 +44,16 @@ export abstract class RequestBuilder {
       return this.contextBuilder
     }
     return (this.contextBuilder = new ContextBuilder(this))
+  }
+
+  /**
+   * Explicitly sets the message ID. Otherwise, a random version 4 UUID is used.
+   * @param messageId The message ID to explicitly use.
+   * @returns This builder.
+   */
+  withMessageId(messageId: string): this {
+    this.messageId = messageId
+    return this
   }
 
   /**
