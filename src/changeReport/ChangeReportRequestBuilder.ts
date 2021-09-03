@@ -20,12 +20,8 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
   private changedProperties: PropState[] = []
   private changeCause: ChangeCauseType
 
-  constructor(
-    messageId: string,
-    endpointId: string,
-    changeCause: ChangeCauseType
-  ) {
-    super(messageId, endpointId)
+  constructor(endpointId: string, changeCause: ChangeCauseType) {
+    super(endpointId)
     this.changeCause = changeCause
   }
 

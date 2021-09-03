@@ -10,10 +10,10 @@ const request: ChangeReportRequest<ChangeReportPayload> = require('./fixtures/ch
 describe('change report request builder', function() {
   it('creates a successful request when messageId, endpointId, and change cause specified', function() {
     const builder = new ChangeReportRequestBuilder(
-      '4b409868-dc4b-ce7f-5ec9-0d6410e74f20',
       'endpointId',
       ChangeCauseType.PhysicalInteraction)
     builder
+      .withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
       .addEndpoint()
         .withSimpleToken('VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==')
         .withCookie('macAddress', '62:7B:51:61:D3:19')
@@ -28,10 +28,10 @@ describe('change report request builder', function() {
   })
   it('creates a successful partitioned token request when messageId, endpointId, and change cause specified', function() {
     const builder = new ChangeReportRequestBuilder(
-      '4b409868-dc4b-ce7f-5ec9-0d6410e74f20',
       'endpointId',
       ChangeCauseType.PhysicalInteraction)
     builder
+      .withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
       .addEndpoint()
         .withPartitionedToken('VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==', 'Partition', 'UserId')
         .withCookie('macAddress', '62:7B:51:61:D3:19')
@@ -63,10 +63,10 @@ describe('change report request builder', function() {
       uncertaintyInMilliseconds: 60000
     })
     const builder = new ChangeReportRequestBuilder(
-      '4b409868-dc4b-ce7f-5ec9-0d6410e74f20',
       'endpointId',
       ChangeCauseType.PhysicalInteraction)
     builder
+      .withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
       .addEndpoint()
         .withSimpleToken('VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==')
         .withCookie('macAddress', '62:7B:51:61:D3:19')
@@ -91,10 +91,10 @@ describe('change report request builder', function() {
       uncertaintyInMilliseconds: 60000
     })
     const builder = new ChangeReportRequestBuilder(
-      '4b409868-dc4b-ce7f-5ec9-0d6410e74f20',
       'endpointId',
       ChangeCauseType.PhysicalInteraction)
     builder
+      .withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
       .addEndpoint()
         .withSimpleToken('VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==')
         .withCookie('macAddress', '62:7B:51:61:D3:19')
@@ -110,10 +110,10 @@ describe('change report request builder', function() {
   })
   it('throws an exception if duplicate unchanged properties are added', function() {
     const builder = new ChangeReportRequestBuilder(
-      '4b409868-dc4b-ce7f-5ec9-0d6410e74f20',
       'endpointId',
       ChangeCauseType.PhysicalInteraction)
     builder
+      .withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
       .withChangedProperty('Alexa.BrightnessController', undefined, 'brightness', 85, new Date('2017-02-03T16:20:50Z'), 0)
       .withUnchangedProperty('Alexa.PowerController', undefined, 'powerState', 'ON', new Date('2017-02-03T16:20:50Z'), 60000)
       .withUnchangedProperty('Alexa.PowerController', undefined, 'powerState', 'ON', new Date('2017-02-03T16:20:50Z'), 60000)
@@ -122,10 +122,10 @@ describe('change report request builder', function() {
   })
   it('throws an exception if duplicate changed properties are added', function() {
     const builder = new ChangeReportRequestBuilder(
-      '4b409868-dc4b-ce7f-5ec9-0d6410e74f20',
       'endpointId',
       ChangeCauseType.PhysicalInteraction)
     builder
+      .withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
       .withChangedProperty('Alexa.BrightnessController', undefined, 'brightness', 85, new Date('2017-02-03T16:20:50Z'), 0)
       .withChangedProperty('Alexa.BrightnessController', undefined, 'brightness', 85, new Date('2017-02-03T16:20:50Z'), 0)
       .withUnchangedProperty('Alexa.PowerController', undefined, 'powerState', 'ON', new Date('2017-02-03T16:20:50Z'), 60000)
@@ -134,10 +134,10 @@ describe('change report request builder', function() {
   })
   it('throws an exception if a property is both changed and unchanged', function() {
     const builder = new ChangeReportRequestBuilder(
-      '4b409868-dc4b-ce7f-5ec9-0d6410e74f20',
       'endpointId',
       ChangeCauseType.PhysicalInteraction)
     builder
+      .withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
       .withChangedProperty('Alexa.BrightnessController', undefined, 'brightness', 85, new Date('2017-02-03T16:20:50Z'), 0)
       .withUnchangedProperty('Alexa.BrightnessController', undefined, 'brightness', 85, new Date('2017-02-03T16:20:50Z'), 0)
 
@@ -145,10 +145,10 @@ describe('change report request builder', function() {
   })
   it('throws an exception if no changed properties are specified', function() {
     const builder = new ChangeReportRequestBuilder(
-      '4b409868-dc4b-ce7f-5ec9-0d6410e74f20',
       'endpointId',
       ChangeCauseType.PhysicalInteraction)
     builder
+      .withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
       .withUnchangedProperty('Alexa.BrightnessController', undefined, 'brightness', 85, new Date('2017-02-03T16:20:50Z'), 0)
 
     expect(function(){ builder.getRequestBody() }).to.throw('At least one property must have changed.')
