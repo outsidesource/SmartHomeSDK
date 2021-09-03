@@ -2,7 +2,10 @@ import { RequestHandler } from 'ask-sdk-runtime'
 import { SmartHomeSkillErrorHandler } from '../../dispatcher/error/handler/SmartHomeSkillErrorHandler'
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/HandlerInputFactory'
 import { HandlerInput } from '../../dispatcher/request/handler/HandlerInput'
-import { PayloadSignature } from '../../dispatcher/request/handler/Request'
+import {
+  PayloadSignature,
+  RequestPayload
+} from '../../dispatcher/request/handler/Request'
 import { SmartHomeSkillRequestInterceptor } from '../../dispatcher/request/interceptor/SmartHomeSkillRequestInterceptor'
 import { SmartHomeSkillResponseInterceptor } from '../../dispatcher/request/interceptor/SmartHomeSkillResponseInterceptor'
 import { Response, ResponsePayload } from '../../response/Response'
@@ -17,39 +20,46 @@ import { LambdaHandler } from './SmartHomeSkillFactory'
 export interface SmartHomeSkillBuilder {
   addRequestHandler(
     matcher:
-      | ((input: HandlerInput<ResponseBuilder>) => Promise<boolean> | boolean)
+      | ((
+          input: HandlerInput<RequestPayload, ResponseBuilder>
+        ) => Promise<boolean> | boolean)
       | PayloadSignature,
     executor: (
-      input: HandlerInput<ResponseBuilder>
+      input: HandlerInput<RequestPayload, ResponseBuilder>
     ) => Promise<Response<ResponsePayload>> | Response<ResponsePayload>
   ): this
   addRequestHandlers(
     ...requestHandlers: Array<
-      RequestHandler<HandlerInput<ResponseBuilder>, Response<ResponsePayload>>
+      RequestHandler<
+        HandlerInput<RequestPayload, ResponseBuilder>,
+        Response<ResponsePayload>
+      >
     >
   ): this
   addRequestInterceptors(
     ...executors: Array<
       | SmartHomeSkillRequestInterceptor
-      | ((input: HandlerInput<ResponseBuilder>) => Promise<void> | void)
+      | ((
+          input: HandlerInput<RequestPayload, ResponseBuilder>
+        ) => Promise<void> | void)
     >
   ): this
   addResponseInterceptors(
     ...executors: Array<
       | SmartHomeSkillResponseInterceptor
       | ((
-          input: HandlerInput<ResponseBuilder>,
+          input: HandlerInput<RequestPayload, ResponseBuilder>,
           response?: Response<ResponsePayload>
         ) => Promise<void> | void)
     >
   ): this
   addErrorHandler(
     matcher: (
-      input: HandlerInput<ResponseBuilder>,
+      input: HandlerInput<RequestPayload, ResponseBuilder>,
       error: Error
     ) => Promise<boolean> | boolean,
     executor: (
-      input: HandlerInput<ResponseBuilder>,
+      input: HandlerInput<RequestPayload, ResponseBuilder>,
       error: Error
     ) => Promise<Response<ResponsePayload>> | Response<ResponsePayload>
   ): this
@@ -57,7 +67,9 @@ export interface SmartHomeSkillBuilder {
   withCustomUserAgent(customUserAgent: string): this
   withSkillId(skillId: string): this
   withHandlerInputFactories(
-    ...handlerInputFactories: Array<HandlerInputFactory<ResponseBuilder>>
+    ...handlerInputFactories: Array<
+      HandlerInputFactory<RequestPayload, ResponseBuilder>
+    >
   ): this
   getSkillConfiguration(): SmartHomeSkillConfiguration
   create(): SmartHomeSkill

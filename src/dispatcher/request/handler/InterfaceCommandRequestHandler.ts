@@ -2,6 +2,7 @@ import { RequestHandler } from 'ask-sdk-runtime'
 import { InterfaceCommandResponseBuilder } from '../../../directives/interfaceCommand/InterfaceCommandResponseBuilder'
 import { Response, ResponsePayload } from '../../../response/Response'
 import { HandlerInput } from './HandlerInput'
+import { RequestPayload } from './Request'
 
 /**
  * A base implementation for user-created handler logic for interface commands.
@@ -9,7 +10,7 @@ import { HandlerInput } from './HandlerInput'
 export abstract class InterfaceCommandRequestHandler
   implements
     RequestHandler<
-      HandlerInput<InterfaceCommandResponseBuilder>,
+      HandlerInput<RequestPayload, InterfaceCommandResponseBuilder>,
       Response<ResponsePayload>
     > {
   /**
@@ -17,7 +18,7 @@ export abstract class InterfaceCommandRequestHandler
    * @param input Information about the request and executing context.
    */
   canHandle(
-    input: HandlerInput<InterfaceCommandResponseBuilder>
+    input: HandlerInput<RequestPayload, InterfaceCommandResponseBuilder>
   ): boolean | Promise<boolean> {
     return true
   }
@@ -27,6 +28,6 @@ export abstract class InterfaceCommandRequestHandler
    * @param input Information about the request and executing context.
    */
   abstract handle(
-    input: HandlerInput<InterfaceCommandResponseBuilder>
+    input: HandlerInput<RequestPayload, InterfaceCommandResponseBuilder>
   ): Response<ResponsePayload> | Promise<Response<ResponsePayload>>
 }

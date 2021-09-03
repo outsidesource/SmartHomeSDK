@@ -2,7 +2,9 @@ import { Request, RequestPayload } from '../dispatcher/request/handler/Request'
 import {
   Context,
   Endpoint,
-  PropertyState,
+  findPropStateDuplicates,
+  getPropertyState,
+  PropState,
   Response,
   ResponsePayload
 } from './Response'
@@ -221,7 +223,7 @@ export class EndpointBuilder {
  */
 export class ContextBuilder {
   private parent: ResponseBuilder
-  private properties: PropertyState[] = []
+  private properties: PropState[] = []
 
   constructor(parent: ResponseBuilder) {
     this.parent = parent
@@ -246,7 +248,15 @@ export class ContextBuilder {
       return undefined
     }
 
-    context.properties = this.properties
+    const duplicates = findPropStateDuplicates(this.properties)
+
+    if (duplicates.length > 0) {
+      throw Error(
+        `The following unchanged properties are duplicated: ${duplicates}`
+      )
+    }
+
+    context.properties = this.properties.map(prop => getPropertyState(prop))
 
     return context
   }
@@ -254,6 +264,7 @@ export class ContextBuilder {
   /**
    * Adds a report of a property value
    * @param namespace The type of controller. This should match the `capabilities[i].interface` value given at discovery.
+   * @param instance The name of the controller instance. This should match the `capabilities[i].instance` value given at discovery.
    * @param name The name of the property. This should match the `capabilities[i].properties.supported[j].name` value  given at discovery.
    * @param value The value of the property.
    * @param timeOfSample The date/time when the property was last updated.
@@ -262,6 +273,7 @@ export class ContextBuilder {
    */
   withProperty(
     namespace: string,
+    instance: string | undefined,
     name: string,
     value: unknown,
     timeOfSample: Date,
@@ -269,11 +281,13 @@ export class ContextBuilder {
   ): this {
     this.properties.push({
       namespace,
+      instance,
       name,
       value,
-      timeOfSample: timeOfSample.toISOString(),
+      timeOfSample,
       uncertaintyInMilliseconds
     })
+
     return this
   }
 }

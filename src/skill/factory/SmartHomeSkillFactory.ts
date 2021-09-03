@@ -36,12 +36,13 @@ export type LambdaHandler = (
 export class SmartHomeSkillFactory {
   static init(): SmartHomeSkillBuilder {
     const runtimeConfigurationBuilder = new RuntimeConfigurationBuilder<
-      HandlerInput<ResponseBuilder>,
+      HandlerInput<RequestPayload, ResponseBuilder>,
       Response<ResponsePayload>
     >()
     let thisCustomUserAgent: string
     let thisSkillId: string
     let thisHandlerInputFactories: Array<HandlerInputFactory<
+      RequestPayload,
       ResponseBuilder
     >> = [
       AcceptGrantHandlerInputFactory,
@@ -54,15 +55,15 @@ export class SmartHomeSkillFactory {
       addRequestHandler(
         matcher:
           | ((
-              input: HandlerInput<ResponseBuilder>
+              input: HandlerInput<RequestPayload, ResponseBuilder>
             ) => Promise<boolean> | boolean)
           | PayloadSignature,
         executor: (
-          input: HandlerInput<ResponseBuilder>
+          input: HandlerInput<RequestPayload, ResponseBuilder>
         ) => Promise<Response<ResponsePayload>> | Response<ResponsePayload>
       ): SmartHomeSkillBuilder {
         const canHandle = isPayloadSignature(matcher)
-          ? (input: HandlerInput<ResponseBuilder>) =>
+          ? (input: HandlerInput<RequestPayload, ResponseBuilder>) =>
               input.request.directive.header.namespace === matcher.namespace &&
               input.request.directive.header.name === matcher.name &&
               input.request.directive.header.payloadVersion ===
@@ -76,7 +77,7 @@ export class SmartHomeSkillFactory {
       addRequestHandlers(
         ...requestHandlers: Array<
           RequestHandler<
-            HandlerInput<ResponseBuilder>,
+            HandlerInput<RequestPayload, ResponseBuilder>,
             Response<ResponsePayload>
           >
         >
@@ -88,7 +89,9 @@ export class SmartHomeSkillFactory {
       addRequestInterceptors(
         ...executors: Array<
           | SmartHomeSkillRequestInterceptor
-          | ((input: HandlerInput<ResponseBuilder>) => Promise<void> | void)
+          | ((
+              input: HandlerInput<RequestPayload, ResponseBuilder>
+            ) => Promise<void> | void)
         >
       ): SmartHomeSkillBuilder {
         runtimeConfigurationBuilder.addRequestInterceptors(...executors)
@@ -99,7 +102,7 @@ export class SmartHomeSkillFactory {
         ...executors: Array<
           | SmartHomeSkillResponseInterceptor
           | ((
-              input: HandlerInput<ResponseBuilder>,
+              input: HandlerInput<RequestPayload, ResponseBuilder>,
               response?: Response<ResponsePayload>
             ) => Promise<void> | void)
         >
@@ -110,11 +113,11 @@ export class SmartHomeSkillFactory {
       },
       addErrorHandler(
         matcher: (
-          input: HandlerInput<ResponseBuilder>,
+          input: HandlerInput<RequestPayload, ResponseBuilder>,
           error: Error
         ) => Promise<boolean> | boolean,
         executor: (
-          input: HandlerInput<ResponseBuilder>,
+          input: HandlerInput<RequestPayload, ResponseBuilder>,
           error: Error
         ) => Promise<Response<ResponsePayload>> | Response<ResponsePayload>
       ): SmartHomeSkillBuilder {
@@ -140,7 +143,9 @@ export class SmartHomeSkillFactory {
         return this
       },
       withHandlerInputFactories(
-        ...handlerInputFactories: Array<HandlerInputFactory<ResponseBuilder>>
+        ...handlerInputFactories: Array<
+          HandlerInputFactory<RequestPayload, ResponseBuilder>
+        >
       ): SmartHomeSkillBuilder {
         thisHandlerInputFactories = [
           ...new Set([...thisHandlerInputFactories, ...handlerInputFactories])
@@ -187,7 +192,9 @@ export class SmartHomeSkillFactory {
 
 function isPayloadSignature(
   x:
-    | ((input: HandlerInput<ResponseBuilder>) => Promise<boolean> | boolean)
+    | ((
+        input: HandlerInput<RequestPayload, ResponseBuilder>
+      ) => Promise<boolean> | boolean)
     | PayloadSignature
 ): x is PayloadSignature {
   return 'namespace' in x && 'name' in x && 'payloadVersion' in x

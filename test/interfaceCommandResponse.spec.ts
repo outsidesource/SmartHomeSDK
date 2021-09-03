@@ -14,9 +14,9 @@ describe('interface command response builder', function() {
     const builder = new InterfaceCommandResponseBuilder(request)
     builder
       .addContext()
-        .withProperty('Alexa.ThermostatController', 'thermostatMode', 'HEAT', new Date('2017-02-03T16:20:50.52Z'), 500)
-        .withProperty('Alexa.ThermostatController', 'targetSetpoint', { value: 20.0, scale: 'CELSIUS' }, new Date('2017-02-03T16:20:50.52Z'), 500)
-        .withProperty('Alexa.TemperatureSensor', 'temperature', { value: 19.3, scale: 'CELSIUS' }, new Date('2017-02-03T16:20:50.52Z'), 1000)
+        .withProperty('Alexa.ThermostatController', undefined, 'thermostatMode', 'HEAT', new Date('2017-02-03T16:20:50.52Z'), 500)
+        .withProperty('Alexa.ThermostatController', undefined, 'targetSetpoint', { value: 20.0, scale: 'CELSIUS' }, new Date('2017-02-03T16:20:50.52Z'), 500)
+        .withProperty('Alexa.TemperatureSensor', undefined, 'temperature', { value: 19.3, scale: 'CELSIUS' }, new Date('2017-02-03T16:20:50.52Z'), 1000)
     builder
       .addEndpoint().withEndpointId('endpointId')
 
@@ -30,9 +30,9 @@ describe('interface command response builder', function() {
     builder
       .withNamespace('myNamespace').withName('myName').withPayload({ prop: 'value', })
       .addContext()
-        .withProperty('Alexa.ThermostatController', 'thermostatMode', 'HEAT', new Date('2017-02-03T16:20:50.52Z'), 500)
-        .withProperty('Alexa.ThermostatController', 'targetSetpoint', { value: 20.0, scale: 'CELSIUS' }, new Date('2017-02-03T16:20:50.52Z'), 500)
-        .withProperty('Alexa.TemperatureSensor', 'temperature', { value: 19.3, scale: 'CELSIUS' }, new Date('2017-02-03T16:20:50.52Z'), 1000)
+        .withProperty('Alexa.ThermostatController', undefined, 'thermostatMode', 'HEAT', new Date('2017-02-03T16:20:50.52Z'), 500)
+        .withProperty('Alexa.ThermostatController', undefined, 'targetSetpoint', { value: 20.0, scale: 'CELSIUS' }, new Date('2017-02-03T16:20:50.52Z'), 500)
+        .withProperty('Alexa.TemperatureSensor', undefined, 'temperature', { value: 19.3, scale: 'CELSIUS' }, new Date('2017-02-03T16:20:50.52Z'), 1000)
     builder
       .addEndpoint().withEndpointId('endpointId')
 

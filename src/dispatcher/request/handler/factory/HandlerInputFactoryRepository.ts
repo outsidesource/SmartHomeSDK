@@ -7,10 +7,12 @@ import { HandlerInputFactory } from './HandlerInputFactory'
  * An in-memory repository for storing and locating {@link HandlerInputFactory}.
  */
 export class HandlerInputFactoryRepository {
-  private factories: Array<HandlerInputFactory<ResponseBuilder>>
+  private factories: Array<HandlerInputFactory<RequestPayload, ResponseBuilder>>
 
   constructor(
-    ...handlerInputFactories: Array<HandlerInputFactory<ResponseBuilder>>
+    ...handlerInputFactories: Array<
+      HandlerInputFactory<RequestPayload, ResponseBuilder>
+    >
   ) {
     this.factories = handlerInputFactories
   }
@@ -24,7 +26,7 @@ export class HandlerInputFactoryRepository {
   getHandlerInputFactory(
     request: Request<RequestPayload>,
     context?: LambdaContext
-  ): HandlerInputFactory<ResponseBuilder> | undefined {
+  ): HandlerInputFactory<RequestPayload, ResponseBuilder> | undefined {
     return this.factories.find(f => f.canCreate(request, context))
   }
 }

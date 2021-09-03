@@ -2,13 +2,14 @@ import { ErrorHandler } from 'ask-sdk-runtime'
 import { Response, ResponsePayload } from '../../../response/Response'
 import { ResponseBuilder } from '../../../response/ResponseBuilder'
 import { HandlerInput } from '../../request/handler/HandlerInput'
+import { RequestPayload } from '../../request/handler/Request'
 
 /**
  * An interface for user-created error handling logic.
  */
 export interface SmartHomeSkillErrorHandler
   extends ErrorHandler<
-    HandlerInput<ResponseBuilder>,
+    HandlerInput<RequestPayload, ResponseBuilder>,
     Response<ResponsePayload>
   > {
   /**
@@ -17,7 +18,7 @@ export interface SmartHomeSkillErrorHandler
    * @param error The unhandled error.
    */
   canHandle(
-    input: HandlerInput<ResponseBuilder>,
+    input: HandlerInput<RequestPayload, ResponseBuilder>,
     error: Error
   ): Promise<boolean> | boolean
 
@@ -27,7 +28,7 @@ export interface SmartHomeSkillErrorHandler
    * @param error The unhandled error.
    */
   handle(
-    input: HandlerInput<ResponseBuilder>,
+    input: HandlerInput<RequestPayload, ResponseBuilder>,
     error: Error
   ): Promise<Response<ResponsePayload>> | Response<ResponsePayload>
 }
