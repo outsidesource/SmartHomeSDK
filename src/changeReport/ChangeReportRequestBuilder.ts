@@ -1,3 +1,5 @@
+import { Request } from '../outboundRequest/Request'
+import { RequestBuilder } from '../outboundRequest/RequestBuilder'
 import {
   findPropStateDuplicates,
   getPropertyState,
@@ -5,8 +7,6 @@ import {
   PropState
 } from '../response/Response'
 import { ChangeCauseType, ChangeReportPayload } from './ChangeReportPayload'
-import { ChangeReportRequest } from './ChangeReportRequest'
-import { RequestBuilder } from './RequestBuilder'
 
 const namespace = 'Alexa'
 const name = 'ChangeReport'
@@ -25,7 +25,7 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
     this.changeCause = changeCause
   }
 
-  getRequestBody(): ChangeReportRequest<ChangeReportPayload> {
+  getRequestBody(): Request<ChangeReportPayload> {
     if (this.unchangedProperties.length > 0) {
       const contextBuilder = this.addContext()
       this.unchangedProperties.map(prop =>

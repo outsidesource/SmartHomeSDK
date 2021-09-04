@@ -2,9 +2,7 @@ import { Context, Scope } from '../response/Response'
 /**
  * Contains the header, payload, and context for a request.
  */
-export interface ChangeReportRequest<
-  TPayload extends ChangeReportRequestPayload
-> {
+export interface Request<TPayload extends RequestPayload> {
   event: {
     header: {
       /** The namespace and interface for the operation in the message. */
@@ -21,7 +19,7 @@ export interface ChangeReportRequest<
     }
 
     /** Contains information about the endpoint making the request. */
-    endpoint: ChangeReportRequestEndpoint
+    endpoint: RequestEndpoint
 
     /** The request payload. */
     payload: TPayload
@@ -34,9 +32,12 @@ export interface ChangeReportRequest<
 /**
  * Base interface for all request payloads.
  */
-export interface ChangeReportRequestPayload {}
+export interface RequestPayload {}
 
-export interface ChangeReportRequestEndpoint {
+/**
+ * Contains information about the endpoint making the request.
+ */
+export interface RequestEndpoint {
   /** The Bearer token information associated with the request. */
   scope?: Scope
 

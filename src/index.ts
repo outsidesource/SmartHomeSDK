@@ -1,7 +1,3 @@
-export {
-  ChangeReportRequest,
-  ChangeReportRequestPayload
-} from './changeReport/ChangeReportRequest'
 export { ChangeReportRequestBuilder } from './changeReport/ChangeReportRequestBuilder'
 export { AcceptGrantErrorTypes } from './directives/acceptGrant/AcceptGrantErrorTypes'
 export { isAcceptGrantRequest } from './directives/acceptGrant/AcceptGrantHandlerInputFactory'
@@ -34,6 +30,12 @@ export { Request, RequestPayload } from './dispatcher/request/handler/Request'
 export { SmartHomeSkillRequestHandler } from './dispatcher/request/handler/SmartHomeSkillRequestHandler'
 export { SmartHomeSkillRequestInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillRequestInterceptor'
 export { SmartHomeSkillResponseInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillResponseInterceptor'
+export {
+  Request as ChangeReportRequest,
+  Request as OutboundRequest,
+  RequestPayload as ChangeReportRequestPayload,
+  RequestPayload as OutboundRequestPayload
+} from './outboundRequest/Request'
 export { ErrorTypes } from './response/ErrorTypes'
 export { EmptyResponsePayload } from './response/payloads/EmptyResponsePayload'
 export { ErrorResponsePayload } from './response/payloads/ErrorResponsePayload'
