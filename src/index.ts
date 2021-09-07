@@ -30,6 +30,7 @@ export { Request, RequestPayload } from './dispatcher/request/handler/Request'
 export { SmartHomeSkillRequestHandler } from './dispatcher/request/handler/SmartHomeSkillRequestHandler'
 export { SmartHomeSkillRequestInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillRequestInterceptor'
 export { SmartHomeSkillResponseInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillResponseInterceptor'
+//TODO: Remove ChangeReportRequest and ChangeReportRequestPayload
 export {
   Request as ChangeReportRequest,
   Request as OutboundRequest,
