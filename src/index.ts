@@ -5,18 +5,18 @@ export { AcceptGrantRequestPayload } from './directives/acceptGrant/AcceptGrantR
 export { AcceptGrantResponseBuilder } from './directives/acceptGrant/AcceptGrantResponseBuilder'
 export { isDiscoveryRequest } from './directives/discovery/DiscoveryHandlerInputFactory'
 export { DiscoveryRequestPayload } from './directives/discovery/DiscoveryRequestPayload'
-export {
-  DiscoveryResponsePayload,
-  DisplayCategories
-} from './directives/discovery/DiscoveryResponsePayload'
+export { DiscoveryResponseBuilder } from './directives/discovery/DiscoveryResponseBuilder'
 export { AdditionalAttributesBuilder } from './directives/discovery/factory/AdditionalAttributesBuilder'
 export { CapabilityBuilder } from './directives/discovery/factory/CapabilityBuilder'
 export { DiscoveryEndpointBuilder } from './directives/discovery/factory/DiscoveryEndpointBuilder'
-export { DiscoveryResponseBuilder } from './directives/discovery/factory/DiscoveryResponseBuilder'
+export {
+  DiscoveryPayload,
+  DisplayCategories
+} from './directives/discovery/factory/DiscoveryPayload'
 export { PropertiesBuilder } from './directives/discovery/factory/PropertiesBuilder'
+export { Locales } from './directives/discovery/factory/ResourceLabel'
 export { SemanticActionBuilder } from './directives/discovery/factory/SemanticActionBuilder'
 export { SemanticStateBuilder } from './directives/discovery/factory/SemanticStateBuilder'
-export { Locales } from './directives/discovery/ResourceLabel'
 export { InterfaceCommandResponseBuilder } from './directives/interfaceCommand/InterfaceCommandResponseBuilder'
 export { isReportStateRequest } from './directives/reportState/ReportStateHandlerInputFactory'
 export { ReportStateResponseBuilder } from './directives/reportState/ReportStateResponseBuilder'

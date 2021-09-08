@@ -1,5 +1,5 @@
-import { AdditionalAttributes } from '../DiscoveryResponsePayload'
 import { DiscoveryEndpointBuilder } from './DiscoveryEndpointBuilder'
+import { AdditionalAttributes } from './DiscoveryPayload'
 
 const additionalAttributesFieldMaxSize = 256
 
