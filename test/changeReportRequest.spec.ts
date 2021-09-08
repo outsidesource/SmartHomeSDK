@@ -43,7 +43,7 @@ describe('change report request builder', function() {
     const requestBody = builder.getRequestBody()
 
     const expected = _.cloneDeep(request)
-    expected.event.endpoint.scope = {
+    expected.event.endpoint!.scope = {
       type: 'BearerTokenWithPartition',
       token: 'VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==',
       partition: 'Partition',

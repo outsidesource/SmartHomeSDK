@@ -21,7 +21,8 @@ export class ChangeReportRequestBuilder extends RequestBuilder {
   private changeCause: ChangeCauseType
 
   constructor(endpointId: string, changeCause: ChangeCauseType) {
-    super(endpointId)
+    super()
+    this.addEndpoint().withEndpointId(endpointId)
     this.changeCause = changeCause
   }
 

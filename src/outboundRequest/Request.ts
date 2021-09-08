@@ -19,7 +19,7 @@ export interface Request<TPayload extends RequestPayload> {
     }
 
     /** Contains information about the endpoint making the request. */
-    endpoint: RequestEndpoint
+    endpoint?: RequestEndpoint
 
     /** The request payload. */
     payload: TPayload

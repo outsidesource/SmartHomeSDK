@@ -8,12 +8,11 @@ import {
 import { Request, RequestEndpoint, RequestPayload } from './Request'
 
 export abstract class RequestBuilder {
-  private endpointBuilder: EndpointBuilder
+  private endpointBuilder?: EndpointBuilder
   private contextBuilder?: ContextBuilder
   private messageId: string
 
-  constructor(endpointId: string) {
-    this.endpointBuilder = new EndpointBuilder(this, endpointId)
+  constructor() {
     this.messageId = uuidv4()
   }
 
@@ -28,7 +27,10 @@ export abstract class RequestBuilder {
    * @returns A fluent mechanism for building an endpoint.
    */
   addEndpoint(): EndpointBuilder {
-    return this.endpointBuilder
+    if (this.endpointBuilder) {
+      return this.endpointBuilder
+    }
+    return (this.endpointBuilder = new EndpointBuilder(this))
   }
 
   /**
@@ -74,8 +76,14 @@ export abstract class RequestBuilder {
           payloadVersion,
           messageId: this.messageId
         },
-        endpoint: this.endpointBuilder.getEndpoint(),
         payload
+      }
+    }
+
+    if (this.endpointBuilder) {
+      const endpoint = this.endpointBuilder.getEndpoint()
+      if (endpoint) {
+        request.event.endpoint = endpoint
       }
     }
 
@@ -95,15 +103,14 @@ export abstract class RequestBuilder {
  */
 export class EndpointBuilder {
   private parent: RequestBuilder
-  private endpointId: string
+  private endpointId?: string
   private token?: string
   private partition?: string
   private userId?: string
   private cookie: { [key: string]: string } = {}
 
-  constructor(parent: RequestBuilder, endpointId: string) {
+  constructor(parent: RequestBuilder) {
     this.parent = parent
-    this.endpointId = endpointId
   }
 
   /**
@@ -118,7 +125,11 @@ export class EndpointBuilder {
    * Generates a {@link RequestEndpoint} based on the current configuration.
    * @returns The {@link RequestEndpoint}.
    */
-  getEndpoint(): RequestEndpoint {
+  getEndpoint(): RequestEndpoint | undefined {
+    if (!this.endpointId) {
+      return undefined
+    }
+
     const endpoint: RequestEndpoint = {
       endpointId: this.endpointId
     }
@@ -144,6 +155,16 @@ export class EndpointBuilder {
     }
 
     return endpoint
+  }
+
+  /**
+   * Sets the endpoint ID.
+   * @param endpointId The endpoint ID.
+   * @returns This builder.
+   */
+  withEndpointId(endpointId: string): this {
+    this.endpointId = endpointId
+    return this
   }
 
   /**
