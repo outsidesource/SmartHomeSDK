@@ -1,8 +1,7 @@
-import { ResponsePayload } from '../../response/Response'
 import { ResourceLabel } from './ResourceLabel'
 
 /** Represents the payload for a collection of endpoints associated with the skill. */
-export interface DiscoveryResponsePayload extends ResponsePayload {
+export interface DiscoveryPayload {
   endpoints: DiscoveryEndpoint[]
 }
 

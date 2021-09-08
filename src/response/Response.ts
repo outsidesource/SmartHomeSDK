@@ -36,6 +36,9 @@ export interface Response<TPayload extends ResponsePayload> {
  */
 export interface ResponsePayload {}
 
+/**
+ * Contains information about the endpoint that handled the request.
+ */
 export interface Endpoint {
   /** The Bearer token information associated with the request. */
   scope?: Scope

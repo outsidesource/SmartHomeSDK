@@ -1,8 +1,5 @@
-import {
-  SemanticActionMapping,
-  SemanticActionNames
-} from '../DiscoveryResponsePayload'
 import { CapabilityBuilder } from './CapabilityBuilder'
+import { SemanticActionMapping, SemanticActionNames } from './DiscoveryPayload'
 
 /** Represents a builder for a {@link SemanticActionMapping}. */
 export class SemanticActionBuilder {

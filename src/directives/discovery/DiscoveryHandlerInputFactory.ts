@@ -6,7 +6,7 @@ import {
   RequestPayload
 } from '../../dispatcher/request/handler/Request'
 import { DiscoveryRequestPayload } from './DiscoveryRequestPayload'
-import { DiscoveryResponseBuilder } from './factory/DiscoveryResponseBuilder'
+import { DiscoveryResponseBuilder } from './DiscoveryResponseBuilder'
 
 /**
  * A factory for {@link HandlerInput} when the request is a Discovery.

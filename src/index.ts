@@ -1,7 +1,3 @@
-export {
-  ChangeReportRequest,
-  ChangeReportRequestPayload
-} from './changeReport/ChangeReportRequest'
 export { ChangeReportRequestBuilder } from './changeReport/ChangeReportRequestBuilder'
 export { AcceptGrantErrorTypes } from './directives/acceptGrant/AcceptGrantErrorTypes'
 export { isAcceptGrantRequest } from './directives/acceptGrant/AcceptGrantHandlerInputFactory'
@@ -9,18 +5,18 @@ export { AcceptGrantRequestPayload } from './directives/acceptGrant/AcceptGrantR
 export { AcceptGrantResponseBuilder } from './directives/acceptGrant/AcceptGrantResponseBuilder'
 export { isDiscoveryRequest } from './directives/discovery/DiscoveryHandlerInputFactory'
 export { DiscoveryRequestPayload } from './directives/discovery/DiscoveryRequestPayload'
-export {
-  DiscoveryResponsePayload,
-  DisplayCategories
-} from './directives/discovery/DiscoveryResponsePayload'
+export { DiscoveryResponseBuilder } from './directives/discovery/DiscoveryResponseBuilder'
 export { AdditionalAttributesBuilder } from './directives/discovery/factory/AdditionalAttributesBuilder'
 export { CapabilityBuilder } from './directives/discovery/factory/CapabilityBuilder'
 export { DiscoveryEndpointBuilder } from './directives/discovery/factory/DiscoveryEndpointBuilder'
-export { DiscoveryResponseBuilder } from './directives/discovery/factory/DiscoveryResponseBuilder'
+export {
+  DiscoveryPayload,
+  DisplayCategories
+} from './directives/discovery/factory/DiscoveryPayload'
 export { PropertiesBuilder } from './directives/discovery/factory/PropertiesBuilder'
+export { Locales } from './directives/discovery/factory/ResourceLabel'
 export { SemanticActionBuilder } from './directives/discovery/factory/SemanticActionBuilder'
 export { SemanticStateBuilder } from './directives/discovery/factory/SemanticStateBuilder'
-export { Locales } from './directives/discovery/ResourceLabel'
 export { InterfaceCommandResponseBuilder } from './directives/interfaceCommand/InterfaceCommandResponseBuilder'
 export { isReportStateRequest } from './directives/reportState/ReportStateHandlerInputFactory'
 export { ReportStateResponseBuilder } from './directives/reportState/ReportStateResponseBuilder'
@@ -34,6 +30,13 @@ export { Request, RequestPayload } from './dispatcher/request/handler/Request'
 export { SmartHomeSkillRequestHandler } from './dispatcher/request/handler/SmartHomeSkillRequestHandler'
 export { SmartHomeSkillRequestInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillRequestInterceptor'
 export { SmartHomeSkillResponseInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillResponseInterceptor'
+//TODO: Remove ChangeReportRequest and ChangeReportRequestPayload
+export {
+  Request as ChangeReportRequest,
+  Request as OutboundRequest,
+  RequestPayload as ChangeReportRequestPayload,
+  RequestPayload as OutboundRequestPayload
+} from './outboundRequest/Request'
 export { ErrorTypes } from './response/ErrorTypes'
 export { EmptyResponsePayload } from './response/payloads/EmptyResponsePayload'
 export { ErrorResponsePayload } from './response/payloads/ErrorResponsePayload'

@@ -1,5 +1,5 @@
-import { CapabilityProperties } from '../DiscoveryResponsePayload'
 import { CapabilityBuilder } from './CapabilityBuilder'
+import { CapabilityProperties } from './DiscoveryPayload'
 
 /** Represents a builder for a {@link CapabilityProperties}. */
 export class PropertiesBuilder {

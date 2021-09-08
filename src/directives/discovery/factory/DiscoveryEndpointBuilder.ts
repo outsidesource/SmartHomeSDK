@@ -1,11 +1,11 @@
+import { AdditionalAttributesBuilder } from './AdditionalAttributesBuilder'
+import { CapabilityBuilder } from './CapabilityBuilder'
 import {
   DiscoveryConnection,
   DiscoveryEndpoint,
   DisplayCategories
-} from '../DiscoveryResponsePayload'
-import { AdditionalAttributesBuilder } from './AdditionalAttributesBuilder'
-import { CapabilityBuilder } from './CapabilityBuilder'
-import { DiscoveryResponseBuilder } from './DiscoveryResponseBuilder'
+} from './DiscoveryPayload'
+import { DiscoveryPayloadBuilder } from './DiscoveryPayloadBuilder'
 
 const maxCapabilitiesPerEndpoint = 100
 const maxCookiesSize = 5000
@@ -20,7 +20,7 @@ const unknownConnectionRegex = /^\S{1,256}$/i
 
 /** Represents builder for a {@link DiscoveryEndpoint}. */
 export class DiscoveryEndpointBuilder {
-  private parent: DiscoveryResponseBuilder
+  private parent: DiscoveryPayloadBuilder
   private endpointId: string
   private manufacturerName: string
   private description: string
@@ -33,7 +33,7 @@ export class DiscoveryEndpointBuilder {
   private cookies: Record<string, string> = {}
 
   constructor(
-    parent: DiscoveryResponseBuilder,
+    parent: DiscoveryPayloadBuilder,
     endpointId: string,
     manufacturerName: string,
     description: string,
@@ -47,10 +47,10 @@ export class DiscoveryEndpointBuilder {
   }
 
   /**
-   * Gets the parent {@link DiscoveryResponseBuilder}.
-   * @returns The parent {@link DiscoveryResponseBuilder}.
+   * Gets the parent {@link DiscoveryPayloadBuilder}.
+   * @returns The parent {@link DiscoveryPayloadBuilder}.
    */
-  getResponseBuilder(): DiscoveryResponseBuilder {
+  getResponseBuilder(): DiscoveryPayloadBuilder {
     return this.parent
   }
 

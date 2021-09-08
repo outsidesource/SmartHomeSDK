@@ -1,0 +1,435 @@
+{
+  "event": {
+    "header": {
+      "namespace": "Alexa.Discovery",
+      "name": "AddOrUpdateReport",
+      "payloadVersion": "3",
+      "messageId": "4b409868-dc4b-ce7f-5ec9-0d6410e74f20"
+    },
+    "payload": {
+      "endpoints": [
+        {
+          "endpointId": "WC:e889552c8a25",
+          "manufacturerName": "Sample Manufacturer",
+          "description": "Smart Thermostat by Sample Manufacturer",
+          "friendlyName": "My Home",
+          "additionalAttributes": {
+            "manufacturer": "Sample Manufacturer",
+            "model": "Sample Model",
+            "serialNumber": "e889552c8a25",
+            "firmwareVersion": "3.14",
+            "softwareVersion": "6.28",
+            "customIdentifier": "a8ab-e889552c8a25"
+          },
+          "displayCategories": [
+            "THERMOSTAT"
+          ],
+          "cookie": {
+            "macAddress": "62:7B:51:61:D3:19"
+          },
+          "capabilities": [
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa",
+              "version": "3"
+            },
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa.PowerController",
+              "version": "3",
+              "properties": {
+                "supported": [
+                  {
+                    "name": "powerState"
+                  }
+                ],
+                "proactivelyReported": true,
+                "retrievable": true
+              }
+            },
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa.EndpointHealth",
+              "version": "3",
+              "properties": {
+                "supported": [
+                  {
+                    "name": "connectivity"
+                  }
+                ],
+                "proactivelyReported": true,
+                "retrievable": true
+              }
+            },
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa.ThermostatController",
+              "version": "3",
+              "properties": {
+                "supported": [
+                  {
+                    "name": "thermostatMode"
+                  }
+                ],
+                "proactivelyReported": true,
+                "retrievable": true
+              },
+              "configuration": {
+                "supportedModes": [
+                  "HEAT",
+                  "COOL",
+                  "AUTO",
+                  "OFF"
+                ]
+              }
+            },
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa.RangeController",
+              "version": "3",
+              "instance": "FreshAirIntake.Position",
+              "properties": {
+                "supported": [
+                  {
+                    "name": "rangeValue"
+                  }
+                ],
+                "proactivelyReported": true,
+                "retrievable": true,
+                "nonControllable": false
+              },
+              "capabilityResources": {
+                "friendlyNames": [
+                  {
+                    "@type": "text",
+                    "value": {
+                      "text": "Fresh air intake",
+                      "locale": "en-US"
+                    }
+                  },
+                  {
+                    "@type": "text",
+                    "value": {
+                      "text": "Air intake",
+                      "locale": "en-US"
+                    }
+                  },
+                  {
+                    "@type": "text",
+                    "value": {
+                      "text": "Outdoor air",
+                      "locale": "en-US"
+                    }
+                  },
+                  {
+                    "@type": "text",
+                    "value": {
+                      "text": "Entrada de aire fresco",
+                      "locale": "es-US"
+                    }
+                  },
+                  {
+                    "@type": "text",
+                    "value": {
+                      "text": "Entrada de aire",
+                      "locale": "es-US"
+                    }
+                  },
+                  {
+                    "@type": "text",
+                    "value": {
+                      "text": "Aire exterior",
+                      "locale": "es-US"
+                    }
+                  }
+                ]
+              },
+              "configuration": {
+                "supportedRange": {
+                  "minimumValue": 0,
+                  "maximumValue": 100,
+                  "precision": 1
+                },
+                "presets": [
+                  {
+                    "rangeValue": 10,
+                    "presetResources": {
+                      "friendlyNames": [
+                        {
+                          "@type": "asset",
+                          "value": {
+                            "assetId": "Alexa.Value.Maximum"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "rangeValue": 0,
+                    "presetResources": {
+                      "friendlyNames": [
+                        {
+                          "@type": "asset",
+                          "value": {
+                            "assetId": "Alexa.Value.Minimum"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "semantics": {
+                "actionMappings": [
+                  {
+                    "@type": "ActionsToDirective",
+                    "actions": [
+                      "Alexa.Actions.Close"
+                    ],
+                    "directive": {
+                      "name": "SetRangeValue",
+                      "payload": {
+                        "rangeValue": 0
+                      }
+                    }
+                  },
+                  {
+                    "@type": "ActionsToDirective",
+                    "actions": [
+                      "Alexa.Actions.Open"
+                    ],
+                    "directive": {
+                      "name": "SetRangeValue",
+                      "payload": {
+                        "rangeValue": 100
+                      }
+                    }
+                  },
+                  {
+                    "@type": "ActionsToDirective",
+                    "actions": [
+                      "Alexa.Actions.Lower"
+                    ],
+                    "directive": {
+                      "name": "AdjustRangeValue",
+                      "payload": {
+                        "rangeValueDelta": -10,
+                        "rangeValueDeltaDefault": false
+                      }
+                    }
+                  },
+                  {
+                    "@type": "ActionsToDirective",
+                    "actions": [
+                      "Alexa.Actions.Raise"
+                    ],
+                    "directive": {
+                      "name": "AdjustRangeValue",
+                      "payload": {
+                        "rangeValueDelta": 10,
+                        "rangeValueDeltaDefault": false
+                      }
+                    }
+                  }
+                ],
+                "stateMappings": [
+                  {
+                    "@type": "StatesToValue",
+                    "states": [
+                      "Alexa.States.Closed"
+                    ],
+                    "value": 0
+                  },
+                  {
+                    "@type": "StatesToRange",
+                    "states": [
+                      "Alexa.States.Open"
+                    ],
+                    "range": {
+                      "minimumValue": 1,
+                      "maximumValue": 100
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "connections": [
+            {
+              "type": "TCP_IP",
+              "macAddress": "A5:E9:A6:90:09:8A:C5:0E"
+            }
+          ]
+        },
+        {
+          "endpointId": "WC:e889552c8a25 Z:0",
+          "manufacturerName": "Sample Manufacturer",
+          "description": "Smart Thermostat Zone by Sample Manufacturer",
+          "friendlyName": "Downstairs",
+          "additionalAttributes": {
+            "manufacturer": "Sample Manufacturer",
+            "model": "Sample Model",
+            "serialNumber": "e889552c8a25",
+            "firmwareVersion": "3.14",
+            "softwareVersion": "6.28",
+            "customIdentifier": "a8ab-e889552c8a25:0"
+          },
+          "displayCategories": [
+            "THERMOSTAT",
+            "TEMPERATURE_SENSOR"
+          ],
+          "cookie": {
+            "macAddress": "62:7B:51:61:D3:19"
+          },
+          "capabilities": [
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa",
+              "version": "3"
+            },
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa.BrightnessController",
+              "version": "3",
+              "properties": {
+                "supported": [
+                  {
+                    "name": "brightness"
+                  }
+                ],
+                "proactivelyReported": true,
+                "retrievable": true
+              }
+            },
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa.ThermostatController",
+              "version": "3",
+              "properties": {
+                "supported": [
+                  {
+                    "name": "targetSetpoint"
+                  },
+                  {
+                    "name": "lowerSetpoint"
+                  },
+                  {
+                    "name": "upperSetpoint"
+                  }
+                ],
+                "proactivelyReported": true,
+                "retrievable": true
+              },
+              "configuration": {
+                "supportsScheduling": true
+              }
+            },
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa.TemperatureSensor",
+              "version": "3",
+              "properties": {
+                "supported": [
+                  {
+                    "name": "temperature"
+                  }
+                ],
+                "proactivelyReported": true,
+                "retrievable": true
+              }
+            }
+          ],
+          "relationships": {
+            "isConnectedBy": {
+              "endpointId": "WC:e889552c8a25"
+            }
+          }
+        },
+        {
+          "endpointId": "WC:e889552c8a25 Z:1",
+          "manufacturerName": "Sample Manufacturer",
+          "description": "Smart Thermostat Zone by Sample Manufacturer",
+          "friendlyName": "Upstairs",
+          "additionalAttributes": {
+            "manufacturer": "Sample Manufacturer",
+            "model": "Sample Model",
+            "serialNumber": "e889552c8a25",
+            "firmwareVersion": "3.14",
+            "softwareVersion": "6.28",
+            "customIdentifier": "a8ab-e889552c8a25:1"
+          },
+          "displayCategories": [
+            "THERMOSTAT",
+            "TEMPERATURE_SENSOR"
+          ],
+          "cookie": {
+            "macAddress": "62:7B:51:61:D3:19"
+          },
+          "capabilities": [
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa",
+              "version": "3"
+            },
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa.BrightnessController",
+              "version": "3",
+              "properties": {
+                "supported": [
+                  {
+                    "name": "brightness"
+                  }
+                ],
+                "proactivelyReported": true,
+                "retrievable": true
+              }
+            },
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa.ThermostatController",
+              "version": "3",
+              "properties": {
+                "supported": [
+                  {
+                    "name": "targetSetpoint"
+                  },
+                  {
+                    "name": "lowerSetpoint"
+                  },
+                  {
+                    "name": "upperSetpoint"
+                  }
+                ],
+                "proactivelyReported": true,
+                "retrievable": true
+              },
+              "configuration": {
+                "supportsScheduling": true
+              }
+            },
+            {
+              "type": "AlexaInterface",
+              "interface": "Alexa.TemperatureSensor",
+              "version": "3",
+              "properties": {
+                "supported": [
+                  {
+                    "name": "temperature"
+                  }
+                ],
+                "proactivelyReported": true,
+                "retrievable": true
+              }
+            }
+          ],
+          "relationships": {
+            "isConnectedBy": {
+              "endpointId": "WC:e889552c8a25"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

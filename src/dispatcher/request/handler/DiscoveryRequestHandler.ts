@@ -1,7 +1,7 @@
 import { RequestHandler } from 'ask-sdk-runtime'
 import { isDiscoveryRequest } from '../../../directives/discovery/DiscoveryHandlerInputFactory'
 import { DiscoveryRequestPayload } from '../../../directives/discovery/DiscoveryRequestPayload'
-import { DiscoveryResponseBuilder } from '../../../directives/discovery/factory/DiscoveryResponseBuilder'
+import { DiscoveryResponseBuilder } from '../../../directives/discovery/DiscoveryResponseBuilder'
 import { Response, ResponsePayload } from '../../../response/Response'
 import { HandlerInput } from './HandlerInput'
 import { RequestPayload } from './Request'
