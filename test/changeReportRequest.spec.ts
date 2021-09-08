@@ -2,10 +2,10 @@ import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
 import { ChangeCauseType, ChangeReportPayload } from '../src/changeReport/ChangeReportPayload'
-import { ChangeReportRequest } from '../src/changeReport/ChangeReportRequest'
 import { ChangeReportRequestBuilder } from '../src/changeReport/ChangeReportRequestBuilder'
+import { Request } from '../src/outboundRequest/Request'
 
-const request: ChangeReportRequest<ChangeReportPayload> = require('./fixtures/changeReportRequest.json')
+const request: Request<ChangeReportPayload> = require('./fixtures/changeReportRequest.json')
 
 describe('change report request builder', function() {
   it('creates a successful request when messageId, endpointId, and change cause specified', function() {
@@ -43,7 +43,7 @@ describe('change report request builder', function() {
     const requestBody = builder.getRequestBody()
 
     const expected = _.cloneDeep(request)
-    expected.event.endpoint.scope = {
+    expected.event.endpoint!.scope = {
       type: 'BearerTokenWithPartition',
       token: 'VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==',
       partition: 'Partition',

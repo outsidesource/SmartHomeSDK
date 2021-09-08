@@ -1,34 +1,21 @@
-import { Request } from '../../../dispatcher/request/handler/Request'
-import { ErrorTypes } from '../../../response/ErrorTypes'
-import { ErrorResponsePayload } from '../../../response/payloads/ErrorResponsePayload'
-import { Response } from '../../../response/Response'
-import { ResponseBuilder } from '../../../response/ResponseBuilder'
-import { DiscoveryRequestPayload } from '../DiscoveryRequestPayload'
+import { DiscoveryEndpointBuilder } from './DiscoveryEndpointBuilder'
 import {
   DiscoveryEndpoint,
-  DiscoveryResponsePayload,
+  DiscoveryPayload,
   SemanticActionNames
-} from '../DiscoveryResponsePayload'
-import { DiscoveryEndpointBuilder } from './DiscoveryEndpointBuilder'
+} from './DiscoveryPayload'
 
-const succeedNamespace = 'Alexa.Discovery'
-const succeedName = 'Discover.Response'
-const failNamespace = 'Alexa'
-const failName = 'ErrorResponse'
-const payloadVersion = '3'
+//TODO: Move entire /src/directives/discovery/factory folder to /src/discovery
+
 const maxEndpoints = 300
 
 /**
- * Represents a {@link ResponseBuilder} for the Discovery directive.
+ * Represents a builder for a {@link DiscoveryPayload}.
  */
-export class DiscoveryResponseBuilder extends ResponseBuilder {
+export class DiscoveryPayloadBuilder {
   private endpointBuilders: DiscoveryEndpointBuilder[] = []
 
-  constructor(request: Request<DiscoveryRequestPayload>) {
-    super(request)
-  }
-
-  getSucceedResponse(): Response<DiscoveryResponsePayload> {
+  getPayload(): DiscoveryPayload {
     if (this.endpointBuilders.length > maxEndpoints) {
       throw Error(`The number of endpoints cannot exceed ${maxEndpoints}.`)
     }
@@ -49,12 +36,7 @@ export class DiscoveryResponseBuilder extends ResponseBuilder {
       )
     }
 
-    return this.getPayloadEnvelope(
-      succeedNamespace,
-      succeedName,
-      payloadVersion,
-      { endpoints }
-    )
+    return { endpoints }
   }
 
   private getDuplicateSematicActionNames(
@@ -85,21 +67,6 @@ export class DiscoveryResponseBuilder extends ResponseBuilder {
       }
     }
     return histo.filter(x => x.locations.length > 1)
-  }
-
-  getFailResponse(
-    type:
-      | ErrorTypes.BridgeUnreachable
-      | ErrorTypes.ExpiredAuthorizationCredential
-      | ErrorTypes.InsufficientPermissions
-      | ErrorTypes.InternalError
-      | ErrorTypes.InvalidAuthorizationCredential,
-    message: string
-  ): Response<ErrorResponsePayload> {
-    return this.getPayloadEnvelope(failNamespace, failName, payloadVersion, {
-      type,
-      message
-    })
   }
 
   /**

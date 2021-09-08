@@ -1,19 +1,16 @@
 import { expect } from 'chai'
 import 'mocha'
-import { DiscoveryRequestPayload } from '../src/directives/discovery/DiscoveryRequestPayload'
-import { DiscoveryResponseBuilder } from '../src/directives/discovery/DiscoveryResponseBuilder'
-import { DisplayCategories, SemanticActionNames, SemanticStateNames } from '../src/directives/discovery/factory/DiscoveryPayload'
+import { AddOrUpdateReportRequestBuilder } from '../src/addOrUpdateReport/AddOrUpdateReportRequestBuilder'
+import { DiscoveryPayload, DisplayCategories, SemanticActionNames, SemanticStateNames } from '../src/directives/discovery/factory/DiscoveryPayload'
 import { Locales } from '../src/directives/discovery/factory/ResourceLabel'
-import { Request } from '../src/dispatcher/request/handler/Request'
-import { ErrorTypes } from '../src/response/ErrorTypes'
-import succeedResponse from './fixtures/discoveryResponse.json'
-import failResponse from './fixtures/errorResponse.json'
+import { Request } from '../src/outboundRequest/Request'
 
-const request: Request<DiscoveryRequestPayload> = require('./fixtures/discoveryRequest.json')
+const request: Request<DiscoveryPayload> = require('./fixtures/addOrUpdateReportRequest.json')
 
-describe('discovery response builder', function() {
-  it('creates a successful response for a successful request', function() {
-    const builder = new DiscoveryResponseBuilder(request)
+describe('add or update report request builder', function() {
+  it('creates a successful request when messageId and discovery details specified', function() {
+    const builder = new AddOrUpdateReportRequestBuilder()
+    builder.withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
     builder.addDiscoveryEndpoint('WC:e889552c8a25', 'Sample Manufacturer', 'Smart Thermostat by Sample Manufacturer', 'My Home')
       .addAdditionalAttributes().withManufacturer('Sample Manufacturer').withModel('Sample Model').withSerialNumber('e889552c8a25').withFirmwareVersion('3.14').withSoftwareVersion('6.28').withCustomIdentifier('a8ab-e889552c8a25').getEndpointBuilder()
       .withDisplayCategories(DisplayCategories.Thermostat)
@@ -59,13 +56,13 @@ describe('discovery response builder', function() {
       .addCapability('Alexa.TemperatureSensor', '3').addProperties().withSupportedProperties('temperature').withProactivelyReported(true).withRetrievable(true).getCapabilityBuilder().getEndpointBuilder()
       .withRelationship('isConnectedBy', 'WC:e889552c8a25')
 
-    expect(builder.getSucceedResponse()).to.deep.equal(succeedResponse)
-  })
-  it('creates an error response for a failed request', function() {
-    const builder = new DiscoveryResponseBuilder(request)
-    const response = builder
-      .getFailResponse(ErrorTypes.InternalError, 'This is a test error')
+    const requestBody = builder.getRequestBody()
 
-    expect(response).to.deep.equal(failResponse)
+    expect(requestBody).to.deep.equal(request)
+  })
+  it('throws when no endpoints are present', function() {
+    const builder = new AddOrUpdateReportRequestBuilder()
+
+    expect(function(){ builder.getRequestBody() }).to.throw('At least one endpoint is required.')
   })
 })

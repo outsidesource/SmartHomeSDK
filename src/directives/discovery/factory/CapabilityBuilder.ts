@@ -1,7 +1,7 @@
-import { EndpointCapability } from '../DiscoveryResponsePayload'
-import { Locales, ResourceLabel } from '../ResourceLabel'
 import { DiscoveryEndpointBuilder } from './DiscoveryEndpointBuilder'
+import { EndpointCapability } from './DiscoveryPayload'
 import { PropertiesBuilder } from './PropertiesBuilder'
+import { Locales, ResourceLabel } from './ResourceLabel'
 import { SemanticActionBuilder } from './SemanticActionBuilder'
 import { SemanticStateBuilder } from './SemanticStateBuilder'
 

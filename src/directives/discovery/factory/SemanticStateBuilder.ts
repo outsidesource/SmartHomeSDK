@@ -1,8 +1,5 @@
-import {
-  SemanticStateMapping,
-  SemanticStateNames
-} from '../DiscoveryResponsePayload'
 import { CapabilityBuilder } from './CapabilityBuilder'
+import { SemanticStateMapping, SemanticStateNames } from './DiscoveryPayload'
 
 const semanticStateValueType = 'StatesToValue'
 const semanticStateRangeType = 'StatesToRange'
