@@ -1,3 +1,7 @@
+export {
+  ChangeCauseType,
+  ChangeReportPayload
+} from './changeReport/ChangeReportPayload'
 export { ChangeReportRequestBuilder } from './changeReport/ChangeReportRequestBuilder'
 export { AcceptGrantErrorTypes } from './directives/acceptGrant/AcceptGrantErrorTypes'
 export { isAcceptGrantRequest } from './directives/acceptGrant/AcceptGrantHandlerInputFactory'
@@ -25,6 +29,7 @@ export { AcceptGrantRequestHandler } from './dispatcher/request/handler/AcceptGr
 export { DiscoveryRequestHandler } from './dispatcher/request/handler/DiscoveryRequestHandler'
 export { HandlerInput } from './dispatcher/request/handler/HandlerInput'
 export { InterfaceCommandRequestHandler } from './dispatcher/request/handler/InterfaceCommandRequestHandler'
+export { LambdaContext } from './dispatcher/request/handler/LambdaContext'
 export { ReportStateRequestHandler } from './dispatcher/request/handler/ReportStateRequestHandler'
 export { Request, RequestPayload } from './dispatcher/request/handler/Request'
 export { SmartHomeSkillRequestHandler } from './dispatcher/request/handler/SmartHomeSkillRequestHandler'
