@@ -4,7 +4,7 @@ import 'mocha'
 import sinon from 'sinon'
 import { AcceptGrantErrorTypes } from '../src/directives/acceptGrant/AcceptGrantErrorTypes'
 import { HandlerInput } from '../src/dispatcher/request/handler/HandlerInput'
-import { RequestPayload } from '../src/dispatcher/request/handler/Request'
+import { PayloadSignature, RequestPayload } from '../src/dispatcher/request/handler/Request'
 import { ErrorTypes } from '../src/response/ErrorTypes'
 import { Response, ResponsePayload } from '../src/response/Response'
 import { ResponseBuilder } from '../src/response/ResponseBuilder'
@@ -46,7 +46,16 @@ describe('smart home skill builder', function() {
   describe('adding a single request handler', function() {
     it('creates arbitrary handler when provided a PayloadSignature', function() {
       const builder = SmartHomeSkillFactory.init()
-      const payloadSignature = {namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion'}
+      const payloadSignature: PayloadSignature = {namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion'}
+      const executor = (input: HandlerInput<RequestPayload, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
+
+      builder.addRequestHandler(payloadSignature, executor)
+  
+      expect(builder.getSkillConfiguration().requestMappers.length).to.equal(1)
+    })
+    it('creates arbitrary handler when provided a PayloadSignature with an instance name', function() {
+      const builder = SmartHomeSkillFactory.init()
+      const payloadSignature: PayloadSignature = {namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion', instance: 'instance'}
       const executor = (input: HandlerInput<RequestPayload, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
 
       builder.addRequestHandler(payloadSignature, executor)

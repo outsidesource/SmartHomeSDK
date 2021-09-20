@@ -67,7 +67,8 @@ export class SmartHomeSkillFactory {
               input.request.directive.header.namespace === matcher.namespace &&
               input.request.directive.header.name === matcher.name &&
               input.request.directive.header.payloadVersion ===
-                matcher.payloadVersion
+                matcher.payloadVersion &&
+              input.request.directive.header.instance === matcher.instance
           : matcher
 
         runtimeConfigurationBuilder.addRequestHandler(canHandle, executor)
