@@ -1,4 +1,5 @@
 import { Request } from '../dispatcher/request/handler/Request'
+import { ErrorResponsePayload } from './payloads/ErrorResponsePayload'
 import {
   Context,
   Endpoint,
@@ -29,7 +30,10 @@ export abstract class ResponseBuilder {
    * @param message The friendly error message.
    * @returns The compiled response.
    */
-  abstract getFailResponse(type: string, message: string): Response<unknown>
+  abstract getFailResponse(
+    type: string,
+    message: string
+  ): Response<ErrorResponsePayload>
 
   /**
    * Adds a builder for the endpoint.
