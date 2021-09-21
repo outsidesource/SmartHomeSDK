@@ -2,12 +2,12 @@ import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
 import { InterfaceCommandResponseBuilder } from '../src/directives/interfaceCommand/InterfaceCommandResponseBuilder'
-import { Request, RequestPayload } from '../src/dispatcher/request/handler/Request'
+import { Request } from '../src/dispatcher/request/handler/Request'
 import { ErrorTypes } from '../src/response/ErrorTypes'
 import failResponse from './fixtures/errorResponse.json'
 import succeedResponse from './fixtures/interfaceCommandResponse.json'
 
-const request: Request<RequestPayload> = require('./fixtures/interfaceCommandRequest.json')
+const request: Request<unknown> = require('./fixtures/interfaceCommandRequest.json')
 
 describe('interface command response builder', function() {
   it('creates a successful response for a successful request', function() {

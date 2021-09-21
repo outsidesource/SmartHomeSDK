@@ -9,12 +9,11 @@ import { HandlerInput } from '../../dispatcher/request/handler/HandlerInput'
 import { LambdaContext } from '../../dispatcher/request/handler/LambdaContext'
 import {
   PayloadSignature,
-  Request,
-  RequestPayload
+  Request
 } from '../../dispatcher/request/handler/Request'
 import { SmartHomeSkillRequestInterceptor } from '../../dispatcher/request/interceptor/SmartHomeSkillRequestInterceptor'
 import { SmartHomeSkillResponseInterceptor } from '../../dispatcher/request/interceptor/SmartHomeSkillResponseInterceptor'
-import { Response, ResponsePayload } from '../../response/Response'
+import { Response } from '../../response/Response'
 import { ResponseBuilder } from '../../response/ResponseBuilder'
 import { SmartHomeSkill } from '../SmartHomeSkill'
 import { SmartHomeSkillConfiguration } from '../SmartHomeSkillConfiguration'
@@ -25,9 +24,9 @@ import { SmartHomeSkillBuilder } from './SmartHomeSkillBuilder'
  *  https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html.
  */
 export type LambdaHandler = (
-  request: Request<RequestPayload>,
+  request: Request<unknown>,
   context: LambdaContext | undefined,
-  callback: (err?: Error, result?: Response<ResponsePayload>) => void
+  callback: (err?: Error, result?: Response<unknown>) => void
 ) => void
 
 /**
@@ -36,13 +35,13 @@ export type LambdaHandler = (
 export class SmartHomeSkillFactory {
   static init(): SmartHomeSkillBuilder {
     const runtimeConfigurationBuilder = new RuntimeConfigurationBuilder<
-      HandlerInput<RequestPayload, ResponseBuilder>,
-      Response<ResponsePayload>
+      HandlerInput<unknown, ResponseBuilder>,
+      Response<unknown>
     >()
     let thisCustomUserAgent: string
     let thisSkillId: string
     let thisHandlerInputFactories: Array<HandlerInputFactory<
-      RequestPayload,
+      unknown,
       ResponseBuilder
     >> = [
       AcceptGrantHandlerInputFactory,
@@ -55,15 +54,15 @@ export class SmartHomeSkillFactory {
       addRequestHandler(
         matcher:
           | ((
-              input: HandlerInput<RequestPayload, ResponseBuilder>
+              input: HandlerInput<unknown, ResponseBuilder>
             ) => Promise<boolean> | boolean)
           | PayloadSignature,
         executor: (
-          input: HandlerInput<RequestPayload, ResponseBuilder>
-        ) => Promise<Response<ResponsePayload>> | Response<ResponsePayload>
+          input: HandlerInput<unknown, ResponseBuilder>
+        ) => Promise<Response<unknown>> | Response<unknown>
       ): SmartHomeSkillBuilder {
         const canHandle = isPayloadSignature(matcher)
-          ? (input: HandlerInput<RequestPayload, ResponseBuilder>) =>
+          ? (input: HandlerInput<unknown, ResponseBuilder>) =>
               input.request.directive.header.namespace === matcher.namespace &&
               input.request.directive.header.name === matcher.name &&
               input.request.directive.header.payloadVersion ===
@@ -78,8 +77,8 @@ export class SmartHomeSkillFactory {
       addRequestHandlers(
         ...requestHandlers: Array<
           RequestHandler<
-            HandlerInput<RequestPayload, ResponseBuilder>,
-            Response<ResponsePayload>
+            HandlerInput<unknown, ResponseBuilder>,
+            Response<unknown>
           >
         >
       ): SmartHomeSkillBuilder {
@@ -91,7 +90,7 @@ export class SmartHomeSkillFactory {
         ...executors: Array<
           | SmartHomeSkillRequestInterceptor
           | ((
-              input: HandlerInput<RequestPayload, ResponseBuilder>
+              input: HandlerInput<unknown, ResponseBuilder>
             ) => Promise<void> | void)
         >
       ): SmartHomeSkillBuilder {
@@ -103,8 +102,8 @@ export class SmartHomeSkillFactory {
         ...executors: Array<
           | SmartHomeSkillResponseInterceptor
           | ((
-              input: HandlerInput<RequestPayload, ResponseBuilder>,
-              response?: Response<ResponsePayload>
+              input: HandlerInput<unknown, ResponseBuilder>,
+              response?: Response<unknown>
             ) => Promise<void> | void)
         >
       ): SmartHomeSkillBuilder {
@@ -114,13 +113,13 @@ export class SmartHomeSkillFactory {
       },
       addErrorHandler(
         matcher: (
-          input: HandlerInput<RequestPayload, ResponseBuilder>,
+          input: HandlerInput<unknown, ResponseBuilder>,
           error: Error
         ) => Promise<boolean> | boolean,
         executor: (
-          input: HandlerInput<RequestPayload, ResponseBuilder>,
+          input: HandlerInput<unknown, ResponseBuilder>,
           error: Error
-        ) => Promise<Response<ResponsePayload>> | Response<ResponsePayload>
+        ) => Promise<Response<unknown>> | Response<unknown>
       ): SmartHomeSkillBuilder {
         runtimeConfigurationBuilder.addErrorHandler(matcher, executor)
 
@@ -145,7 +144,7 @@ export class SmartHomeSkillFactory {
       },
       withHandlerInputFactories(
         ...handlerInputFactories: Array<
-          HandlerInputFactory<RequestPayload, ResponseBuilder>
+          HandlerInputFactory<unknown, ResponseBuilder>
         >
       ): SmartHomeSkillBuilder {
         thisHandlerInputFactories = [
@@ -171,9 +170,9 @@ export class SmartHomeSkillFactory {
         const skill = new SmartHomeSkill(this.getSkillConfiguration())
 
         return (
-          request: Request<RequestPayload>,
+          request: Request<unknown>,
           context: LambdaContext | undefined,
-          callback: (err?: Error, result?: Response<ResponsePayload>) => void
+          callback: (err?: Error, result?: Response<unknown>) => void
         ) => {
           skill
             .invoke(request, context)
@@ -194,7 +193,7 @@ export class SmartHomeSkillFactory {
 function isPayloadSignature(
   x:
     | ((
-        input: HandlerInput<RequestPayload, ResponseBuilder>
+        input: HandlerInput<unknown, ResponseBuilder>
       ) => Promise<boolean> | boolean)
     | PayloadSignature
 ): x is PayloadSignature {

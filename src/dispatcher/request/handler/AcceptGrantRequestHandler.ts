@@ -5,7 +5,6 @@ import { AcceptGrantResponseBuilder } from '../../../directives/acceptGrant/Acce
 import { EmptyResponsePayload } from '../../../response/payloads/EmptyResponsePayload'
 import { Response } from '../../../response/Response'
 import { HandlerInput } from './HandlerInput'
-import { RequestPayload } from './Request'
 
 /**
  * A base implementation for user-created handler logic for accept grant requests.
@@ -21,7 +20,7 @@ export abstract class AcceptGrantRequestHandler
    * @param input Information about the request and executing context.
    */
   canHandle(
-    input: HandlerInput<RequestPayload, AcceptGrantResponseBuilder>
+    input: HandlerInput<unknown, AcceptGrantResponseBuilder>
   ): boolean | Promise<boolean> {
     return isAcceptGrantRequest(input.request)
   }

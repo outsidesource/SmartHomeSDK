@@ -1,7 +1,7 @@
 /**
  * Contains information about the request, specifically the header and payload.
  */
-export interface Request<TPayload extends RequestPayload> {
+export interface Request<TPayload = unknown> {
   directive: {
     header: {
       /** The namespace and interface for the operation in the message. */
@@ -53,11 +53,6 @@ export interface Request<TPayload extends RequestPayload> {
  */
 export interface PayloadSignature
   extends Omit<
-    Request<RequestPayload>['directive']['header'],
+    Request<unknown>['directive']['header'],
     'messageId' | 'correlationToken'
   > {}
-
-/**
- * Base interface for all request payloads.
- */
-export interface RequestPayload {}

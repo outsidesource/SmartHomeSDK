@@ -2,9 +2,9 @@ import { RequestHandler } from 'ask-sdk-runtime'
 import { isDiscoveryRequest } from '../../../directives/discovery/DiscoveryHandlerInputFactory'
 import { DiscoveryRequestPayload } from '../../../directives/discovery/DiscoveryRequestPayload'
 import { DiscoveryResponseBuilder } from '../../../directives/discovery/DiscoveryResponseBuilder'
-import { Response, ResponsePayload } from '../../../response/Response'
+import { DiscoveryPayload } from '../../../directives/discovery/factory/DiscoveryPayload'
+import { Response } from '../../../response/Response'
 import { HandlerInput } from './HandlerInput'
-import { RequestPayload } from './Request'
 
 /**
  * A base implementation for user-created handler logic for discovery requests.
@@ -13,14 +13,14 @@ export abstract class DiscoveryRequestHandler
   implements
     RequestHandler<
       HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>,
-      Response<ResponsePayload>
+      Response<DiscoveryPayload>
     > {
   /**
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
    */
   canHandle(
-    input: HandlerInput<RequestPayload, DiscoveryResponseBuilder>
+    input: HandlerInput<unknown, DiscoveryResponseBuilder>
   ): boolean | Promise<boolean> {
     return isDiscoveryRequest(input.request)
   }
@@ -31,5 +31,5 @@ export abstract class DiscoveryRequestHandler
    */
   abstract handle(
     input: HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>
-  ): Response<ResponsePayload> | Promise<Response<ResponsePayload>>
+  ): Response<DiscoveryPayload> | Promise<Response<DiscoveryPayload>>
 }

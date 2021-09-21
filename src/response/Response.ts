@@ -1,7 +1,7 @@
 /**
  * Contains the header, payload, and context for a response.
  */
-export interface Response<TPayload extends ResponsePayload> {
+export interface Response<TPayload = unknown> {
   event: {
     header: {
       /** The namespace and interface for the operation in the message. */
@@ -30,11 +30,6 @@ export interface Response<TPayload extends ResponsePayload> {
   /** Contains addition information pertinent to the request. */
   context?: Context
 }
-
-/**
- * Base interface for all response payloads.
- */
-export interface ResponsePayload {}
 
 /**
  * Contains information about the endpoint that handled the request.

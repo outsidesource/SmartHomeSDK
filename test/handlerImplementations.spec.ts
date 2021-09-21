@@ -4,6 +4,7 @@ import { AcceptGrantRequestPayload } from '../src/directives/acceptGrant/AcceptG
 import { AcceptGrantResponseBuilder } from '../src/directives/acceptGrant/AcceptGrantResponseBuilder'
 import { DiscoveryRequestPayload } from '../src/directives/discovery/DiscoveryRequestPayload'
 import { DiscoveryResponseBuilder } from '../src/directives/discovery/DiscoveryResponseBuilder'
+import { DiscoveryPayload } from '../src/directives/discovery/factory/DiscoveryPayload'
 import { InterfaceCommandResponseBuilder } from '../src/directives/interfaceCommand/InterfaceCommandResponseBuilder'
 import { ReportStateResponseBuilder } from '../src/directives/reportState/ReportStateResponseBuilder'
 import { AcceptGrantRequestHandler } from '../src/dispatcher/request/handler/AcceptGrantRequestHandler'
@@ -11,9 +12,9 @@ import { DiscoveryRequestHandler } from '../src/dispatcher/request/handler/Disco
 import { HandlerInput } from '../src/dispatcher/request/handler/HandlerInput'
 import { InterfaceCommandRequestHandler } from '../src/dispatcher/request/handler/InterfaceCommandRequestHandler'
 import { ReportStateRequestHandler } from '../src/dispatcher/request/handler/ReportStateRequestHandler'
-import { RequestPayload } from '../src/dispatcher/request/handler/Request'
 import { SmartHomeSkillRequestHandler } from '../src/dispatcher/request/handler/SmartHomeSkillRequestHandler'
-import { Response, ResponsePayload } from '../src/response/Response'
+import { EmptyResponsePayload } from '../src/response/payloads/EmptyResponsePayload'
+import { Response } from '../src/response/Response'
 import { ResponseBuilder } from '../src/response/ResponseBuilder'
 
 describe('handler implementations', function() {
@@ -39,38 +40,38 @@ describe('handler implementations', function() {
 })
 
 class AcceptGrantHandler extends AcceptGrantRequestHandler {
-  handle(input: HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder>): Response<ResponsePayload> | Promise<Response<ResponsePayload>> {
+  handle(input: HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder>): Response<EmptyResponsePayload> | Promise<Response<EmptyResponsePayload>> {
     const requestClassName = input.request.constructor.name
     return input.responseBuilder.getSucceedResponse()
   }
 }
 
 class DiscoveryHandler extends DiscoveryRequestHandler {
-  handle(input: HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>): Response<ResponsePayload> | Promise<Response<ResponsePayload>> {
+  handle(input: HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>): Response<DiscoveryPayload> | Promise<Response<DiscoveryPayload>> {
     const requestClassName = input.request.constructor.name
     return input.responseBuilder.getSucceedResponse()
   }
 }
 
 class InterfaceCommandHandler extends InterfaceCommandRequestHandler {
-  handle(input: HandlerInput<RequestPayload, InterfaceCommandResponseBuilder>): Response<ResponsePayload> | Promise<Response<ResponsePayload>> {
+  handle(input: HandlerInput<unknown, InterfaceCommandResponseBuilder>): Response<unknown> | Promise<Response<unknown>> {
     const requestClassName = input.request.constructor.name
     return input.responseBuilder.getSucceedResponse()
   }
 }
 
 class ReportStateHandler extends ReportStateRequestHandler {
-  handle(input: HandlerInput<RequestPayload, ReportStateResponseBuilder>): Response<ResponsePayload> | Promise<Response<ResponsePayload>> {
+  handle(input: HandlerInput<unknown, ReportStateResponseBuilder>): Response<EmptyResponsePayload> | Promise<Response<EmptyResponsePayload>> {
     const requestClassName = input.request.constructor.name
     return input.responseBuilder.getSucceedResponse()
   }
 }
 
 class GenericHandler extends SmartHomeSkillRequestHandler {
-  canHandle(input: HandlerInput<RequestPayload, ResponseBuilder>): boolean | Promise<boolean> {
+  canHandle(input: HandlerInput<unknown, ResponseBuilder>): boolean | Promise<boolean> {
     return true
   }
-  handle(input: HandlerInput<RequestPayload, ResponseBuilder>): Response<ResponsePayload> | Promise<Response<ResponsePayload>> {
+  handle(input: HandlerInput<unknown, ResponseBuilder>): Response<unknown> | Promise<Response<unknown>> {
     const requestClassName = input.request.constructor.name
     return input.responseBuilder.getSucceedResponse()
   }

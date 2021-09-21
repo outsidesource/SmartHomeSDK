@@ -1,9 +1,6 @@
-import {
-  Request,
-  RequestPayload
-} from '../../dispatcher/request/handler/Request'
+import { Request } from '../../dispatcher/request/handler/Request'
 import { ErrorResponsePayload } from '../../response/payloads/ErrorResponsePayload'
-import { Response, ResponsePayload } from '../../response/Response'
+import { Response } from '../../response/Response'
 import { ResponseBuilder } from '../../response/ResponseBuilder'
 
 const defaultNamespace = 'Alexa'
@@ -17,13 +14,13 @@ const payloadVersion = '3'
 export class InterfaceCommandResponseBuilder extends ResponseBuilder {
   private namespace: string = defaultNamespace
   private name: string = defaultSucceedName
-  private payload: ResponsePayload = {}
+  private payload: unknown = {}
 
-  constructor(request: Request<RequestPayload>) {
+  constructor(request: Request<unknown>) {
     super(request)
   }
 
-  getSucceedResponse(): Response<ResponsePayload> {
+  getSucceedResponse(): Response<unknown> {
     const envelope = this.getPayloadEnvelope(
       this.namespace,
       this.name,
@@ -73,7 +70,7 @@ export class InterfaceCommandResponseBuilder extends ResponseBuilder {
    * @param payload The payload for the response.
    * @returns This builder.
    */
-  withPayload(payload: ResponsePayload): this {
+  withPayload(payload: unknown): this {
     this.payload = payload
     return this
   }

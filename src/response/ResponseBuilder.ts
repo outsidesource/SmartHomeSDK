@@ -1,12 +1,11 @@
-import { Request, RequestPayload } from '../dispatcher/request/handler/Request'
+import { Request } from '../dispatcher/request/handler/Request'
 import {
   Context,
   Endpoint,
   findPropStateDuplicates,
   getPropertyState,
   PropState,
-  Response,
-  ResponsePayload
+  Response
 } from './Response'
 
 /**
@@ -16,13 +15,13 @@ export abstract class ResponseBuilder {
   private endpointBuilder?: EndpointBuilder
   private contextBuilder?: ContextBuilder
 
-  constructor(protected request: Request<RequestPayload>) {}
+  constructor(protected request: Request<unknown>) {}
 
   /**
    * Generates a response for a request that was successfully handled.
    * @returns The compiled response.
    */
-  abstract getSucceedResponse(): Response<ResponsePayload>
+  abstract getSucceedResponse(): Response<unknown>
 
   /**
    * Generates a response for a request that failed.
@@ -30,10 +29,7 @@ export abstract class ResponseBuilder {
    * @param message The friendly error message.
    * @returns The compiled response.
    */
-  abstract getFailResponse(
-    type: string,
-    message: string
-  ): Response<ResponsePayload>
+  abstract getFailResponse(type: string, message: string): Response<unknown>
 
   /**
    * Adds a builder for the endpoint.
