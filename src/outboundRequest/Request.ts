@@ -2,7 +2,7 @@ import { Context, Scope } from '../response/Response'
 /**
  * Contains the header, payload, and context for a request.
  */
-export interface Request<TPayload extends RequestPayload> {
+export interface Request<TPayload = unknown> {
   event: {
     header: {
       /** The namespace and interface for the operation in the message. */
@@ -28,11 +28,6 @@ export interface Request<TPayload extends RequestPayload> {
   /** Contains addition information pertinent to the request. */
   context?: Context
 }
-
-/**
- * Base interface for all request payloads.
- */
-export interface RequestPayload {}
 
 /**
  * Contains information about the endpoint making the request.

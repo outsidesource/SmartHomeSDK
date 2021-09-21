@@ -1,4 +1,5 @@
 import { RequestHandler } from 'ask-sdk-runtime'
+import { ErrorResponsePayload } from '../../../response/payloads/ErrorResponsePayload'
 import { Response } from '../../../response/Response'
 import { ResponseBuilder } from '../../../response/ResponseBuilder'
 import { HandlerInput } from './HandlerInput'
@@ -8,7 +9,10 @@ import { HandlerInput } from './HandlerInput'
  */
 export abstract class SmartHomeSkillRequestHandler
   implements
-    RequestHandler<HandlerInput<unknown, ResponseBuilder>, Response<unknown>> {
+    RequestHandler<
+      HandlerInput<unknown, ResponseBuilder>,
+      Response<unknown | ErrorResponsePayload>
+    > {
   /**
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
@@ -23,5 +27,7 @@ export abstract class SmartHomeSkillRequestHandler
    */
   abstract handle(
     input: HandlerInput<unknown, ResponseBuilder>
-  ): Response<unknown> | Promise<Response<unknown>>
+  ):
+    | Response<unknown | ErrorResponsePayload>
+    | Promise<Response<unknown | ErrorResponsePayload>>
 }

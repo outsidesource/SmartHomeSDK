@@ -2,6 +2,7 @@ import { RequestHandler } from 'ask-sdk-runtime'
 import { isReportStateRequest } from '../../../directives/reportState/ReportStateHandlerInputFactory'
 import { ReportStateResponseBuilder } from '../../../directives/reportState/ReportStateResponseBuilder'
 import { EmptyResponsePayload } from '../../../response/payloads/EmptyResponsePayload'
+import { ErrorResponsePayload } from '../../../response/payloads/ErrorResponsePayload'
 import { Response } from '../../../response/Response'
 import { HandlerInput } from './HandlerInput'
 
@@ -12,7 +13,7 @@ export abstract class ReportStateRequestHandler
   implements
     RequestHandler<
       HandlerInput<unknown, ReportStateResponseBuilder>,
-      Response<EmptyResponsePayload>
+      Response<EmptyResponsePayload | ErrorResponsePayload>
     > {
   /**
    * A predicate that determines if this handler can handle this type of request.
@@ -30,5 +31,7 @@ export abstract class ReportStateRequestHandler
    */
   abstract handle(
     input: HandlerInput<unknown, ReportStateResponseBuilder>
-  ): Response<EmptyResponsePayload> | Promise<Response<EmptyResponsePayload>>
+  ):
+    | Response<EmptyResponsePayload | ErrorResponsePayload>
+    | Promise<Response<EmptyResponsePayload | ErrorResponsePayload>>
 }
