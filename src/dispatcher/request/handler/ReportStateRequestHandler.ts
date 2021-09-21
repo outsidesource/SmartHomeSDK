@@ -1,9 +1,9 @@
 import { RequestHandler } from 'ask-sdk-runtime'
 import { isReportStateRequest } from '../../../directives/reportState/ReportStateHandlerInputFactory'
 import { ReportStateResponseBuilder } from '../../../directives/reportState/ReportStateResponseBuilder'
-import { Response, ResponsePayload } from '../../../response/Response'
+import { EmptyResponsePayload } from '../../../response/payloads/EmptyResponsePayload'
+import { Response } from '../../../response/Response'
 import { HandlerInput } from './HandlerInput'
-import { RequestPayload } from './Request'
 
 /**
  * A base implementation for user-created handler logic for report state requests.
@@ -11,15 +11,15 @@ import { RequestPayload } from './Request'
 export abstract class ReportStateRequestHandler
   implements
     RequestHandler<
-      HandlerInput<RequestPayload, ReportStateResponseBuilder>,
-      Response<ResponsePayload>
+      HandlerInput<unknown, ReportStateResponseBuilder>,
+      Response<EmptyResponsePayload>
     > {
   /**
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
    */
   canHandle(
-    input: HandlerInput<RequestPayload, ReportStateResponseBuilder>
+    input: HandlerInput<unknown, ReportStateResponseBuilder>
   ): boolean | Promise<boolean> {
     return isReportStateRequest(input.request)
   }
@@ -29,6 +29,6 @@ export abstract class ReportStateRequestHandler
    * @param input Information about the request and executing context.
    */
   abstract handle(
-    input: HandlerInput<RequestPayload, ReportStateResponseBuilder>
-  ): Response<ResponsePayload> | Promise<Response<ResponsePayload>>
+    input: HandlerInput<unknown, ReportStateResponseBuilder>
+  ): Response<EmptyResponsePayload> | Promise<Response<EmptyResponsePayload>>
 }

@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
-import { Request, RequestPayload } from '../src/dispatcher/request/handler/Request'
+import { Request } from '../src/dispatcher/request/handler/Request'
 import { ErrorResponsePayload } from '../src/response/payloads/ErrorResponsePayload'
-import { findPropStateDuplicates, getPropertyState, isSamePropState, Response, ResponsePayload } from '../src/response/Response'
+import { findPropStateDuplicates, getPropertyState, isSamePropState, Response } from '../src/response/Response'
 import { ResponseBuilder } from '../src/response/ResponseBuilder'
 
 const request: Request<TestRequestPayload> = {
@@ -370,11 +370,11 @@ describe('property states', function() {
   })
 })
 
-interface TestRequestPayload extends RequestPayload {
+interface TestRequestPayload {
   customInput: number
 }
 
-interface TestResponsePayload extends ResponsePayload {
+interface TestResponsePayload {
   customOutput: number
 }
 

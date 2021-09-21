@@ -1,26 +1,23 @@
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/HandlerInputFactory'
 import { HandlerInput } from '../../dispatcher/request/handler/HandlerInput'
 import { LambdaContext } from '../../dispatcher/request/handler/LambdaContext'
-import {
-  Request,
-  RequestPayload
-} from '../../dispatcher/request/handler/Request'
+import { Request } from '../../dispatcher/request/handler/Request'
 import { ReportStateResponseBuilder } from './ReportStateResponseBuilder'
 
 /**
  * A factory for {@link HandlerInput} when the request is a ReportState.
  */
 export const ReportStateHandlerInputFactory: HandlerInputFactory<
-  RequestPayload,
+  unknown,
   ReportStateResponseBuilder
 > = {
-  canCreate(request: Request<RequestPayload>, context?: LambdaContext) {
+  canCreate(request: Request<unknown>, context?: LambdaContext) {
     return isReportStateRequest(request)
   },
   create(
-    request: Request<RequestPayload>,
+    request: Request<unknown>,
     context?: LambdaContext
-  ): HandlerInput<RequestPayload, ReportStateResponseBuilder> | undefined {
+  ): HandlerInput<unknown, ReportStateResponseBuilder> | undefined {
     if (!isReportStateRequest(request)) {
       return undefined
     }
@@ -38,9 +35,7 @@ export const ReportStateHandlerInputFactory: HandlerInputFactory<
  * @param request The request to examine.
  * @returns True if the request is a ReportState; otherwise, false.
  */
-export function isReportStateRequest(
-  request: Request<RequestPayload>
-): boolean {
+export function isReportStateRequest(request: Request<unknown>): boolean {
   return (
     request.directive.header.namespace === 'Alexa' &&
     request.directive.header.name === 'ReportState' &&

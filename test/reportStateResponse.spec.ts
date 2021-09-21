@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 import 'mocha'
 import { ReportStateResponseBuilder } from '../src/directives/reportState/ReportStateResponseBuilder'
-import { Request, RequestPayload } from '../src/dispatcher/request/handler/Request'
+import { Request } from '../src/dispatcher/request/handler/Request'
 import { ErrorTypes } from '../src/response/ErrorTypes'
 import failResponse from './fixtures/errorResponse.json'
 import succeedResponse from './fixtures/reportStateResponse.json'
 
-const request: Request<RequestPayload> = require('./fixtures/reportStateRequest.json')
+const request: Request<unknown> = require('./fixtures/reportStateRequest.json')
 
 describe('report state response builder', function() {
   it('creates a successful response for a successful request', function() {

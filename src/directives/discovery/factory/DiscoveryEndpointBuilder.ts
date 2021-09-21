@@ -20,11 +20,6 @@ const unknownConnectionRegex = /^\S{1,256}$/i
 
 /** Represents builder for a {@link DiscoveryEndpoint}. */
 export class DiscoveryEndpointBuilder {
-  private parent: DiscoveryPayloadBuilder
-  private endpointId: string
-  private manufacturerName: string
-  private description: string
-  private friendlyName: string
   private displayCategories: DisplayCategories[] = []
   private capabilityBuilders: CapabilityBuilder[] = []
   private additionalAttributesBuilder?: AdditionalAttributesBuilder
@@ -33,18 +28,12 @@ export class DiscoveryEndpointBuilder {
   private cookies: Record<string, string> = {}
 
   constructor(
-    parent: DiscoveryPayloadBuilder,
-    endpointId: string,
-    manufacturerName: string,
-    description: string,
-    friendlyName: string
-  ) {
-    this.parent = parent
-    this.endpointId = endpointId
-    this.manufacturerName = manufacturerName
-    this.description = description
-    this.friendlyName = friendlyName
-  }
+    private parent: DiscoveryPayloadBuilder,
+    private endpointId: string,
+    private manufacturerName: string,
+    private description: string,
+    private friendlyName: string
+  ) {}
 
   /**
    * Gets the parent {@link DiscoveryPayloadBuilder}.

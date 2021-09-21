@@ -1,12 +1,12 @@
 import { ResponseBuilder } from '../../../response/ResponseBuilder'
 import { LambdaContext } from './LambdaContext'
-import { Request, RequestPayload } from './Request'
+import { Request } from './Request'
 
 /**
  * An interface that represents components passed into {@link RequestHandler} and {@link SmartHomeSkillErrorHandler}.
  */
 export interface HandlerInput<
-  TRequestPayload extends RequestPayload,
+  TRequestPayload,
   TResponseBuilder extends ResponseBuilder
 > {
   /**

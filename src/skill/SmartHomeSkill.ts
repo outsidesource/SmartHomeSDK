@@ -8,8 +8,8 @@ import {
 import { HandlerInputFactoryRepository } from '../dispatcher/request/handler/factory/HandlerInputFactoryRepository'
 import { HandlerInput } from '../dispatcher/request/handler/HandlerInput'
 import { LambdaContext } from '../dispatcher/request/handler/LambdaContext'
-import { Request, RequestPayload } from '../dispatcher/request/handler/Request'
-import { Response, ResponsePayload } from '../response/Response'
+import { Request } from '../dispatcher/request/handler/Request'
+import { Response } from '../response/Response'
 import { ResponseBuilder } from '../response/ResponseBuilder'
 import { SmartHomeSkillConfiguration } from './SmartHomeSkillConfiguration'
 
@@ -17,10 +17,10 @@ import { SmartHomeSkillConfiguration } from './SmartHomeSkillConfiguration'
  * Top level container for request dispatcher.
  */
 export class SmartHomeSkill
-  implements Skill<Request<RequestPayload>, Response<ResponsePayload>> {
+  implements Skill<Request<unknown>, Response<unknown>> {
   protected requestDispatcher: RequestDispatcher<
-    HandlerInput<RequestPayload, ResponseBuilder>,
-    Response<ResponsePayload>
+    HandlerInput<unknown, ResponseBuilder>,
+    Response<unknown>
   >
   // protected persistenceAdapter: PersistenceAdapter;
   // protected apiClient: ApiClient;
@@ -38,8 +38,8 @@ export class SmartHomeSkill
     )
 
     this.requestDispatcher = new GenericRequestDispatcher<
-      HandlerInput<RequestPayload, ResponseBuilder>,
-      Response<ResponsePayload>
+      HandlerInput<unknown, ResponseBuilder>,
+      Response<unknown>
     >({
       requestMappers: skillConfiguration.requestMappers,
       handlerAdapters: skillConfiguration.handlerAdapters,
@@ -66,9 +66,9 @@ export class SmartHomeSkill
    * @param context The context that the lambda is running in.
    */
   async invoke(
-    request: Request<RequestPayload>,
+    request: Request<unknown>,
     context?: LambdaContext
-  ): Promise<Response<ResponsePayload>> {
+  ): Promise<Response<unknown>> {
     const handlerInputFactory = this.handlerInputFactoryRepository.getHandlerInputFactory(
       request,
       context
@@ -100,7 +100,7 @@ export class SmartHomeSkill
    * @param request The directive and payload for the request.
    * @param context The context that the lambda is running in.
    */
-  supports(request: Request<RequestPayload>, context?: LambdaContext): boolean {
+  supports(request: Request<unknown>, context?: LambdaContext): boolean {
     return !!request && !!context
   }
 

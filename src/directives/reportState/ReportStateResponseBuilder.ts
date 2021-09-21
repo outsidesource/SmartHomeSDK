@@ -1,7 +1,4 @@
-import {
-  Request,
-  RequestPayload
-} from '../../dispatcher/request/handler/Request'
+import { Request } from '../../dispatcher/request/handler/Request'
 import { EmptyResponsePayload } from '../../response/payloads/EmptyResponsePayload'
 import { ErrorResponsePayload } from '../../response/payloads/ErrorResponsePayload'
 import { PropState, Response } from '../../response/Response'
@@ -18,7 +15,7 @@ const payloadVersion = '3'
 export class ReportStateResponseBuilder extends ResponseBuilder {
   private properties: PropState[] = []
 
-  constructor(request: Request<RequestPayload>) {
+  constructor(request: Request<unknown>) {
     super(request)
   }
 

@@ -1,8 +1,7 @@
 import { RuntimeConfiguration } from 'ask-sdk-runtime'
 import { HandlerInputFactory } from '../dispatcher/request/handler/factory/HandlerInputFactory'
 import { HandlerInput } from '../dispatcher/request/handler/HandlerInput'
-import { RequestPayload } from '../dispatcher/request/handler/Request'
-import { Response, ResponsePayload } from '../response/Response'
+import { Response } from '../response/Response'
 import { ResponseBuilder } from '../response/ResponseBuilder'
 
 /**
@@ -10,14 +9,12 @@ import { ResponseBuilder } from '../response/ResponseBuilder'
  */
 export interface SmartHomeSkillConfiguration
   extends RuntimeConfiguration<
-    HandlerInput<RequestPayload, ResponseBuilder>,
-    Response<ResponsePayload>
+    HandlerInput<unknown, ResponseBuilder>,
+    Response<unknown>
   > {
   // persistenceAdapter?: PersistenceAdapter;
   // apiClient?: services.ApiClient;
   customUserAgent?: string
   skillId?: string
-  handlerInputFactories: Array<
-    HandlerInputFactory<RequestPayload, ResponseBuilder>
-  >
+  handlerInputFactories: Array<HandlerInputFactory<unknown, ResponseBuilder>>
 }

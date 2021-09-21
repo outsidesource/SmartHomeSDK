@@ -1,7 +1,7 @@
 /**
  * Contains information about the request, specifically the header and payload.
  */
-export interface Request<TPayload extends RequestPayload> {
+export interface Request<TPayload = unknown> {
   directive: {
     header: {
       /** The namespace and interface for the operation in the message. */
@@ -9,6 +9,9 @@ export interface Request<TPayload extends RequestPayload> {
 
       /** The name of the operation in the message. */
       name: string
+
+      /** The instance of the interface being addressed. */
+      instance?: string
 
       /** A unique identifier for each message. The message ID is used for tracking purposes. You should log the message ID, but don't use the message ID to program business logic. Any string of alphanumeric characters and dashes of fewer than 128 characters is valid, but a version 4 UUID, which is a UUID generated from random numbers, is recommended. */
       messageId: string
@@ -48,18 +51,8 @@ export interface Request<TPayload extends RequestPayload> {
 /**
  * An interface for identifying payload types.
  */
-export interface PayloadSignature {
-  /** The namespace and interface for the operation in the message. */
-  namespace: string
-
-  /** The name of the operation in the message. */
-  name: string
-
-  /** The version of the interface specified in the namespace field. */
-  payloadVersion: string
-}
-
-/**
- * Base interface for all request payloads.
- */
-export interface RequestPayload {}
+export interface PayloadSignature
+  extends Omit<
+    Request<unknown>['directive']['header'],
+    'messageId' | 'correlationToken'
+  > {}

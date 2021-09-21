@@ -1,10 +1,7 @@
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/HandlerInputFactory'
 import { HandlerInput } from '../../dispatcher/request/handler/HandlerInput'
 import { LambdaContext } from '../../dispatcher/request/handler/LambdaContext'
-import {
-  Request,
-  RequestPayload
-} from '../../dispatcher/request/handler/Request'
+import { Request } from '../../dispatcher/request/handler/Request'
 import { DiscoveryRequestPayload } from './DiscoveryRequestPayload'
 import { DiscoveryResponseBuilder } from './DiscoveryResponseBuilder'
 
@@ -15,7 +12,7 @@ export const DiscoveryHandlerInputFactory: HandlerInputFactory<
   DiscoveryRequestPayload,
   DiscoveryResponseBuilder
 > = {
-  canCreate(request: Request<RequestPayload>, context?: LambdaContext) {
+  canCreate(request: Request<unknown>, context?: LambdaContext) {
     return isDiscoveryRequest(request)
   },
   create(
@@ -38,7 +35,7 @@ export const DiscoveryHandlerInputFactory: HandlerInputFactory<
  * @returns True if the request payload is a {@link DiscoveryRequestPayload}; otherwise, false.
  */
 export function isDiscoveryRequest(
-  request: Request<RequestPayload>
+  request: Request<unknown>
 ): request is Request<DiscoveryRequestPayload> {
   return (
     request.directive.header.namespace === 'Alexa.Discovery' &&

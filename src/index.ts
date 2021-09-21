@@ -31,21 +31,18 @@ export { HandlerInput } from './dispatcher/request/handler/HandlerInput'
 export { InterfaceCommandRequestHandler } from './dispatcher/request/handler/InterfaceCommandRequestHandler'
 export { LambdaContext } from './dispatcher/request/handler/LambdaContext'
 export { ReportStateRequestHandler } from './dispatcher/request/handler/ReportStateRequestHandler'
-export { Request, RequestPayload } from './dispatcher/request/handler/Request'
+export { Request } from './dispatcher/request/handler/Request'
 export { SmartHomeSkillRequestHandler } from './dispatcher/request/handler/SmartHomeSkillRequestHandler'
 export { SmartHomeSkillRequestInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillRequestInterceptor'
 export { SmartHomeSkillResponseInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillResponseInterceptor'
-//TODO: Remove ChangeReportRequest and ChangeReportRequestPayload
 export {
-  Request as ChangeReportRequest,
   Request as OutboundRequest,
-  RequestPayload as ChangeReportRequestPayload,
   RequestPayload as OutboundRequestPayload
 } from './outboundRequest/Request'
 export { ErrorTypes } from './response/ErrorTypes'
 export { EmptyResponsePayload } from './response/payloads/EmptyResponsePayload'
 export { ErrorResponsePayload } from './response/payloads/ErrorResponsePayload'
-export { Response, ResponsePayload } from './response/Response'
+export { Response } from './response/Response'
 export { ResponseBuilder } from './response/ResponseBuilder'
 export { SkillBuilders } from './skill/SkillBuilders'
 export { SmartHomeSkillConfiguration } from './skill/SmartHomeSkillConfiguration'
