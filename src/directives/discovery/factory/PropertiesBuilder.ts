@@ -3,15 +3,12 @@ import { CapabilityProperties } from './DiscoveryPayload'
 
 /** Represents a builder for a {@link CapabilityProperties}. */
 export class PropertiesBuilder {
-  private parent: CapabilityBuilder
   private supported: string[] = []
   private proactivelyReported?: boolean
   private retrievable?: boolean
   private nonControllable?: boolean
 
-  constructor(parent: CapabilityBuilder) {
-    this.parent = parent
-  }
+  constructor(private parent: CapabilityBuilder) {}
 
   /**
    * Gets the parent {@link CapabilityBuilder}.

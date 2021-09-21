@@ -13,13 +13,10 @@ import {
  * Represents a fluent mechanism for building a response.
  */
 export abstract class ResponseBuilder {
-  protected request: Request<RequestPayload>
   private endpointBuilder?: EndpointBuilder
   private contextBuilder?: ContextBuilder
 
-  constructor(request: Request<RequestPayload>) {
-    this.request = request
-  }
+  constructor(protected request: Request<RequestPayload>) {}
 
   /**
    * Generates a response for a request that was successfully handled.
@@ -109,16 +106,13 @@ export abstract class ResponseBuilder {
  * Represents a fluent mechanism for building an endpoint.
  */
 export class EndpointBuilder {
-  private parent: ResponseBuilder
   private endpointId?: string
   private token?: string
   private partition?: string
   private userId?: string
   private cookie: { [key: string]: string } = {}
 
-  constructor(parent: ResponseBuilder) {
-    this.parent = parent
-  }
+  constructor(private parent: ResponseBuilder) {}
 
   /**
    * Returns the {@link ResponseBuilder} that created this builder.
@@ -222,12 +216,9 @@ export class EndpointBuilder {
  * Represents a fluent mechanism for building a response context.
  */
 export class ContextBuilder {
-  private parent: ResponseBuilder
   private properties: PropState[] = []
 
-  constructor(parent: ResponseBuilder) {
-    this.parent = parent
-  }
+  constructor(private parent: ResponseBuilder) {}
 
   /**
    * Returns the {@link ResponseBuilder} that created this builder.
