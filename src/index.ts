@@ -35,10 +35,7 @@ export { Request } from './dispatcher/request/handler/Request'
 export { SmartHomeSkillRequestHandler } from './dispatcher/request/handler/SmartHomeSkillRequestHandler'
 export { SmartHomeSkillRequestInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillRequestInterceptor'
 export { SmartHomeSkillResponseInterceptor } from './dispatcher/request/interceptor/SmartHomeSkillResponseInterceptor'
-export {
-  Request as OutboundRequest,
-  RequestPayload as OutboundRequestPayload
-} from './outboundRequest/Request'
+export { Request as OutboundRequest } from './outboundRequest/Request'
 export { ErrorTypes } from './response/ErrorTypes'
 export { EmptyResponsePayload } from './response/payloads/EmptyResponsePayload'
 export { ErrorResponsePayload } from './response/payloads/ErrorResponsePayload'

@@ -3,6 +3,7 @@ import { isDiscoveryRequest } from '../../../directives/discovery/DiscoveryHandl
 import { DiscoveryRequestPayload } from '../../../directives/discovery/DiscoveryRequestPayload'
 import { DiscoveryResponseBuilder } from '../../../directives/discovery/DiscoveryResponseBuilder'
 import { DiscoveryPayload } from '../../../directives/discovery/factory/DiscoveryPayload'
+import { ErrorResponsePayload } from '../../../response/payloads/ErrorResponsePayload'
 import { Response } from '../../../response/Response'
 import { HandlerInput } from './HandlerInput'
 
@@ -13,7 +14,7 @@ export abstract class DiscoveryRequestHandler
   implements
     RequestHandler<
       HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>,
-      Response<DiscoveryPayload>
+      Response<DiscoveryPayload | ErrorResponsePayload>
     > {
   /**
    * A predicate that determines if this handler can handle this type of request.
@@ -31,5 +32,7 @@ export abstract class DiscoveryRequestHandler
    */
   abstract handle(
     input: HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>
-  ): Response<DiscoveryPayload> | Promise<Response<DiscoveryPayload>>
+  ):
+    | Response<DiscoveryPayload | ErrorResponsePayload>
+    | Promise<Response<DiscoveryPayload | ErrorResponsePayload>>
 }

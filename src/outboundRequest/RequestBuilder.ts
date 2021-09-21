@@ -5,7 +5,7 @@ import {
   getPropertyState,
   PropState
 } from '../response/Response'
-import { Request, RequestEndpoint, RequestPayload } from './Request'
+import { Request, RequestEndpoint } from './Request'
 
 export abstract class RequestBuilder {
   private endpointBuilder?: EndpointBuilder
@@ -20,7 +20,7 @@ export abstract class RequestBuilder {
    * Generates a request body to send to the event gateway.
    * @returns The compiled request body.
    */
-  abstract getRequestBody(): Request<RequestPayload>
+  abstract getRequestBody(): Request<unknown>
 
   /**
    * Adds a builder for the endpoint.
