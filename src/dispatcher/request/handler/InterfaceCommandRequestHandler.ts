@@ -1,5 +1,6 @@
 import { RequestHandler } from 'ask-sdk-runtime'
 import { InterfaceCommandResponseBuilder } from '../../../directives/interfaceCommand/InterfaceCommandResponseBuilder'
+import { ErrorResponsePayload } from '../../../response/payloads/ErrorResponsePayload'
 import { Response } from '../../../response/Response'
 import { HandlerInput } from './HandlerInput'
 
@@ -10,7 +11,7 @@ export abstract class InterfaceCommandRequestHandler
   implements
     RequestHandler<
       HandlerInput<unknown, InterfaceCommandResponseBuilder>,
-      Response<unknown>
+      Response<unknown | ErrorResponsePayload>
     > {
   /**
    * A predicate that determines if this handler can handle this type of request.
@@ -28,5 +29,7 @@ export abstract class InterfaceCommandRequestHandler
    */
   abstract handle(
     input: HandlerInput<unknown, InterfaceCommandResponseBuilder>
-  ): Response<unknown> | Promise<Response<unknown>>
+  ):
+    | Response<unknown | ErrorResponsePayload>
+    | Promise<Response<unknown | ErrorResponsePayload>>
 }

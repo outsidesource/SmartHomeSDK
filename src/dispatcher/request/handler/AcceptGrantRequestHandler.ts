@@ -3,6 +3,7 @@ import { isAcceptGrantRequest } from '../../../directives/acceptGrant/AcceptGran
 import { AcceptGrantRequestPayload } from '../../../directives/acceptGrant/AcceptGrantRequestPayload'
 import { AcceptGrantResponseBuilder } from '../../../directives/acceptGrant/AcceptGrantResponseBuilder'
 import { EmptyResponsePayload } from '../../../response/payloads/EmptyResponsePayload'
+import { ErrorResponsePayload } from '../../../response/payloads/ErrorResponsePayload'
 import { Response } from '../../../response/Response'
 import { HandlerInput } from './HandlerInput'
 
@@ -13,7 +14,7 @@ export abstract class AcceptGrantRequestHandler
   implements
     RequestHandler<
       HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder>,
-      Response<EmptyResponsePayload>
+      Response<EmptyResponsePayload | ErrorResponsePayload>
     > {
   /**
    * A predicate that determines if this handler can handle this type of request.
@@ -31,5 +32,7 @@ export abstract class AcceptGrantRequestHandler
    */
   abstract handle(
     input: HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder>
-  ): Response<EmptyResponsePayload> | Promise<Response<EmptyResponsePayload>>
+  ):
+    | Response<EmptyResponsePayload | ErrorResponsePayload>
+    | Promise<Response<EmptyResponsePayload | ErrorResponsePayload>>
 }
