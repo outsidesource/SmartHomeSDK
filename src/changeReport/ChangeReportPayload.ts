@@ -1,8 +1,7 @@
-import { RequestPayload } from '../outboundRequest/Request'
 import { PropertyState } from '../response/Response'
 
 /** A payload representing one or more property changes. */
-export interface ChangeReportPayload extends RequestPayload {
+export interface ChangeReportPayload {
   change: {
     cause: {
       type: ChangeCauseType
