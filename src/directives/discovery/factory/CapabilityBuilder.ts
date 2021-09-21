@@ -146,6 +146,8 @@ export class CapabilityBuilder {
     return this
   }
 
+  //TODO: Possibly add method for custom asset IDs when a catalog is available
+
   /**
    * Adds a custom friendly name that users can use to more naturally interact with an interface.
    * @param text The friendly name.
