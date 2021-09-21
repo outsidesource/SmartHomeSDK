@@ -18,12 +18,10 @@ const payloadVersion = '3'
 export class ChangeReportRequestBuilder extends RequestBuilder {
   private unchangedProperties: PropState[] = []
   private changedProperties: PropState[] = []
-  private changeCause: ChangeCauseType
 
-  constructor(endpointId: string, changeCause: ChangeCauseType) {
+  constructor(endpointId: string, private changeCause: ChangeCauseType) {
     super()
     this.addEndpoint().withEndpointId(endpointId)
-    this.changeCause = changeCause
   }
 
   getRequestBody(): Request<ChangeReportPayload> {

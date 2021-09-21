@@ -2,9 +2,9 @@ import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
 import { isReportStateRequest } from '../src/directives/reportState/ReportStateHandlerInputFactory'
-import { Request, RequestPayload } from '../src/dispatcher/request/handler/Request'
+import { Request } from '../src/dispatcher/request/handler/Request'
 
-const request: Request<RequestPayload> = require('./fixtures/reportStateRequest.json')
+const request: Request<unknown> = require('./fixtures/reportStateRequest.json')
 
 describe('report state request', function() {
   it('identifies the payload when header is correct and endpoint is present', function() {

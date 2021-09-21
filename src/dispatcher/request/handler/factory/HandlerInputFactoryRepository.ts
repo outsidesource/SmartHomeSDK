@@ -1,17 +1,17 @@
 import { ResponseBuilder } from '../../../../response/ResponseBuilder'
 import { LambdaContext } from '../LambdaContext'
-import { Request, RequestPayload } from '../Request'
+import { Request } from '../Request'
 import { HandlerInputFactory } from './HandlerInputFactory'
 
 /**
  * An in-memory repository for storing and locating {@link HandlerInputFactory}.
  */
 export class HandlerInputFactoryRepository {
-  private factories: Array<HandlerInputFactory<RequestPayload, ResponseBuilder>>
+  private factories: Array<HandlerInputFactory<unknown, ResponseBuilder>>
 
   constructor(
     ...handlerInputFactories: Array<
-      HandlerInputFactory<RequestPayload, ResponseBuilder>
+      HandlerInputFactory<unknown, ResponseBuilder>
     >
   ) {
     this.factories = handlerInputFactories
@@ -24,9 +24,9 @@ export class HandlerInputFactoryRepository {
    * @returns The first registered {@link HandlerInputFactory} that can create a {@link HandlerInput} or {@code undefined}.
    */
   getHandlerInputFactory(
-    request: Request<RequestPayload>,
+    request: Request<unknown>,
     context?: LambdaContext
-  ): HandlerInputFactory<RequestPayload, ResponseBuilder> | undefined {
+  ): HandlerInputFactory<unknown, ResponseBuilder> | undefined {
     return this.factories.find(f => f.canCreate(request, context))
   }
 }

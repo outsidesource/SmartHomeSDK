@@ -5,7 +5,6 @@ const additionalAttributesFieldMaxSize = 256
 
 /** Represents a builder for a {@link AdditionalAttributes}. */
 export class AdditionalAttributesBuilder {
-  private parent: DiscoveryEndpointBuilder
   private manufacturer?: string
   private model?: string
   private serialNumber?: string
@@ -13,9 +12,7 @@ export class AdditionalAttributesBuilder {
   private softwareVersion?: string
   private customIdentifier?: string
 
-  constructor(parent: DiscoveryEndpointBuilder) {
-    this.parent = parent
-  }
+  constructor(private parent: DiscoveryEndpointBuilder) {}
 
   /**
    * Gets the parent {@link DiscoveryEndpointBuilder}.

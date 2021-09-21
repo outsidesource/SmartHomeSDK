@@ -2,13 +2,13 @@ import { expect } from 'chai'
 import 'mocha'
 import { HandlerInputFactoryRepository } from '../src/dispatcher/request/handler/factory/HandlerInputFactoryRepository'
 import { LambdaContext } from '../src/dispatcher/request/handler/LambdaContext'
-import { Request, RequestPayload } from '../src/dispatcher/request/handler/Request'
+import { Request } from '../src/dispatcher/request/handler/Request'
 import { getLambdaContext } from './fixtures'
 import request from './fixtures/acceptGrantRequest.json'
 
 const factory = {
-  canCreate: (request: Request<RequestPayload>, context: LambdaContext) => true,
-  create: (request: Request<RequestPayload>, context: LambdaContext) => undefined,
+  canCreate: (request: Request<unknown>, context: LambdaContext) => true,
+  create: (request: Request<unknown>, context: LambdaContext) => undefined,
 }
 const lambdaContext = getLambdaContext()
 

@@ -1,31 +1,27 @@
-import { Request, RequestPayload } from '../dispatcher/request/handler/Request'
+import { Request } from '../dispatcher/request/handler/Request'
 import {
   Context,
   Endpoint,
   findPropStateDuplicates,
   getPropertyState,
   PropState,
-  Response,
-  ResponsePayload
+  Response
 } from './Response'
 
 /**
  * Represents a fluent mechanism for building a response.
  */
 export abstract class ResponseBuilder {
-  protected request: Request<RequestPayload>
   private endpointBuilder?: EndpointBuilder
   private contextBuilder?: ContextBuilder
 
-  constructor(request: Request<RequestPayload>) {
-    this.request = request
-  }
+  constructor(protected request: Request<unknown>) {}
 
   /**
    * Generates a response for a request that was successfully handled.
    * @returns The compiled response.
    */
-  abstract getSucceedResponse(): Response<ResponsePayload>
+  abstract getSucceedResponse(): Response<unknown>
 
   /**
    * Generates a response for a request that failed.
@@ -33,10 +29,7 @@ export abstract class ResponseBuilder {
    * @param message The friendly error message.
    * @returns The compiled response.
    */
-  abstract getFailResponse(
-    type: string,
-    message: string
-  ): Response<ResponsePayload>
+  abstract getFailResponse(type: string, message: string): Response<unknown>
 
   /**
    * Adds a builder for the endpoint.
@@ -109,16 +102,13 @@ export abstract class ResponseBuilder {
  * Represents a fluent mechanism for building an endpoint.
  */
 export class EndpointBuilder {
-  private parent: ResponseBuilder
   private endpointId?: string
   private token?: string
   private partition?: string
   private userId?: string
   private cookie: { [key: string]: string } = {}
 
-  constructor(parent: ResponseBuilder) {
-    this.parent = parent
-  }
+  constructor(private parent: ResponseBuilder) {}
 
   /**
    * Returns the {@link ResponseBuilder} that created this builder.
@@ -222,12 +212,9 @@ export class EndpointBuilder {
  * Represents a fluent mechanism for building a response context.
  */
 export class ContextBuilder {
-  private parent: ResponseBuilder
   private properties: PropState[] = []
 
-  constructor(parent: ResponseBuilder) {
-    this.parent = parent
-  }
+  constructor(private parent: ResponseBuilder) {}
 
   /**
    * Returns the {@link ResponseBuilder} that created this builder.

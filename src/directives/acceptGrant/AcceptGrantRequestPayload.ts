@@ -1,10 +1,8 @@
-import { RequestPayload } from '../../dispatcher/request/handler/Request'
-
 /**
  * A payload representing an AcceptGrant request.
  * {@see https://developer.amazon.com/en-US/docs/alexa/device-apis/alexa-authorization.html}
  */
-export interface AcceptGrantRequestPayload extends RequestPayload {
+export interface AcceptGrantRequestPayload {
   /** Information that identifies a user in Amazon Alexa systems. */
   grant: {
     /** The type of grant. Currently, the only valid value is {@link OAuth2.AuthorizationCode}. */

@@ -1,13 +1,13 @@
 import { ResponseBuilder } from '../../../../response/ResponseBuilder'
 import { HandlerInput } from '../HandlerInput'
 import { LambdaContext } from '../LambdaContext'
-import { Request, RequestPayload } from '../Request'
+import { Request } from '../Request'
 
 /**
  * Provides a strategy for creating {@link HandlerInput} for a given request and context.
  */
 export interface HandlerInputFactory<
-  TRequestPayload extends RequestPayload,
+  TRequestPayload,
   TResponseBuilder extends ResponseBuilder
 > {
   /**
@@ -15,7 +15,7 @@ export interface HandlerInputFactory<
    * @param request The directive and payload for the request.
    * @param context The context that the lambda is running in.
    */
-  canCreate(request: Request<RequestPayload>, context?: LambdaContext): boolean
+  canCreate(request: Request<unknown>, context?: LambdaContext): boolean
 
   /**
    * Fulfills the request and returns a valid response.

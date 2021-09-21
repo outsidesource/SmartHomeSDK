@@ -102,16 +102,13 @@ export abstract class RequestBuilder {
  * Represents a fluent mechanism for building an endpoint.
  */
 export class EndpointBuilder {
-  private parent: RequestBuilder
   private endpointId?: string
   private token?: string
   private partition?: string
   private userId?: string
   private cookie: { [key: string]: string } = {}
 
-  constructor(parent: RequestBuilder) {
-    this.parent = parent
-  }
+  constructor(private parent: RequestBuilder) {}
 
   /**
    * Returns the {@link RequestBuilder} that created this builder.
@@ -209,12 +206,9 @@ export class EndpointBuilder {
  * Represents a fluent mechanism for building a request context.
  */
 export class ContextBuilder {
-  private parent: RequestBuilder
   private properties: PropState[] = []
 
-  constructor(parent: RequestBuilder) {
-    this.parent = parent
-  }
+  constructor(private parent: RequestBuilder) {}
 
   /**
    * Returns the {@link RequestBuilder} that created this builder.

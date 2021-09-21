@@ -4,9 +4,9 @@ import 'mocha'
 import sinon from 'sinon'
 import { AcceptGrantErrorTypes } from '../src/directives/acceptGrant/AcceptGrantErrorTypes'
 import { HandlerInput } from '../src/dispatcher/request/handler/HandlerInput'
-import { RequestPayload } from '../src/dispatcher/request/handler/Request'
+import { PayloadSignature } from '../src/dispatcher/request/handler/Request'
 import { ErrorTypes } from '../src/response/ErrorTypes'
-import { Response, ResponsePayload } from '../src/response/Response'
+import { Response } from '../src/response/Response'
 import { ResponseBuilder } from '../src/response/ResponseBuilder'
 import { SmartHomeSkillFactory } from '../src/skill/factory/SmartHomeSkillFactory'
 import { getLambdaCallback, getLambdaContext } from './fixtures'
@@ -15,20 +15,20 @@ import request from './fixtures/acceptGrantRequest.json'
 import succeedResponse from './fixtures/acceptGrantResponse.json'
 
 const successfulRequestHandler = {
-  canHandle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => true,
-  handle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => input.responseBuilder.getSucceedResponse(),
+  canHandle: (input: HandlerInput<unknown, ResponseBuilder>) => true,
+  handle: (input: HandlerInput<unknown, ResponseBuilder>) => input.responseBuilder.getSucceedResponse(),
 }
 const failedRequestHandler = {
-  canHandle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => true,
-  handle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => input.responseBuilder.getFailResponse(AcceptGrantErrorTypes.AcceptGrantFailed, 'This is a test error'),
+  canHandle: (input: HandlerInput<unknown, ResponseBuilder>) => true,
+  handle: (input: HandlerInput<unknown, ResponseBuilder>) => input.responseBuilder.getFailResponse(AcceptGrantErrorTypes.AcceptGrantFailed, 'This is a test error'),
 }
 const throwingRequestHandler = {
-  canHandle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => true,
-  handle: (input: HandlerInput<RequestPayload, ResponseBuilder>) => { throw Error('This is a test error') },
+  canHandle: (input: HandlerInput<unknown, ResponseBuilder>) => true,
+  handle: (input: HandlerInput<unknown, ResponseBuilder>) => { throw Error('This is a test error') },
 }
 const errorHandler = {
-  canHandle: (input: HandlerInput<RequestPayload, ResponseBuilder>, error: Error) => true,
-  handle: (input: HandlerInput<RequestPayload, ResponseBuilder>, error: Error) => input.responseBuilder.getFailResponse(ErrorTypes.InternalError, error.message),
+  canHandle: (input: HandlerInput<unknown, ResponseBuilder>, error: Error) => true,
+  handle: (input: HandlerInput<unknown, ResponseBuilder>, error: Error) => input.responseBuilder.getFailResponse(ErrorTypes.InternalError, error.message),
 }
 const lambdaContext = getLambdaContext()
 
@@ -46,8 +46,17 @@ describe('smart home skill builder', function() {
   describe('adding a single request handler', function() {
     it('creates arbitrary handler when provided a PayloadSignature', function() {
       const builder = SmartHomeSkillFactory.init()
-      const payloadSignature = {namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion'}
-      const executor = (input: HandlerInput<RequestPayload, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
+      const payloadSignature: PayloadSignature = {namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion'}
+      const executor = (input: HandlerInput<unknown, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
+
+      builder.addRequestHandler(payloadSignature, executor)
+  
+      expect(builder.getSkillConfiguration().requestMappers.length).to.equal(1)
+    })
+    it('creates arbitrary handler when provided a PayloadSignature with an instance name', function() {
+      const builder = SmartHomeSkillFactory.init()
+      const payloadSignature: PayloadSignature = {namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion', instance: 'instance'}
+      const executor = (input: HandlerInput<unknown, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
 
       builder.addRequestHandler(payloadSignature, executor)
   
@@ -59,7 +68,7 @@ describe('smart home skill builder', function() {
       const builder = SmartHomeSkillFactory.init()
       const requestHandlerSpy = sinon.spy(successfulRequestHandler, 'handle')
       builder.addRequestHandlers(successfulRequestHandler)
-      const test = (err?:Error, result?: Response<ResponsePayload>) => {
+      const test = (err?:Error, result?: Response<unknown>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
         expect(result).to.deep.equal(succeedResponse)
       }
@@ -70,7 +79,7 @@ describe('smart home skill builder', function() {
       const builder = SmartHomeSkillFactory.init()
       const requestHandlerSpy = sinon.spy(successfulRequestHandler, 'handle')
       builder.addRequestHandlers(successfulRequestHandler, successfulRequestHandler)
-      const test = (err?:Error, result?: Response<ResponsePayload>) => {
+      const test = (err?:Error, result?: Response<unknown>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
       }
 
@@ -82,7 +91,7 @@ describe('smart home skill builder', function() {
       const errorHandlerSpy = sinon.spy(errorHandler, 'handle')
       builder.addRequestHandlers(failedRequestHandler)
       builder.addErrorHandlers(errorHandler)
-      const test = (err?:Error, result?: Response<ResponsePayload>) => {
+      const test = (err?:Error, result?: Response<unknown>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
         expect(errorHandlerSpy.notCalled).to.be.true
         expect(result).to.deep.equal(failResponse)
@@ -99,7 +108,7 @@ describe('smart home skill builder', function() {
       builder.addErrorHandlers(errorHandler)
       const expectedResult = _.cloneDeep(failResponse)
       expectedResult.event.payload.type = ErrorTypes.InternalError
-      const test = (err?:Error, result?: Response<ResponsePayload>) => {
+      const test = (err?:Error, result?: Response<unknown>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
         expect(errorHandlerSpy.calledOnce).to.be.true
         expect(result).to.deep.equal(expectedResult)
@@ -112,7 +121,7 @@ describe('smart home skill builder', function() {
       const builder = SmartHomeSkillFactory.init()
       const requestHandlerSpy = sinon.spy(throwingRequestHandler, 'handle')
       builder.addRequestHandlers(throwingRequestHandler)
-      const test = (err?:Error, result?: Response<ResponsePayload>) => {
+      const test = (err?:Error, result?: Response<unknown>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
         expect(err?.message).to.equal('This is a test error')
         expect(result).to.be.undefined

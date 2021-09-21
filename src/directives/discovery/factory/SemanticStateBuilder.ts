@@ -6,16 +6,13 @@ const semanticStateRangeType = 'StatesToRange'
 
 /** Represents a builder for a {@link SemanticStateMapping}. */
 export class SemanticStateBuilder {
-  private parent: CapabilityBuilder
   private states: SemanticStateNames[] = []
   private type = ''
   private value?: number | string
   private minimum?: number
   private maximum?: number
 
-  constructor(parent: CapabilityBuilder) {
-    this.parent = parent
-  }
+  constructor(private parent: CapabilityBuilder) {}
 
   /**
    * Gets the parent {@link CapabilityBuilder}.

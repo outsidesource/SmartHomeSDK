@@ -7,10 +7,7 @@ import { SemanticStateBuilder } from './SemanticStateBuilder'
 
 /** Represents a builder for an {@link EndpointCapability}. */
 export class CapabilityBuilder {
-  private parent: DiscoveryEndpointBuilder
-  private interfaceName: string
   private instance?: string
-  private version: string
   private propertiesBuilder?: PropertiesBuilder
   private resourceFriendlyNames: ResourceLabel[] = []
   private configuration?: unknown
@@ -19,14 +16,10 @@ export class CapabilityBuilder {
   private verifications: string[] = []
 
   constructor(
-    parent: DiscoveryEndpointBuilder,
-    interfaceName: string,
-    version: string
-  ) {
-    this.parent = parent
-    this.interfaceName = interfaceName
-    this.version = version
-  }
+    private parent: DiscoveryEndpointBuilder,
+    private interfaceName: string,
+    private version: string
+  ) {}
 
   /**
    * Gets the parent {@link DiscoveryEndpointBuilder}.
@@ -145,6 +138,8 @@ export class CapabilityBuilder {
     })
     return this
   }
+
+  //TODO: Possibly add method for custom asset IDs when a catalog is available
 
   /**
    * Adds a custom friendly name that users can use to more naturally interact with an interface.

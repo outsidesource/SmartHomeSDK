@@ -3,15 +3,13 @@ import { SemanticActionMapping, SemanticActionNames } from './DiscoveryPayload'
 
 /** Represents a builder for a {@link SemanticActionMapping}. */
 export class SemanticActionBuilder {
-  private parent: CapabilityBuilder
   private actions: SemanticActionNames[] = []
-  private directiveName: string
   private payload?: unknown
 
-  constructor(parent: CapabilityBuilder, directiveName: string) {
-    this.parent = parent
-    this.directiveName = directiveName
-  }
+  constructor(
+    private parent: CapabilityBuilder,
+    private directiveName: string
+  ) {}
 
   /**
    * Gets the parent {@link CapabilityBuilder}.
