@@ -13,7 +13,7 @@ const maxCookiesSize = 5000
 const endpointIdRegex = /^[\w \-=#;:?@&]{1,256}$/i
 const manufacturerNameMaxSize = 128
 const descriptionMaxSize = 128
-const friendlyNameRegex = /^\P{P}{1,128}$/iu
+const friendlyNameRegex = /^[\p{L}\p{N} ]{1,128}$/iu
 const zwaveHomeIdRegex = /^0x[0-9A-F]{8}$/i
 const zwaveNodeIdRegex = /^0x[0-9A-F]{2}$/i
 const unknownConnectionRegex = /^\S{1,256}$/i
