@@ -145,6 +145,20 @@ describe('discovery endpoint builder', function() {
 
     expect(endpoint).to.deep.equal(minimalEndpoint)
   })
+  it('creates an endpoint with a unicode friendly name', function() {
+    const parentBuilderStub = createSinonStubInstance(DiscoveryPayloadBuilder)
+    const builder = new DiscoveryEndpointBuilder(parentBuilderStub, 'endpointId', 'manufacturerName', 'description', 'Système Maison')
+    const expected = _.cloneDeep(minimalEndpoint)
+    expected.friendlyName = 'Système Maison'
+
+    const endpoint = builder
+      .withDisplayCategories(DisplayCategories.Other)
+      .addCapability('Alexa', '3')
+        .getEndpointBuilder()
+      .getEndpoint()
+
+    expect(endpoint).to.deep.equal(expected)
+  })
   it('creates an endpoint with a Zigbee connection', function() {
     const parentBuilderStub = createSinonStubInstance(DiscoveryPayloadBuilder)
     const builder = new DiscoveryEndpointBuilder(parentBuilderStub, 'endpointId', 'manufacturerName', 'description', 'friendly name')
