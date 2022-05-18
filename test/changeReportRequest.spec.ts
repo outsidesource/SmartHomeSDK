@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
-import { ChangeCauseType, ChangeReportPayload } from '../src/changeReport/ChangeReportPayload'
-import { ChangeReportRequestBuilder } from '../src/changeReport/ChangeReportRequestBuilder'
 import { Request } from '../src/outboundRequest/Request'
+import { ChangeCauseType, ChangeReportPayload } from '../src/reports/change/ChangeReportPayload'
+import { ChangeReportRequestBuilder } from '../src/reports/change/ChangeReportRequestBuilder'
 
 const request: Request<ChangeReportPayload> = require('./fixtures/changeReportRequest.json')
 
