@@ -1,15 +1,20 @@
+import { v4 as uuidv4 } from 'uuid'
 import { DiscoveryEndpointBuilder } from '../../discovery/DiscoveryEndpointBuilder'
 import { DiscoveryPayload } from '../../discovery/DiscoveryPayload'
 import { DiscoveryPayloadBuilder } from '../../discovery/DiscoveryPayloadBuilder'
 import { Request } from '../../outboundRequest/Request'
-import { RequestBuilder } from '../../outboundRequest/RequestBuilder'
 
 const namespace = 'Alexa.Discovery'
 const name = 'AddOrUpdateReport'
 const payloadVersion = '3'
 
-export class AddOrUpdateReportRequestBuilder extends RequestBuilder {
+export class AddOrUpdateReportRequestBuilder {
+  private messageId: string
   private payloadBuilder: DiscoveryPayloadBuilder = new DiscoveryPayloadBuilder()
+
+  constructor() {
+    this.messageId = uuidv4()
+  }
 
   getRequestBody(): Request<DiscoveryPayload> {
     const payload = this.payloadBuilder.getPayload()
@@ -18,7 +23,17 @@ export class AddOrUpdateReportRequestBuilder extends RequestBuilder {
       throw Error('At least one endpoint is required.')
     }
 
-    return this.getPayloadEnvelope(namespace, name, payloadVersion, payload)
+    return {
+      event: {
+        header: {
+          namespace,
+          name,
+          payloadVersion,
+          messageId: this.messageId
+        },
+        payload
+      }
+    }
   }
 
   /**
@@ -41,5 +56,15 @@ export class AddOrUpdateReportRequestBuilder extends RequestBuilder {
       description,
       friendlyName
     )
+  }
+
+  /**
+   * Explicitly sets the message ID. Otherwise, a random version 4 UUID is used.
+   * @param messageId The message ID to explicitly use.
+   * @returns This builder.
+   */
+  withMessageId(messageId: string): this {
+    this.messageId = messageId
+    return this
   }
 }

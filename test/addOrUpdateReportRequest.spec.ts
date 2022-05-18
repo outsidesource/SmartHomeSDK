@@ -1,4 +1,5 @@
 import { expect } from 'chai'
+import _ from 'lodash'
 import 'mocha'
 import { DiscoveryPayload, DisplayCategories, SemanticActionNames, SemanticStateNames } from '../src/discovery/DiscoveryPayload'
 import { Locales } from '../src/discovery/ResourceLabel'
@@ -9,6 +10,7 @@ const request: Request<DiscoveryPayload> = require('./fixtures/addOrUpdateReport
 
 describe('add or update report request builder', function() {
   it('creates a successful request when messageId and discovery details specified', function() {
+    const req = _.cloneDeep(request)
     const builder = new AddOrUpdateReportRequestBuilder()
     builder.withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
     builder.addDiscoveryEndpoint('WC:e889552c8a25', 'Sample Manufacturer', 'Smart Thermostat by Sample Manufacturer', 'My Home')
@@ -58,7 +60,7 @@ describe('add or update report request builder', function() {
 
     const requestBody = builder.getRequestBody()
 
-    expect(requestBody).to.deep.equal(request)
+    expect(requestBody).to.deep.equal(req)
   })
   it('throws when no endpoints are present', function() {
     const builder = new AddOrUpdateReportRequestBuilder()
