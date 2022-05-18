@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import 'mocha'
 import { AddOrUpdateReportRequestBuilder } from '../src/addOrUpdateReport/AddOrUpdateReportRequestBuilder'
-import { DiscoveryPayload, DisplayCategories, SemanticActionNames, SemanticStateNames } from '../src/directives/discovery/factory/DiscoveryPayload'
-import { Locales } from '../src/directives/discovery/factory/ResourceLabel'
+import { DiscoveryPayload, DisplayCategories, SemanticActionNames, SemanticStateNames } from '../src/discovery/DiscoveryPayload'
+import { Locales } from '../src/discovery/ResourceLabel'
 import { Request } from '../src/outboundRequest/Request'
 
 const request: Request<DiscoveryPayload> = require('./fixtures/addOrUpdateReportRequest.json')

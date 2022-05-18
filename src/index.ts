@@ -10,20 +10,20 @@ export { AcceptGrantResponseBuilder } from './directives/acceptGrant/AcceptGrant
 export { isDiscoveryRequest } from './directives/discovery/DiscoveryHandlerInputFactory'
 export { DiscoveryRequestPayload } from './directives/discovery/DiscoveryRequestPayload'
 export { DiscoveryResponseBuilder } from './directives/discovery/DiscoveryResponseBuilder'
-export { AdditionalAttributesBuilder } from './directives/discovery/factory/AdditionalAttributesBuilder'
-export { CapabilityBuilder } from './directives/discovery/factory/CapabilityBuilder'
-export { DiscoveryEndpointBuilder } from './directives/discovery/factory/DiscoveryEndpointBuilder'
-export {
-  DiscoveryPayload,
-  DisplayCategories
-} from './directives/discovery/factory/DiscoveryPayload'
-export { PropertiesBuilder } from './directives/discovery/factory/PropertiesBuilder'
-export { Locales } from './directives/discovery/factory/ResourceLabel'
-export { SemanticActionBuilder } from './directives/discovery/factory/SemanticActionBuilder'
-export { SemanticStateBuilder } from './directives/discovery/factory/SemanticStateBuilder'
 export { InterfaceCommandResponseBuilder } from './directives/interfaceCommand/InterfaceCommandResponseBuilder'
 export { isReportStateRequest } from './directives/reportState/ReportStateHandlerInputFactory'
 export { ReportStateResponseBuilder } from './directives/reportState/ReportStateResponseBuilder'
+export { AdditionalAttributesBuilder } from './discovery/AdditionalAttributesBuilder'
+export { CapabilityBuilder } from './discovery/CapabilityBuilder'
+export { DiscoveryEndpointBuilder } from './discovery/DiscoveryEndpointBuilder'
+export {
+  DiscoveryPayload,
+  DisplayCategories
+} from './discovery/DiscoveryPayload'
+export { PropertiesBuilder } from './discovery/PropertiesBuilder'
+export { Locales } from './discovery/ResourceLabel'
+export { SemanticActionBuilder } from './discovery/SemanticActionBuilder'
+export { SemanticStateBuilder } from './discovery/SemanticStateBuilder'
 export { SmartHomeSkillErrorHandler } from './dispatcher/error/handler/SmartHomeSkillErrorHandler'
 export { AcceptGrantRequestHandler } from './dispatcher/request/handler/AcceptGrantRequestHandler'
 export { DiscoveryRequestHandler } from './dispatcher/request/handler/DiscoveryRequestHandler'
