@@ -1,8 +1,8 @@
-import { DiscoveryEndpointBuilder } from '../discovery/DiscoveryEndpointBuilder'
-import { DiscoveryPayload } from '../discovery/DiscoveryPayload'
-import { DiscoveryPayloadBuilder } from '../discovery/DiscoveryPayloadBuilder'
-import { Request } from '../outboundRequest/Request'
-import { RequestBuilder } from '../outboundRequest/RequestBuilder'
+import { DiscoveryEndpointBuilder } from '../../discovery/DiscoveryEndpointBuilder'
+import { DiscoveryPayload } from '../../discovery/DiscoveryPayload'
+import { DiscoveryPayloadBuilder } from '../../discovery/DiscoveryPayloadBuilder'
+import { Request } from '../../outboundRequest/Request'
+import { RequestBuilder } from '../../outboundRequest/RequestBuilder'
 
 const namespace = 'Alexa.Discovery'
 const name = 'AddOrUpdateReport'

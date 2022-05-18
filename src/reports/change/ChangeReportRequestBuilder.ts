@@ -1,11 +1,11 @@
-import { Request } from '../outboundRequest/Request'
-import { RequestBuilder } from '../outboundRequest/RequestBuilder'
+import { Request } from '../../outboundRequest/Request'
+import { RequestBuilder } from '../../outboundRequest/RequestBuilder'
 import {
   findPropStateDuplicates,
   getPropertyState,
   isSamePropState,
   PropState
-} from '../response/Response'
+} from '../../response/Response'
 import { ChangeCauseType, ChangeReportPayload } from './ChangeReportPayload'
 
 const namespace = 'Alexa'
