@@ -5,8 +5,6 @@ import {
   SemanticActionNames
 } from './DiscoveryPayload'
 
-//TODO: Move entire /src/directives/discovery/factory folder to /src/discovery
-
 const maxEndpoints = 300
 
 /**

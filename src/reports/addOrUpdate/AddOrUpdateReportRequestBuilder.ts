@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
 import { DiscoveryEndpointBuilder } from '../../discovery/DiscoveryEndpointBuilder'
-import { DiscoveryPayload } from '../../discovery/DiscoveryPayload'
+import { DiscoveryEndpoint } from '../../discovery/DiscoveryPayload'
 import { DiscoveryPayloadBuilder } from '../../discovery/DiscoveryPayloadBuilder'
 import { Request } from '../../outboundRequest/Request'
+import { AddOrUpdateReportPayload } from './AddOrUpdateReportPayload'
 
 const namespace = 'Alexa.Discovery'
 const name = 'AddOrUpdateReport'
@@ -11,18 +12,59 @@ const payloadVersion = '3'
 export class AddOrUpdateReportRequestBuilder {
   private messageId: string
   private payloadBuilder: DiscoveryPayloadBuilder = new DiscoveryPayloadBuilder()
+  private token?: string
+  private partition?: string
+  private userId?: string
 
   constructor() {
     this.messageId = uuidv4()
   }
+  getRequestBody(): Request<AddOrUpdateReportPayload> {
+    const discoveryPayload = this.payloadBuilder.getPayload()
 
-  getRequestBody(): Request<DiscoveryPayload> {
-    const payload = this.payloadBuilder.getPayload()
-
-    if (payload.endpoints.length === 0) {
+    if (discoveryPayload.endpoints.length === 0) {
       throw Error('At least one endpoint is required.')
     }
 
+    const payload = this.getAddOrUpdateReportPayload(discoveryPayload.endpoints)
+
+    return this.getPayloadEnvelope(payload)
+  }
+
+  private getAddOrUpdateReportPayload(
+    endpoints: DiscoveryEndpoint[]
+  ): AddOrUpdateReportPayload {
+    let scope
+
+    if (this.token) {
+      if (this.partition && this.userId) {
+        scope = {
+          type: 'BearerTokenWithPartition' as const,
+          token: this.token,
+          partition: this.partition,
+          userId: this.userId
+        }
+      } else {
+        scope = {
+          type: 'BearerToken' as const,
+          token: this.token
+        }
+      }
+    }
+
+    if (scope === undefined) {
+      throw Error('A token is required.')
+    }
+
+    return {
+      endpoints,
+      scope
+    }
+  }
+
+  private getPayloadEnvelope(
+    payload: AddOrUpdateReportPayload
+  ): Request<AddOrUpdateReportPayload> {
     return {
       event: {
         header: {
@@ -34,6 +76,16 @@ export class AddOrUpdateReportRequestBuilder {
         payload
       }
     }
+  }
+
+  /**
+   * Generates a request body with no endpoints.
+   * @returns The compiled request body.
+   */
+  getNoEndpointsRequestBody(): Request<AddOrUpdateReportPayload> {
+    const payload = this.getAddOrUpdateReportPayload([])
+
+    return this.getPayloadEnvelope(payload)
   }
 
   /**
@@ -65,6 +117,32 @@ export class AddOrUpdateReportRequestBuilder {
    */
   withMessageId(messageId: string): this {
     this.messageId = messageId
+    return this
+  }
+
+  /**
+   * Sets an OAuth 2 bearer token with no partition.
+   * @param token The LWA token associated with the user.
+   * @returns This builder.
+   */
+  withSimpleToken(token: string): this {
+    this.token = token
+    this.partition = undefined
+    this.userId = undefined
+    return this
+  }
+
+  /**
+   * Sets an OAuth 2 bearer token with a partition.
+   * @param token The LWA token associated with the user.
+   * @param partition The location target for the request such as a room name or number.
+   * @param userId A unique identifier for the user. Don't rely on {@link userId} to identify users, use {@link token} instead.
+   * @returns This builder.
+   */
+  withPartitionedToken(token: string, partition: string, userId: string): this {
+    this.token = token
+    this.partition = partition
+    this.userId = userId
     return this
   }
 }
