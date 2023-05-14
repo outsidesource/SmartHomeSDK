@@ -14,35 +14,35 @@ import { InterfaceCommandRequestHandler } from '../src/dispatcher/request/handle
 import { ReportStateRequestHandler } from '../src/dispatcher/request/handler/ReportStateRequestHandler'
 import { SmartHomeSkillRequestHandler } from '../src/dispatcher/request/handler/SmartHomeSkillRequestHandler'
 import { ErrorTypes } from '../src/response/ErrorTypes'
-import { EmptyResponsePayload } from '../src/response/payloads/EmptyResponsePayload'
-import { ErrorResponsePayload } from '../src/response/payloads/ErrorResponsePayload'
 import { Response } from '../src/response/Response'
 import { ResponseBuilder } from '../src/response/ResponseBuilder'
+import { EmptyResponsePayload } from '../src/response/payloads/EmptyResponsePayload'
+import { ErrorResponsePayload } from '../src/response/payloads/ErrorResponsePayload'
 
-describe('handler implementations', function() {
-  it('accept grant', function() {
-    expect(function() { new AcceptGrantHandler(true) }).to.not.throw()
-    expect(function() { new AcceptGrantHandler(false) }).to.not.throw()
+describe('handler implementations', function () {
+  it('accept grant', function () {
+    expect(() => new AcceptGrantHandler(true)).to.not.throw()
+    expect(() => new AcceptGrantHandler(false)).to.not.throw()
   })
 
-  it('discovery', function() {
-    expect(function() { new DiscoveryHandler(true) }).to.not.throw()
-    expect(function() { new DiscoveryHandler(false) }).to.not.throw()
+  it('discovery', function () {
+    expect(() => new DiscoveryHandler(true)).to.not.throw()
+    expect(() => new DiscoveryHandler(false)).to.not.throw()
   })
 
-  it('interface command', function() {
-    expect(function() { new InterfaceCommandHandler(true) }).to.not.throw()
-    expect(function() { new InterfaceCommandHandler(false) }).to.not.throw()
+  it('interface command', function () {
+    expect(() => new InterfaceCommandHandler(true)).to.not.throw()
+    expect(() => new InterfaceCommandHandler(false)).to.not.throw()
   })
 
-  it('report state', function() {
-    expect(function() { new ReportStateHandler(true) }).to.not.throw()
-    expect(function() { new ReportStateHandler(false) }).to.not.throw()
+  it('report state', function () {
+    expect(() => new ReportStateHandler(true)).to.not.throw()
+    expect(() => new ReportStateHandler(false)).to.not.throw()
   })
 
-  it('generic smart home request handler', function() {
-    expect(function() { new GenericHandler(true) }).to.not.throw()
-    expect(function() { new GenericHandler(false) }).to.not.throw()
+  it('generic smart home request handler', function () {
+    expect(() => new GenericHandler(true)).to.not.throw()
+    expect(() => new GenericHandler(false)).to.not.throw()
   })
 })
 

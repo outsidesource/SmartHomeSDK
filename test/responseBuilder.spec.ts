@@ -80,106 +80,124 @@ const failResponse: Response<ErrorResponsePayload> = {
   }
 }
 
-describe('response builder', function() {
-  it('creates a successful response for a successful request', function() {
-    const builder = new TestResponseBuilder(request)
-    const response = builder
+describe('response builder', function () {
+  it('creates a successful response for a successful request', function () {
+    const sut = new TestResponseBuilder(request)
+
+    const actual = sut
       .setValue(6.28)
       .getSucceedResponse()
 
-    expect(response).to.deep.equal(succeedResponse)
+    expect(actual).to.deep.equal(succeedResponse)
   })
-  it('creates an error response for a failed request', function() {
-    const builder = new TestResponseBuilder(request)
-    const response = builder
+
+  it('creates an error response for a failed request', function () {
+    const sut = new TestResponseBuilder(request)
+
+    const actual = sut
       .getFailResponse('TestError', 'This is a test error')
 
-    expect(response).to.deep.equal(failResponse)
+    expect(actual).to.deep.equal(failResponse)
   })
-  it('ignores succeed model values for a failed request', function() {
-    const builder = new TestResponseBuilder(request)
-    const response = builder
+
+  it('ignores succeed model values for a failed request', function () {
+    const sut = new TestResponseBuilder(request)
+
+    const actual = sut
       .setValue(6.28)
       .getFailResponse('TestError', 'This is a test error')
 
-    expect(response).to.deep.equal(failResponse)
+    expect(actual).to.deep.equal(failResponse)
   })
-  it('creates a successful response with an endpointId for a successful request', function() {
-    const builder = new TestResponseBuilder(request)
+
+  it('creates a successful response with an endpointId for a successful request', function () {
+    const sut = new TestResponseBuilder(request)
     const expectedResponse = _.cloneDeep(succeedResponse)
     expectedResponse.event.endpoint = { endpointId: 'endpointId' }
-    const response = builder
+
+    const actual = sut
       .setValue(6.28)
       .addEndpoint()
       .withEndpointId('endpointId')
       .getResponseBuilder()
       .getSucceedResponse()
 
-    expect(response).to.deep.equal(expectedResponse)
+    expect(actual).to.deep.equal(expectedResponse)
   })
-  it('creates a successful response with a correlation token for a successful request', function() {
+
+  it('creates a successful response with a correlation token for a successful request', function () {
     const correlationTokenRequest = _.cloneDeep(request)
     correlationTokenRequest.directive.header.correlationToken = 'T3B0aW9uYWwgY29ycmVsYXRpb24gdG9rZW4='
-    const builder = new TestResponseBuilder(correlationTokenRequest)
+    const sut = new TestResponseBuilder(correlationTokenRequest)
     const expectedResponse = _.cloneDeep(succeedResponse)
     expectedResponse.event.header.correlationToken = 'T3B0aW9uYWwgY29ycmVsYXRpb24gdG9rZW4='
-    const response = builder
+
+    const actual = sut
       .setValue(6.28)
       .getSucceedResponse()
 
-    expect(response).to.deep.equal(expectedResponse)
+    expect(actual).to.deep.equal(expectedResponse)
   })
-  it('creates a successful response with a cookie for a successful request', function() {
-    const builder = new TestResponseBuilder(request)
+
+  it('creates a successful response with a cookie for a successful request', function () {
+    const sut = new TestResponseBuilder(request)
     const expectedResponse = _.cloneDeep(succeedResponse)
     expectedResponse.event.endpoint = { cookie: { macAddress: '62:7B:51:61:D3:19', } }
-    builder
+    sut
       .setValue(6.28)
       .addEndpoint()
-        .withCookie('macAddress', '62:7B:51:61:D3:19')
-    const response = builder.getSucceedResponse()
+      .withCookie('macAddress', '62:7B:51:61:D3:19')
 
-    expect(response).to.deep.equal(expectedResponse)
+    const actual = sut.getSucceedResponse()
+
+    expect(actual).to.deep.equal(expectedResponse)
   })
-  it('creates an error response with an endpointId for a failed request', function() {
-    const builder = new TestResponseBuilder(request)
+
+  it('creates an error response with an endpointId for a failed request', function () {
+    const sut = new TestResponseBuilder(request)
     const expectedResponse = _.cloneDeep(failResponse)
     expectedResponse.event.endpoint = { endpointId: 'endpointId' }
-    const response = builder
+
+    const actual = sut
       .addEndpoint()
       .withEndpointId('endpointId')
       .getResponseBuilder()
       .getFailResponse('TestError', 'This is a test error')
 
-    expect(response).to.deep.equal(expectedResponse)
+    expect(actual).to.deep.equal(expectedResponse)
   })
-  it('creates a response with a simple Bearer token', function() {
-    const builder = new TestResponseBuilder(request)
-    const response = builder
+
+  it('creates a response with a simple Bearer token', function () {
+    const sut = new TestResponseBuilder(request)
+
+    const actual = sut
       .setValue(6.28)
       .addEndpoint()
-        .withSimpleToken('VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==')
-        .getResponseBuilder()
+      .withSimpleToken('VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==')
+      .getResponseBuilder()
       .getSucceedResponse()
 
-    expect(response).to.deep.equal(succeedSimpleTokenResponse)
+    expect(actual).to.deep.equal(succeedSimpleTokenResponse)
   })
-  it('creates a response with a partitioned Bearer token', function() {
-    const builder = new TestResponseBuilder(request)
-    const response = builder
+
+  it('creates a response with a partitioned Bearer token', function () {
+    const sut = new TestResponseBuilder(request)
+    const actual = sut
       .setValue(6.28)
       .addEndpoint()
-        .withPartitionedToken('VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==', 'Partition', 'UserId')
-        .getResponseBuilder()
+      .withPartitionedToken('VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==', 'Partition', 'UserId')
+      .getResponseBuilder()
       .getSucceedResponse()
 
-    expect(response).to.deep.equal(succeedPartitionedTokenResponse)
+    expect(actual).to.deep.equal(succeedPartitionedTokenResponse)
   })
 })
 
-describe('property states', function() {
-  describe('when comparing prop states', function() {
-    it('returns true when namespace, instance, and name are the same', function() {
+
+
+describe('property states', function () {
+  describe('when comparing prop states', function () {
+    it('returns true when namespace, instance, and name are the same', function () {
       const x = {
         namespace: 'namespace',
         instance: 'instance',
@@ -197,9 +215,12 @@ describe('property states', function() {
         uncertaintyInMilliseconds: 0,
       }
 
-      expect(isSamePropState(x, y)).to.be.true
+      const actual = isSamePropState(x, y)
+
+      expect(actual).to.be.true
     })
-    it('returns false when namespace is different', function() {
+
+    it('returns false when namespace is different', function () {
       const x = {
         namespace: 'namespace1',
         instance: 'instance',
@@ -217,9 +238,12 @@ describe('property states', function() {
         uncertaintyInMilliseconds: 0,
       }
 
-      expect(isSamePropState(x, y)).to.be.false
+      const actual = isSamePropState(x, y)
+
+      expect(actual).to.be.false
     })
-    it('returns false when instance is different', function() {
+
+    it('returns false when instance is different', function () {
       const x = {
         namespace: 'namespace',
         instance: undefined,
@@ -237,9 +261,12 @@ describe('property states', function() {
         uncertaintyInMilliseconds: 0,
       }
 
-      expect(isSamePropState(x, y)).to.be.false
+      const actual = isSamePropState(x, y)
+
+      expect(actual).to.be.false
     })
-    it('returns false when name is different', function() {
+
+    it('returns false when name is different', function () {
       const x = {
         namespace: 'namespace',
         instance: 'instance',
@@ -257,11 +284,16 @@ describe('property states', function() {
         uncertaintyInMilliseconds: 0,
       }
 
-      expect(isSamePropState(x, y)).to.be.false
+      const actual = isSamePropState(x, y)
+
+      expect(actual).to.be.false
     })
   })
-  describe('when getting duplicate prop states', function() {
-    it('returns none when all are unique', function() {
+
+
+
+  describe('when getting duplicate prop states', function () {
+    it('returns none when all are unique', function () {
       const props = [
         {
           namespace: 'namespace1',
@@ -281,9 +313,12 @@ describe('property states', function() {
         },
       ]
 
-      expect(findPropStateDuplicates(props).length).to.equal(0)
+      const actual = findPropStateDuplicates(props)
+
+      expect(actual.length).to.equal(0)
     })
-    it('returns duplicates when duplicates exist', function() {
+
+    it('returns duplicates when duplicates exist', function () {
       const props = [
         {
           namespace: 'namespace',
@@ -303,9 +338,12 @@ describe('property states', function() {
         },
       ]
 
-      expect(findPropStateDuplicates(props).length).to.equal(1)
+      const actual = findPropStateDuplicates(props)
+
+      expect(actual.length).to.equal(1)
     })
-    it('returns duplicates when namespace, instance, and name are the same', function() {
+
+    it('returns duplicates when namespace, instance, and name are the same', function () {
       const props = [
         {
           namespace: 'namespace',
@@ -325,11 +363,16 @@ describe('property states', function() {
         },
       ]
 
-      expect(findPropStateDuplicates(props).length).to.equal(1)
+      const actual = findPropStateDuplicates(props)
+
+      expect(actual.length).to.equal(1)
     })
   })
-  describe('when converting prop states to property states', function() {
-    it('returns a property state with no instance', function() {
+
+
+
+  describe('when converting prop states to property states', function () {
+    it('returns a property state with no instance', function () {
       const propState = {
         namespace: 'namespace',
         name: 'name',
@@ -344,10 +387,13 @@ describe('property states', function() {
         timeOfSample: '2017-02-03T16:20:50.000Z',
         uncertaintyInMilliseconds: 0,
       }
-      
-      expect(getPropertyState(propState)).to.deep.equal(expected)
+
+      const actual = getPropertyState(propState)
+
+      expect(actual).to.deep.equal(expected)
     })
-    it('returns a property state with an instance', function() {
+
+    it('returns a property state with an instance', function () {
       const propState = {
         namespace: 'namespace',
         instance: 'instance',
@@ -364,8 +410,10 @@ describe('property states', function() {
         timeOfSample: '2017-02-03T16:20:50.000Z',
         uncertaintyInMilliseconds: 0,
       }
-      
-      expect(getPropertyState(propState)).to.deep.equal(expected)
+
+      const actual = getPropertyState(propState)
+
+      expect(actual).to.deep.equal(expected)
     })
   })
 })

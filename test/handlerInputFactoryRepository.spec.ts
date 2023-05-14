@@ -1,10 +1,12 @@
 import { expect } from 'chai'
 import 'mocha'
-import { HandlerInputFactoryRepository } from '../src/dispatcher/request/handler/factory/HandlerInputFactoryRepository'
+import { AcceptGrantRequestPayload } from '../src/directives/acceptGrant/AcceptGrantRequestPayload'
 import { LambdaContext } from '../src/dispatcher/request/handler/LambdaContext'
 import { Request } from '../src/dispatcher/request/handler/Request'
+import { HandlerInputFactoryRepository } from '../src/dispatcher/request/handler/factory/HandlerInputFactoryRepository'
 import { getLambdaContext } from './fixtures'
-import request from './fixtures/acceptGrantRequest.json'
+
+const request: Request<AcceptGrantRequestPayload> = require('./fixtures/acceptGrantRequest.json')
 
 const factory = {
   canCreate: (request: Request<unknown>, context: LambdaContext) => true,
@@ -12,19 +14,20 @@ const factory = {
 }
 const lambdaContext = getLambdaContext()
 
-describe('handler input factory repository', function() {
-  it('returns the factory when found', function() {
-    const repo = new HandlerInputFactoryRepository(factory)
+describe('handler input factory repository', function () {
+  it('returns the factory when found', function () {
+    const sut = new HandlerInputFactoryRepository(factory)
 
-    const result = repo.getHandlerInputFactory(request, lambdaContext)
+    const actual = sut.getHandlerInputFactory(request, lambdaContext)
 
-    expect(result).to.equal(factory)
+    expect(actual).to.equal(factory)
   })
-  it('returns undefined when the factory is not found', function() {
-    const repo = new HandlerInputFactoryRepository()
 
-    const result = repo.getHandlerInputFactory(request, lambdaContext)
+  it('returns undefined when the factory is not found', function () {
+    const sut = new HandlerInputFactoryRepository()
 
-    expect(result).to.be.undefined
+    const actual = sut.getHandlerInputFactory(request, lambdaContext)
+
+    expect(actual).to.be.undefined
   })
 })
