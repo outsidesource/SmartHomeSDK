@@ -7,15 +7,15 @@ export function getLambdaContext(): LambdaContext {
 }
 
 export function getLambdaCallback(
-  done: (error?:Error) => void, 
-  test?: (err?:Error, result?: Response<unknown>) => void) {
+  done: (error?: Error) => void, 
+  test?: (err?: Error, result?: Response<unknown>) => void) {
   return (err?: Error, result?: Response<unknown>) => {
     try {
       if (test) {
         test(err, result)
       }
-    } catch (error) {
-      done(error)
+    } catch (error: unknown) {
+      done(error as Error)
     }
     done()
   }
