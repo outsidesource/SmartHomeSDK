@@ -4,6 +4,7 @@ import 'mocha'
 import { Request } from '../src/outboundRequest/Request'
 import { ChangeCauseType, ChangeReportPayload } from '../src/reports/change/ChangeReportPayload'
 import { ChangeReportRequestBuilder } from '../src/reports/change/ChangeReportRequestBuilder'
+import { removeUndefinedProps } from './fixtures'
 
 const request: Request<ChangeReportPayload> = require('./fixtures/changeReportRequest.json')
 
@@ -25,7 +26,7 @@ describe('change report request builder', function () {
 
     const actual = sut.getRequestBody()
 
-    expect(actual).to.deep.equal(request)
+    expect(removeUndefinedProps(actual)).to.deep.equal(request)
   })
 
   it('creates a successful partitioned token request when messageId, endpointId, and change cause specified', function () {
@@ -52,7 +53,7 @@ describe('change report request builder', function () {
 
     const actual = sut.getRequestBody()
 
-    expect(actual).to.deep.equal(req)
+    expect(removeUndefinedProps(actual)).to.deep.equal(req)
   })
 
   it('creates a successful request when multiple properties have the same instance but different namespaces', function () {
@@ -82,7 +83,7 @@ describe('change report request builder', function () {
 
     const actual = sut.getRequestBody()
 
-    expect(actual).to.deep.equal(req)
+    expect(removeUndefinedProps(actual)).to.deep.equal(req)
   })
 
   it('creates a successful request when multiple properties have the same namespace but different instances', function () {
@@ -112,7 +113,7 @@ describe('change report request builder', function () {
 
     const actual = sut.getRequestBody()
 
-    expect(actual).to.deep.equal(req)
+    expect(removeUndefinedProps(actual)).to.deep.equal(req)
   })
 
   it('throws an exception if duplicate unchanged properties are added', function () {

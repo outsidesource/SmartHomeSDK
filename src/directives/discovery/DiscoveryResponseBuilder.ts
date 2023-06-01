@@ -1,12 +1,10 @@
 import { DiscoveryEndpointBuilder } from '../../discovery/DiscoveryEndpointBuilder'
 import { DiscoveryPayload } from '../../discovery/DiscoveryPayload'
 import { DiscoveryPayloadBuilder } from '../../discovery/DiscoveryPayloadBuilder'
-import { Request } from '../../dispatcher/request/handler/Request'
 import { ErrorTypes } from '../../response/ErrorTypes'
 import { ErrorResponsePayload } from '../../response/payloads/ErrorResponsePayload'
 import { Response } from '../../response/Response'
 import { ResponseBuilder } from '../../response/ResponseBuilder'
-import { DiscoveryRequestPayload } from './DiscoveryRequestPayload'
 
 const succeedNamespace = 'Alexa.Discovery'
 const succeedName = 'Discover.Response'
@@ -18,28 +16,14 @@ const payloadVersion = '3'
  * Represents a {@link ResponseBuilder} for the Discovery directive.
  */
 export class DiscoveryResponseBuilder extends ResponseBuilder {
-  private payloadBuilder: DiscoveryPayloadBuilder = new DiscoveryPayloadBuilder()
+  private readonly payloadBuilder: DiscoveryPayloadBuilder = new DiscoveryPayloadBuilder()
 
-  constructor(request: Request<DiscoveryRequestPayload>) {
-    super(request)
+  getSucceedResponse (): Response<DiscoveryPayload> {
+    return this.getPayloadEnvelope(succeedNamespace, succeedName, payloadVersion, this.payloadBuilder.getPayload())
   }
 
-  getSucceedResponse(): Response<DiscoveryPayload> {
-    return this.getPayloadEnvelope(
-      succeedNamespace,
-      succeedName,
-      payloadVersion,
-      this.payloadBuilder.getPayload()
-    )
-  }
-
-  getFailResponse(
-    type:
-      | ErrorTypes.BridgeUnreachable
-      | ErrorTypes.ExpiredAuthorizationCredential
-      | ErrorTypes.InsufficientPermissions
-      | ErrorTypes.InternalError
-      | ErrorTypes.InvalidAuthorizationCredential,
+  getFailResponse (
+    type: ErrorTypes.BridgeUnreachable | ErrorTypes.ExpiredAuthorizationCredential | ErrorTypes.InsufficientPermissions | ErrorTypes.InternalError | ErrorTypes.InvalidAuthorizationCredential,
     message: string
   ): Response<ErrorResponsePayload> {
     return this.getPayloadEnvelope(failNamespace, failName, payloadVersion, {
@@ -56,17 +40,7 @@ export class DiscoveryResponseBuilder extends ResponseBuilder {
    * @param friendlyName The name used by the user to identify the device. You set an initial value, and later the user can change the friendly name by using the Alexa app. This value can contain up to 128 characters, and shouldn't contain special characters or punctuation.
    * @returns A builder for a {@link DiscoveryEndpoint}.
    */
-  addDiscoveryEndpoint(
-    endpointId: string,
-    manufacturerName: string,
-    description: string,
-    friendlyName: string
-  ): DiscoveryEndpointBuilder {
-    return this.payloadBuilder.addDiscoveryEndpoint(
-      endpointId,
-      manufacturerName,
-      description,
-      friendlyName
-    )
+  addDiscoveryEndpoint (endpointId: string, manufacturerName: string, description: string, friendlyName: string): DiscoveryEndpointBuilder {
+    return this.payloadBuilder.addDiscoveryEndpoint(endpointId, manufacturerName, description, friendlyName)
   }
 }

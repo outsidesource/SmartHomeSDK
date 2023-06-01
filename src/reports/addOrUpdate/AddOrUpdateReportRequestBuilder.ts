@@ -11,15 +11,16 @@ const payloadVersion = '3'
 
 export class AddOrUpdateReportRequestBuilder {
   private messageId: string
-  private payloadBuilder: DiscoveryPayloadBuilder = new DiscoveryPayloadBuilder()
+  private readonly payloadBuilder: DiscoveryPayloadBuilder = new DiscoveryPayloadBuilder()
   private token?: string
   private partition?: string
   private userId?: string
 
-  constructor() {
+  constructor () {
     this.messageId = uuidv4()
   }
-  getRequestBody(): Request<AddOrUpdateReportPayload> {
+
+  getRequestBody (): Request<AddOrUpdateReportPayload> {
     const discoveryPayload = this.payloadBuilder.getPayload()
 
     if (discoveryPayload.endpoints.length === 0) {
@@ -31,13 +32,11 @@ export class AddOrUpdateReportRequestBuilder {
     return this.getPayloadEnvelope(payload)
   }
 
-  private getAddOrUpdateReportPayload(
-    endpoints: DiscoveryEndpoint[]
-  ): AddOrUpdateReportPayload {
+  private getAddOrUpdateReportPayload (endpoints: DiscoveryEndpoint[]): AddOrUpdateReportPayload {
     let scope
 
-    if (this.token) {
-      if (this.partition && this.userId) {
+    if (this.token !== undefined && this.token !== '') {
+      if (this.partition !== undefined && this.partition !== '' && this.userId !== undefined && this.userId !== '') {
         scope = {
           type: 'BearerTokenWithPartition' as const,
           token: this.token,
@@ -62,9 +61,7 @@ export class AddOrUpdateReportRequestBuilder {
     }
   }
 
-  private getPayloadEnvelope(
-    payload: AddOrUpdateReportPayload
-  ): Request<AddOrUpdateReportPayload> {
+  private getPayloadEnvelope (payload: AddOrUpdateReportPayload): Request<AddOrUpdateReportPayload> {
     return {
       event: {
         header: {
@@ -82,7 +79,7 @@ export class AddOrUpdateReportRequestBuilder {
    * Generates a request body with no endpoints.
    * @returns The compiled request body.
    */
-  getNoEndpointsRequestBody(): Request<AddOrUpdateReportPayload> {
+  getNoEndpointsRequestBody (): Request<AddOrUpdateReportPayload> {
     const payload = this.getAddOrUpdateReportPayload([])
 
     return this.getPayloadEnvelope(payload)
@@ -96,18 +93,8 @@ export class AddOrUpdateReportRequestBuilder {
    * @param friendlyName The name used by the user to identify the device. You set an initial value, and later the user can change the friendly name by using the Alexa app. This value can contain up to 128 characters, and shouldn't contain special characters or punctuation.
    * @returns A builder for a {@link DiscoveryEndpoint}.
    */
-  addDiscoveryEndpoint(
-    endpointId: string,
-    manufacturerName: string,
-    description: string,
-    friendlyName: string
-  ): DiscoveryEndpointBuilder {
-    return this.payloadBuilder.addDiscoveryEndpoint(
-      endpointId,
-      manufacturerName,
-      description,
-      friendlyName
-    )
+  addDiscoveryEndpoint (endpointId: string, manufacturerName: string, description: string, friendlyName: string): DiscoveryEndpointBuilder {
+    return this.payloadBuilder.addDiscoveryEndpoint(endpointId, manufacturerName, description, friendlyName)
   }
 
   /**
@@ -115,7 +102,7 @@ export class AddOrUpdateReportRequestBuilder {
    * @param messageId The message ID to explicitly use.
    * @returns This builder.
    */
-  withMessageId(messageId: string): this {
+  withMessageId (messageId: string): this {
     this.messageId = messageId
     return this
   }
@@ -125,7 +112,7 @@ export class AddOrUpdateReportRequestBuilder {
    * @param token The LWA token associated with the user.
    * @returns This builder.
    */
-  withSimpleToken(token: string): this {
+  withSimpleToken (token: string): this {
     this.token = token
     this.partition = undefined
     this.userId = undefined
@@ -139,7 +126,7 @@ export class AddOrUpdateReportRequestBuilder {
    * @param userId A unique identifier for the user. Don't rely on {@link userId} to identify users, use {@link token} instead.
    * @returns This builder.
    */
-  withPartitionedToken(token: string, partition: string, userId: string): this {
+  withPartitionedToken (token: string, partition: string, userId: string): this {
     this.token = token
     this.partition = partition
     this.userId = userId

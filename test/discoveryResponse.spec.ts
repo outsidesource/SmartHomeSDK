@@ -8,6 +8,7 @@ import { Request } from '../src/dispatcher/request/handler/Request'
 import { ErrorTypes } from '../src/response/ErrorTypes'
 import { Response } from '../src/response/Response'
 import { ErrorResponsePayload } from '../src/response/payloads/ErrorResponsePayload'
+import { removeUndefinedProps } from './fixtures'
 
 const request: Request<DiscoveryRequestPayload> = require('./fixtures/discoveryRequest.json')
 const succeedResponse: Response<DiscoveryPayload> = require('./fixtures/discoveryResponse.json')
@@ -63,7 +64,7 @@ describe('discovery response builder', function () {
 
     const actual = sut.getSucceedResponse()
 
-    expect(actual).to.deep.equal(succeedResponse)
+    expect(removeUndefinedProps(actual)).to.deep.equal(succeedResponse)
   })
 
   it('creates an error response for a failed request', function () {

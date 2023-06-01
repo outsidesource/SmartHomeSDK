@@ -1,13 +1,7 @@
-import {
-  createAskSdkUserAgent,
-  GenericRequestDispatcher,
-  RequestDispatcher,
-  Skill,
-  UserAgentManager
-} from 'ask-sdk-runtime'
+import { createAskSdkUserAgent, GenericRequestDispatcher, RequestDispatcher, Skill, UserAgentManager } from 'ask-sdk-runtime'
+import { Context } from 'aws-lambda'
 import { HandlerInputFactoryRepository } from '../dispatcher/request/handler/factory/HandlerInputFactoryRepository'
 import { HandlerInput } from '../dispatcher/request/handler/HandlerInput'
-import { LambdaContext } from '../dispatcher/request/handler/LambdaContext'
 import { Request } from '../dispatcher/request/handler/Request'
 import { Response } from '../response/Response'
 import { ResponseBuilder } from '../response/ResponseBuilder'
@@ -17,18 +11,16 @@ import { SmartHomeSkillConfiguration } from './SmartHomeSkillConfiguration'
  * Top level container for request dispatcher.
  */
 export class SmartHomeSkill
-  implements Skill<Request<unknown>, Response<unknown>> {
-  protected requestDispatcher: RequestDispatcher<
-    HandlerInput<unknown, ResponseBuilder>,
-    Response<unknown>
-  >
+implements Skill<Request<unknown>, Response<unknown>> {
+  protected requestDispatcher: RequestDispatcher<HandlerInput<unknown, ResponseBuilder>, Response<unknown>>
+
   // protected persistenceAdapter: PersistenceAdapter;
   // protected apiClient: ApiClient;
   protected customUserAgent?: string
   protected skillId?: string
   protected handlerInputFactoryRepository: HandlerInputFactoryRepository
 
-  constructor(skillConfiguration: SmartHomeSkillConfiguration) {
+  constructor (skillConfiguration: SmartHomeSkillConfiguration) {
     // this.persistenceAdapter = skillConfiguration.persistenceAdapter;
     // this.apiClient = skillConfiguration.apiClient;
     this.customUserAgent = skillConfiguration.customUserAgent
@@ -37,10 +29,7 @@ export class SmartHomeSkill
       ...skillConfiguration.handlerInputFactories
     )
 
-    this.requestDispatcher = new GenericRequestDispatcher<
-      HandlerInput<unknown, ResponseBuilder>,
-      Response<unknown>
-    >({
+    this.requestDispatcher = new GenericRequestDispatcher<HandlerInput<unknown, ResponseBuilder>, Response<unknown>>({
       requestMappers: skillConfiguration.requestMappers,
       handlerAdapters: skillConfiguration.handlerAdapters,
       errorMapper: skillConfiguration.errorMapper,
@@ -48,14 +37,13 @@ export class SmartHomeSkill
       responseInterceptors: skillConfiguration.responseInterceptors
     })
 
-    const packageInfo =
-      process.env.NODE_ENV === 'test'
-        ? require('../../package.json')
-        : require('../package.json')
+    const packageInfo = process.env.NODE_ENV === 'test'
+      ? require('../../package.json')
+      : require('../package.json')
     UserAgentManager.registerComponent(
       createAskSdkUserAgent(packageInfo.version)
     )
-    if (this.customUserAgent) {
+    if (this.customUserAgent !== undefined && this.customUserAgent !== '') {
       UserAgentManager.registerComponent(this.customUserAgent)
     }
   }
@@ -65,34 +53,26 @@ export class SmartHomeSkill
    * @param request The directive and payload for the request.
    * @param context The context that the lambda is running in.
    */
-  async invoke(
+  async invoke (
     request: Request<unknown>,
-    context?: LambdaContext
+    context: Context
   ): Promise<Response<unknown>> {
     const handlerInputFactory = this.handlerInputFactoryRepository.getHandlerInputFactory(
       request,
       context
     )
 
-    if (!handlerInputFactory) {
-      throw Error(
-        `No handler input factory for request: ${JSON.stringify(
-          request.directive.header
-        )}`
-      )
+    if (handlerInputFactory === undefined) {
+      throw Error(`No handler input factory for request: ${JSON.stringify(request.directive.header)}`)
     }
 
     const input = handlerInputFactory.create(request, context)
 
-    if (!input) {
-      throw Error(
-        `Unable to create handler input for request: ${JSON.stringify(
-          request.directive.header
-        )}`
-      )
+    if (input === undefined) {
+      throw Error(`Unable to create handler input for request: ${JSON.stringify(request.directive.header)}`)
     }
 
-    return this.requestDispatcher.dispatch(input)
+    return await this.requestDispatcher.dispatch(input)
   }
 
   /**
@@ -100,15 +80,15 @@ export class SmartHomeSkill
    * @param request The directive and payload for the request.
    * @param context The context that the lambda is running in.
    */
-  supports(request: Request<unknown>, context?: LambdaContext): boolean {
-    return !!request && !!context
+  supports (request: Request<unknown>, context: Context): boolean {
+    return true
   }
 
   /**
    * Append additional user agent info
    * @param userAgent
    */
-  appendAdditionalUserAgent(userAgent: string): void {
+  appendAdditionalUserAgent (userAgent: string): void {
     UserAgentManager.registerComponent(userAgent)
   }
 }

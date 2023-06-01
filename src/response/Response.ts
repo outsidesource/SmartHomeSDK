@@ -112,27 +112,21 @@ export interface PropState extends Omit<PropertyState, 'timeOfSample'> {
   timeOfSample: Date
 }
 
-export const isSamePropState = (x: PropState, y: PropState) => {
-  return (
-    x.namespace === y.namespace &&
+export const isSamePropState = (x: PropState, y: PropState): boolean => {
+  return x.namespace === y.namespace &&
     x.instance === y.instance &&
     x.name === y.name
-  )
 }
 
-export const findPropStateDuplicates = (arr: PropState[]) => {
+export const findPropStateDuplicates = (arr: PropState[]): string[] => {
   const histo = histogram(arr)
   return Object.keys(histo).filter(key => histo[key] > 1)
 }
 
-const histogram = (arr: PropState[]) => {
+const histogram = (arr: PropState[]): { [key: string]: number } => {
   return arr.reduce((histo: { [key: string]: number }, prop) => {
-    const key = JSON.stringify({
-      namespace: prop.namespace,
-      instance: prop.instance,
-      name: prop.name
-    })
-    return { ...histo, [key]: (histo[key] || 0) + 1 }
+    const key = JSON.stringify({ namespace: prop.namespace, instance: prop.instance, name: prop.name })
+    return { ...histo, [key]: (histo[key] ?? 0) + 1 }
   }, {})
 }
 
@@ -145,7 +139,7 @@ export const getPropertyState = (prop: PropState): PropertyState => {
     uncertaintyInMilliseconds: prop.uncertaintyInMilliseconds
   }
 
-  if (prop.instance) {
+  if (prop.instance !== undefined && prop.instance !== '') {
     result.instance = prop.instance
   }
 

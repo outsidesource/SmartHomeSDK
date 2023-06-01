@@ -1,23 +1,17 @@
-import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/HandlerInputFactory'
+import { Context } from 'aws-lambda'
 import { HandlerInput } from '../../dispatcher/request/handler/HandlerInput'
-import { LambdaContext } from '../../dispatcher/request/handler/LambdaContext'
 import { Request } from '../../dispatcher/request/handler/Request'
+import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/HandlerInputFactory'
 import { ReportStateResponseBuilder } from './ReportStateResponseBuilder'
 
 /**
  * A factory for {@link HandlerInput} when the request is a ReportState.
  */
-export const ReportStateHandlerInputFactory: HandlerInputFactory<
-  unknown,
-  ReportStateResponseBuilder
-> = {
-  canCreate(request: Request<unknown>, context?: LambdaContext) {
+export const ReportStateHandlerInputFactory: HandlerInputFactory<unknown, ReportStateResponseBuilder> = {
+  canCreate (request: Request<unknown>, context: Context): boolean {
     return isReportStateRequest(request)
   },
-  create(
-    request: Request<unknown>,
-    context?: LambdaContext
-  ): HandlerInput<unknown, ReportStateResponseBuilder> | undefined {
+  create (request: Request<unknown>, context: Context): HandlerInput<unknown, ReportStateResponseBuilder> | undefined {
     if (!isReportStateRequest(request)) {
       return undefined
     }
@@ -35,11 +29,10 @@ export const ReportStateHandlerInputFactory: HandlerInputFactory<
  * @param request The request to examine.
  * @returns True if the request is a ReportState; otherwise, false.
  */
-export function isReportStateRequest(request: Request<unknown>): boolean {
-  return (
-    request.directive.header.namespace === 'Alexa' &&
+export function isReportStateRequest (request: Request<unknown>): boolean {
+  const endpointId = request.directive.endpoint?.endpointId
+  return request.directive.header.namespace === 'Alexa' &&
     request.directive.header.name === 'ReportState' &&
     request.directive.header.payloadVersion === '3' &&
-    !!request.directive.endpoint?.endpointId
-  )
+    endpointId !== undefined && endpointId !== ''
 }

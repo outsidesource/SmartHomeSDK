@@ -11,7 +11,7 @@ import { Response } from '../src/response/Response'
 import { ResponseBuilder } from '../src/response/ResponseBuilder'
 import { EmptyResponsePayload } from '../src/response/payloads/EmptyResponsePayload'
 import { ErrorResponsePayload } from '../src/response/payloads/ErrorResponsePayload'
-import { SmartHomeSkillFactory } from '../src/skill/factory/SmartHomeSkillFactory'
+import SmartHomeSkillFactory from '../src/skill/factory/SmartHomeSkillFactory'
 import { getLambdaCallback, getLambdaContext } from './fixtures'
 
 const request: Request<AcceptGrantRequestPayload> = require('./fixtures/acceptGrantRequest.json')
@@ -42,7 +42,7 @@ describe('smart home skill builder', function () {
   })
 
   it('creates a skill', function () {
-    const builder = SmartHomeSkillFactory.init()
+    const builder = SmartHomeSkillFactory()
     const skill = builder.create()
 
     expect(skill).to.exist
@@ -52,7 +52,7 @@ describe('smart home skill builder', function () {
 
   describe('adding a single request handler', function () {
     it('creates arbitrary handler when provided a PayloadSignature', function () {
-      const builder = SmartHomeSkillFactory.init()
+      const builder = SmartHomeSkillFactory()
       const payloadSignature: PayloadSignature = { namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion' }
       const executor = (input: HandlerInput<unknown, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
 
@@ -62,7 +62,7 @@ describe('smart home skill builder', function () {
     })
 
     it('creates arbitrary handler when provided a PayloadSignature with an instance name', function () {
-      const builder = SmartHomeSkillFactory.init()
+      const builder = SmartHomeSkillFactory()
       const payloadSignature: PayloadSignature = { namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion', instance: 'instance' }
       const executor = (input: HandlerInput<unknown, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
 
@@ -76,10 +76,10 @@ describe('smart home skill builder', function () {
 
   describe('invoking the lambda', function () {
     it('creates a response when successful', function (done) {
-      const builder = SmartHomeSkillFactory.init()
+      const builder = SmartHomeSkillFactory()
       const requestHandlerSpy = sinon.spy(successfulRequestHandler, 'handle')
       builder.addRequestHandlers(successfulRequestHandler)
-      const test = (err?: Error, result?: Response<unknown>) => {
+      const test = (err?: Error | string | null, result?: Response<unknown>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
         expect(result).to.deep.equal(succeedResponse)
       }
@@ -88,10 +88,10 @@ describe('smart home skill builder', function () {
     })
 
     it('invokes only the first request handler', function (done) {
-      const builder = SmartHomeSkillFactory.init()
+      const builder = SmartHomeSkillFactory()
       const requestHandlerSpy = sinon.spy(successfulRequestHandler, 'handle')
       builder.addRequestHandlers(successfulRequestHandler, successfulRequestHandler)
-      const test = (err?: Error, result?: Response<unknown>) => {
+      const test = (err?: Error | string | null, result?: Response<unknown>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
       }
 
@@ -99,12 +99,12 @@ describe('smart home skill builder', function () {
     })
 
     it('creates an error response when the error is handled', function (done) {
-      const builder = SmartHomeSkillFactory.init()
+      const builder = SmartHomeSkillFactory()
       const requestHandlerSpy = sinon.spy(failedRequestHandler, 'handle')
       const errorHandlerSpy = sinon.spy(errorHandler, 'handle')
       builder.addRequestHandlers(failedRequestHandler)
       builder.addErrorHandlers(errorHandler)
-      const test = (err?: Error, result?: Response<unknown>) => {
+      const test = (err?: Error | string | null, result?: Response<unknown>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
         expect(errorHandlerSpy.notCalled).to.be.true
         expect(result).to.deep.equal(failResponse)
@@ -115,14 +115,14 @@ describe('smart home skill builder', function () {
     })
 
     it('invokes the error handler for unhandled errors', function (done) {
-      const builder = SmartHomeSkillFactory.init()
+      const builder = SmartHomeSkillFactory()
       const requestHandlerSpy = sinon.spy(throwingRequestHandler, 'handle')
       const errorHandlerSpy = sinon.spy(errorHandler, 'handle')
       builder.addRequestHandlers(throwingRequestHandler)
       builder.addErrorHandlers(errorHandler)
       const expectedResult = _.cloneDeep(failResponse)
       expectedResult.event.payload.type = ErrorTypes.InternalError
-      const test = (err?: Error, result?: Response<unknown>) => {
+      const test = (err?: Error | string | null, result?: Response<unknown>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
         expect(errorHandlerSpy.calledOnce).to.be.true
         expect(result).to.deep.equal(expectedResult)
@@ -133,12 +133,12 @@ describe('smart home skill builder', function () {
     })
 
     it('returns unhandled and uncaught errors to callback', function (done) {
-      const builder = SmartHomeSkillFactory.init()
+      const builder = SmartHomeSkillFactory()
       const requestHandlerSpy = sinon.spy(throwingRequestHandler, 'handle')
       builder.addRequestHandlers(throwingRequestHandler)
-      const test = (err?: Error, result?: Response<unknown>) => {
+      const test = (err?: Error | string | null, result?: Response<unknown>) => {
         expect(requestHandlerSpy.calledOnce).to.be.true
-        expect(err?.message).to.equal('This is a test error')
+        expect((err as Error).message).to.equal('This is a test error')
         expect(result).to.be.undefined
       }
 

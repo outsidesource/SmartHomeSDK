@@ -1,4 +1,3 @@
-import { Request } from '../../dispatcher/request/handler/Request'
 import { EmptyResponsePayload } from '../../response/payloads/EmptyResponsePayload'
 import { ErrorResponsePayload } from '../../response/payloads/ErrorResponsePayload'
 import { PropState, Response } from '../../response/Response'
@@ -13,13 +12,9 @@ const payloadVersion = '3'
  * Represents a {@link ResponseBuilder} for the ReportState directive.
  */
 export class ReportStateResponseBuilder extends ResponseBuilder {
-  private properties: PropState[] = []
+  private readonly properties: PropState[] = []
 
-  constructor(request: Request<unknown>) {
-    super(request)
-  }
-
-  getSucceedResponse(): Response<EmptyResponsePayload> {
+  getSucceedResponse (): Response<EmptyResponsePayload> {
     if (this.properties.length > 0) {
       const contextBuilder = this.addContext()
       this.properties.map(prop =>
@@ -34,24 +29,17 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
       )
     }
 
-    const envelope = this.getPayloadEnvelope(
-      namespace,
-      succeedName,
-      payloadVersion,
-      {}
-    )
+    const envelope = this.getPayloadEnvelope(namespace, succeedName, payloadVersion, {})
 
-    if (!envelope.event.endpoint?.endpointId) {
+    const endpointId = envelope.event.endpoint?.endpointId
+    if (endpointId === undefined || endpointId === '') {
       throw Error('An endpoint ID is required.')
     }
 
     return envelope
   }
 
-  getFailResponse(
-    type: string,
-    message: string
-  ): Response<ErrorResponsePayload> {
+  getFailResponse (type: string, message: string): Response<ErrorResponsePayload> {
     return this.getPayloadEnvelope(namespace, failName, payloadVersion, {
       type,
       message
@@ -68,22 +56,8 @@ export class ReportStateResponseBuilder extends ResponseBuilder {
    * @param uncertaintyInMilliseconds The uncertainty of the value in milliseconds.
    * @returns This builder.
    */
-  withProperty(
-    namespace: string,
-    instance: string | undefined,
-    name: string,
-    value: unknown,
-    timeOfSample: Date,
-    uncertaintyInMilliseconds: number
-  ): this {
-    this.properties.push({
-      namespace,
-      instance,
-      name,
-      value,
-      timeOfSample,
-      uncertaintyInMilliseconds
-    })
+  withProperty (namespace: string, instance: string | undefined, name: string, value: unknown, timeOfSample: Date, uncertaintyInMilliseconds: number): this {
+    this.properties.push({ namespace, instance, name, value, timeOfSample, uncertaintyInMilliseconds })
     return this
   }
 }

@@ -6,7 +6,6 @@ describe('skill builders', function () {
   it('returns a SmartHomeSkillBuilder', function () {
     const builder = SkillBuilders.smarthome()
 
-    expect(builder).to.not.be.undefined
-    expect(builder).to.not.be.null
+    expect(builder).to.exist
   })
 })

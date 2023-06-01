@@ -11,6 +11,7 @@ import { PropertiesBuilder } from '../src/discovery/PropertiesBuilder'
 import { Locales } from '../src/discovery/ResourceLabel'
 import { SemanticActionBuilder } from '../src/discovery/SemanticActionBuilder'
 import { SemanticStateBuilder } from '../src/discovery/SemanticStateBuilder'
+import { removeUndefinedProps } from './fixtures'
 import { createSinonStubInstance, toStringWithLeadingZeros } from './helpers'
 
 const comprehensiveDiscoveryPayload: DiscoveryPayload = require('./fixtures/discoveryPayload.json')
@@ -65,7 +66,7 @@ describe('discovery payload builder', function () {
 
     const actual = sut.getPayload()
 
-    expect(actual).to.deep.equal(comprehensiveDiscoveryPayload)
+    expect(removeUndefinedProps(actual)).to.deep.equal(comprehensiveDiscoveryPayload)
   })
 
   it('creates a payload with no endpoints when none are present', function () {
@@ -155,7 +156,7 @@ describe('discovery endpoint builder', function () {
       .getEndpointBuilder()
       .getEndpoint()
 
-    expect(actual).to.deep.equal(minimalEndpoint)
+    expect(removeUndefinedProps(actual)).to.deep.equal(minimalEndpoint)
   })
 
   it('creates an endpoint with a unicode friendly name', function () {
@@ -170,7 +171,7 @@ describe('discovery endpoint builder', function () {
       .getEndpointBuilder()
       .getEndpoint()
 
-    expect(actual).to.deep.equal(expected)
+    expect(removeUndefinedProps(actual)).to.deep.equal(expected)
   })
 
   it('creates an endpoint with a Zigbee connection', function () {
@@ -191,7 +192,7 @@ describe('discovery endpoint builder', function () {
       .getEndpointBuilder()
       .getEndpoint()
 
-    expect(actual).to.deep.equal(expectedEndpoint)
+    expect(removeUndefinedProps(actual)).to.deep.equal(expectedEndpoint)
   })
 
   it('creates an endpoint with a ZWave connection', function () {
@@ -213,7 +214,7 @@ describe('discovery endpoint builder', function () {
       .getEndpointBuilder()
       .getEndpoint()
 
-    expect(actual).to.deep.equal(expectedEndpoint)
+    expect(removeUndefinedProps(actual)).to.deep.equal(expectedEndpoint)
   })
 
   it('creates an endpoint with an unknown connection', function () {
@@ -234,7 +235,7 @@ describe('discovery endpoint builder', function () {
       .getEndpointBuilder()
       .getEndpoint()
 
-    expect(actual).to.deep.equal(expectedEndpoint)
+    expect(removeUndefinedProps(actual)).to.deep.equal(expectedEndpoint)
   })
 
   it('throws if the endpoint ID is empty', function () {
@@ -403,7 +404,7 @@ describe('additional attributes builder', function () {
         .withManufacturer('value')
         .getAdditionalAttributes()
 
-      expect(actual).to.deep.equal(expectedAttributes)
+      expect(removeUndefinedProps(actual)).to.deep.equal(expectedAttributes)
     })
 
     it('model', function () {
@@ -417,7 +418,7 @@ describe('additional attributes builder', function () {
         .withModel('value')
         .getAdditionalAttributes()
 
-      expect(actual).to.deep.equal(expectedAttributes)
+      expect(removeUndefinedProps(actual)).to.deep.equal(expectedAttributes)
     })
 
     it('serial number', function () {
@@ -431,7 +432,7 @@ describe('additional attributes builder', function () {
         .withSerialNumber('value')
         .getAdditionalAttributes()
 
-      expect(actual).to.deep.equal(expectedAttributes)
+      expect(removeUndefinedProps(actual)).to.deep.equal(expectedAttributes)
     })
 
     it('firmware version', function () {
@@ -445,7 +446,7 @@ describe('additional attributes builder', function () {
         .withFirmwareVersion('value')
         .getAdditionalAttributes()
 
-      expect(actual).to.deep.equal(expectedAttributes)
+      expect(removeUndefinedProps(actual)).to.deep.equal(expectedAttributes)
     })
 
     it('software version', function () {
@@ -459,7 +460,7 @@ describe('additional attributes builder', function () {
         .withSoftwareVersion('value')
         .getAdditionalAttributes()
 
-      expect(actual).to.deep.equal(expectedAttributes)
+      expect(removeUndefinedProps(actual)).to.deep.equal(expectedAttributes)
     })
 
     it('custom identifier', function () {
@@ -473,7 +474,7 @@ describe('additional attributes builder', function () {
         .withCustomIdentifier('value')
         .getAdditionalAttributes()
 
-      expect(actual).to.deep.equal(expectedAttributes)
+      expect(removeUndefinedProps(actual)).to.deep.equal(expectedAttributes)
     })
   })
 
@@ -571,7 +572,7 @@ describe('capability builder', function () {
       .withVerification('directiveName')
       .getCapability()
 
-    expect(actual).to.deep.equal(expectedCapability)
+    expect(removeUndefinedProps(actual)).to.deep.equal(expectedCapability)
   })
 })
 
@@ -597,7 +598,7 @@ describe('properties builder', function () {
       .withSupportedProperties('interfaceProperty')
       .getProperties()
 
-    expect(actual).to.deep.equal(expectedProperties)
+    expect(removeUndefinedProps(actual)).to.deep.equal(expectedProperties)
   })
 
   it('creates a properties with flags only when no names are specified', function () {
@@ -613,7 +614,7 @@ describe('properties builder', function () {
       .withRetrievable(true)
       .getProperties()
 
-    expect(actual).to.deep.equal(expectedProperties)
+    expect(removeUndefinedProps(actual)).to.deep.equal(expectedProperties)
   })
 })
 
@@ -637,7 +638,7 @@ describe('semantic action builder', function () {
       .withActions(SemanticActionNames.Open, SemanticActionNames.Raise)
       .getMapping()
 
-    expect(actual).to.deep.equal(expectedMapping)
+    expect(removeUndefinedProps(actual)).to.deep.equal(expectedMapping)
   })
 
   it('throws if no actions are specified', function () {

@@ -1,4 +1,3 @@
-import { Request } from '../../dispatcher/request/handler/Request'
 import { ErrorResponsePayload } from '../../response/payloads/ErrorResponsePayload'
 import { Response } from '../../response/Response'
 import { ResponseBuilder } from '../../response/ResponseBuilder'
@@ -16,26 +15,18 @@ export class InterfaceCommandResponseBuilder extends ResponseBuilder {
   private name: string = defaultSucceedName
   private payload: unknown = {}
 
-  constructor(request: Request<unknown>) {
-    super(request)
-  }
+  getSucceedResponse (): Response<unknown> {
+    const envelope = this.getPayloadEnvelope(this.namespace, this.name, payloadVersion, this.payload)
 
-  getSucceedResponse(): Response<unknown> {
-    const envelope = this.getPayloadEnvelope(
-      this.namespace,
-      this.name,
-      payloadVersion,
-      this.payload
-    )
-
-    if (!envelope.event.endpoint?.endpointId) {
+    const endpointId = envelope.event.endpoint?.endpointId
+    if (endpointId === undefined || endpointId === '') {
       throw Error('An endpoint ID is required.')
     }
 
     return envelope
   }
 
-  getFailResponse(
+  getFailResponse (
     type: string,
     message: string
   ): Response<ErrorResponsePayload> {
@@ -50,7 +41,7 @@ export class InterfaceCommandResponseBuilder extends ResponseBuilder {
    * @param namespace The namespace for the response.
    * @returns This builder.
    */
-  withNamespace(namespace: string): this {
+  withNamespace (namespace: string): this {
     this.namespace = namespace
     return this
   }
@@ -60,7 +51,7 @@ export class InterfaceCommandResponseBuilder extends ResponseBuilder {
    * @param name The name for the response.
    * @returns This builder.
    */
-  withName(name: string): this {
+  withName (name: string): this {
     this.name = name
     return this
   }
@@ -70,7 +61,7 @@ export class InterfaceCommandResponseBuilder extends ResponseBuilder {
    * @param payload The payload for the response.
    * @returns This builder.
    */
-  withPayload(payload: unknown): this {
+  withPayload (payload: unknown): this {
     this.payload = payload
     return this
   }

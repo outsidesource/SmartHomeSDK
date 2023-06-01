@@ -51,8 +51,5 @@ export interface Request<TPayload = unknown> {
 /**
  * An interface for identifying payload types.
  */
-export interface PayloadSignature
-  extends Omit<
-    Request<unknown>['directive']['header'],
-    'messageId' | 'correlationToken'
-  > {}
+export interface PayloadSignature extends Omit<Request<unknown>['directive']['header'], 'messageId' | 'correlationToken'> {
+}

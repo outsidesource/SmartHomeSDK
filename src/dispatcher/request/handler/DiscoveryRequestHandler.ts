@@ -3,26 +3,22 @@ import { isDiscoveryRequest } from '../../../directives/discovery/DiscoveryHandl
 import { DiscoveryRequestPayload } from '../../../directives/discovery/DiscoveryRequestPayload'
 import { DiscoveryResponseBuilder } from '../../../directives/discovery/DiscoveryResponseBuilder'
 import { DiscoveryPayload } from '../../../discovery/DiscoveryPayload'
-import { ErrorResponsePayload } from '../../../response/payloads/ErrorResponsePayload'
 import { Response } from '../../../response/Response'
+import { ErrorResponsePayload } from '../../../response/payloads/ErrorResponsePayload'
 import { HandlerInput } from './HandlerInput'
 
 /**
  * A base implementation for user-created handler logic for discovery requests.
  */
-export abstract class DiscoveryRequestHandler
-  implements
-    RequestHandler<
-      HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>,
-      Response<DiscoveryPayload | ErrorResponsePayload>
-    > {
+export abstract class DiscoveryRequestHandler implements RequestHandler<
+HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>,
+Response<DiscoveryPayload | ErrorResponsePayload>
+> {
   /**
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
    */
-  canHandle(
-    input: HandlerInput<unknown, DiscoveryResponseBuilder>
-  ): boolean | Promise<boolean> {
+  canHandle (input: HandlerInput<unknown, DiscoveryResponseBuilder>): boolean | Promise<boolean> {
     return isDiscoveryRequest(input.request)
   }
 
@@ -30,9 +26,5 @@ export abstract class DiscoveryRequestHandler
    * Fulfills the request and returns a valid response.
    * @param input Information about the request and executing context.
    */
-  abstract handle(
-    input: HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>
-  ):
-    | Response<DiscoveryPayload | ErrorResponsePayload>
-    | Promise<Response<DiscoveryPayload | ErrorResponsePayload>>
+  abstract handle (input: HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>): Response<DiscoveryPayload | ErrorResponsePayload> | Promise<Response<DiscoveryPayload | ErrorResponsePayload>>
 }

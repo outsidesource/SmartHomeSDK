@@ -6,6 +6,7 @@ import { Locales } from '../src/discovery/ResourceLabel'
 import { Request } from '../src/outboundRequest/Request'
 import { AddOrUpdateReportPayload } from '../src/reports/addOrUpdate/AddOrUpdateReportPayload'
 import { AddOrUpdateReportRequestBuilder } from '../src/reports/addOrUpdate/AddOrUpdateReportRequestBuilder'
+import { removeUndefinedProps } from './fixtures'
 
 const filledRequest: Request<AddOrUpdateReportPayload> = require('./fixtures/addOrUpdateReportRequest.json')
 const emptyRequest: Request<AddOrUpdateReportPayload> = require('./fixtures/addOrUpdateReportEmptyRequest.json')
@@ -63,7 +64,7 @@ describe('add or update report request builder', function () {
 
       const actual = sut.getRequestBody()
 
-      expect(actual).to.deep.equal(filledRequest)
+      expect(removeUndefinedProps(actual)).to.deep.equal(filledRequest)
     })
 
     it('creates a successful request with a partitioned token', function () {
@@ -124,7 +125,7 @@ describe('add or update report request builder', function () {
 
       const actual = sut.getRequestBody()
 
-      expect(actual).to.deep.equal(req)
+      expect(removeUndefinedProps(actual)).to.deep.equal(req)
     })
 
     it('throws when no token is present', function () {

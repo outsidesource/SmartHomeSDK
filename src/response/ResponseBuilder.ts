@@ -16,13 +16,13 @@ export abstract class ResponseBuilder {
   private endpointBuilder?: EndpointBuilder
   private contextBuilder?: ContextBuilder
 
-  constructor(protected request: Request<unknown>) {}
+  constructor (protected request: Request<unknown>) {}
 
   /**
    * Generates a response for a request that was successfully handled.
    * @returns The compiled response.
    */
-  abstract getSucceedResponse(): Response<unknown>
+  abstract getSucceedResponse (): Response<unknown>
 
   /**
    * Generates a response for a request that failed.
@@ -30,16 +30,13 @@ export abstract class ResponseBuilder {
    * @param message The friendly error message.
    * @returns The compiled response.
    */
-  abstract getFailResponse(
-    type: string,
-    message: string
-  ): Response<ErrorResponsePayload>
+  abstract getFailResponse (type: string, message: string): Response<ErrorResponsePayload>
 
   /**
    * Adds a builder for the endpoint.
    * @returns A fluent mechanism for building an endpoint.
    */
-  addEndpoint(): EndpointBuilder {
+  addEndpoint (): EndpointBuilder {
     return (this.endpointBuilder = new EndpointBuilder(this))
   }
 
@@ -47,8 +44,8 @@ export abstract class ResponseBuilder {
    * Adds a builder for the context.
    * @returns A fluent mechanism for building a context.
    */
-  addContext(): ContextBuilder {
-    if (this.contextBuilder) {
+  addContext (): ContextBuilder {
+    if (this.contextBuilder !== undefined) {
       return this.contextBuilder
     }
     return (this.contextBuilder = new ContextBuilder(this))
@@ -62,12 +59,7 @@ export abstract class ResponseBuilder {
    * @param payload The request payload.
    * @returns The {@link Response}.
    */
-  protected getPayloadEnvelope<TPayload>(
-    namespace: string,
-    name: string,
-    payloadVersion: string,
-    payload: TPayload
-  ): Response<TPayload> {
+  protected getPayloadEnvelope<TPayload>(namespace: string, name: string, payloadVersion: string, payload: TPayload): Response<TPayload> {
     const response: Response<TPayload> = {
       event: {
         header: {
@@ -80,20 +72,20 @@ export abstract class ResponseBuilder {
       }
     }
 
-    if (this.request.directive.header.correlationToken) {
+    if (this.request.directive.header.correlationToken !== undefined && this.request.directive.header.correlationToken !== '') {
       response.event.header.correlationToken = this.request.directive.header.correlationToken
     }
 
-    if (this.endpointBuilder) {
+    if (this.endpointBuilder !== undefined) {
       const endpoint = this.endpointBuilder.getEndpoint()
-      if (endpoint) {
+      if (endpoint !== undefined) {
         response.event.endpoint = endpoint
       }
     }
 
-    if (this.contextBuilder) {
+    if (this.contextBuilder !== undefined) {
       const context = this.contextBuilder.getContext()
-      if (context) {
+      if (context !== undefined) {
         response.context = context
       }
     }
@@ -112,13 +104,13 @@ export class EndpointBuilder {
   private userId?: string
   private cookie: { [key: string]: string } = {}
 
-  constructor(private parent: ResponseBuilder) {}
+  constructor (private readonly parent: ResponseBuilder) {}
 
   /**
    * Returns the {@link ResponseBuilder} that created this builder.
    * @returns The {@link ResponseBuilder} that created this builder.
    */
-  getResponseBuilder(): ResponseBuilder {
+  getResponseBuilder (): ResponseBuilder {
     return this.parent
   }
 
@@ -126,10 +118,10 @@ export class EndpointBuilder {
    * Generates a {@link Endpoint} based on the current configuration.
    * @returns The {@link Endpoint}.
    */
-  getEndpoint(): Endpoint | undefined {
+  getEndpoint (): Endpoint | undefined {
     if (
-      !this.endpointId &&
-      !this.token &&
+      (this.endpointId === undefined || this.endpointId === '') &&
+      (this.token === undefined || this.token === '') &&
       Object.keys(this.cookie).length === 0
     ) {
       return undefined
@@ -137,12 +129,12 @@ export class EndpointBuilder {
 
     const endpoint: Endpoint = {}
 
-    if (this.endpointId) {
+    if (this.endpointId !== undefined && this.endpointId !== '') {
       endpoint.endpointId = this.endpointId
     }
 
-    if (this.token) {
-      if (this.partition && this.userId) {
+    if (this.token !== undefined && this.token !== '') {
+      if (this.partition !== undefined && this.partition !== '' && this.userId !== undefined && this.userId !== '') {
         endpoint.scope = {
           type: 'BearerTokenWithPartition',
           token: this.token,
@@ -169,7 +161,7 @@ export class EndpointBuilder {
    * @param endpointId The endpoint ID.
    * @returns This builder.
    */
-  withEndpointId(endpointId: string): this {
+  withEndpointId (endpointId: string): this {
     this.endpointId = endpointId
     return this
   }
@@ -179,7 +171,7 @@ export class EndpointBuilder {
    * @param token The token for identifying and accessing a linked user account.
    * @returns This builder.
    */
-  withSimpleToken(token: string): this {
+  withSimpleToken (token: string): this {
     this.token = token
     this.partition = undefined
     this.userId = undefined
@@ -193,7 +185,7 @@ export class EndpointBuilder {
    * @param userId A unique identifier for the user who made the request. Don't rely on {@link userId} to identify users, use {@link token} instead.
    * @returns This builder.
    */
-  withPartitionedToken(token: string, partition: string, userId: string): this {
+  withPartitionedToken (token: string, partition: string, userId: string): this {
     this.token = token
     this.partition = partition
     this.userId = userId
@@ -206,7 +198,7 @@ export class EndpointBuilder {
    * @param value The value for the additional information.
    * @returns This builder.
    */
-  withCookie(name: string, value: string): this {
+  withCookie (name: string, value: string): this {
     this.cookie[name] = value
     return this
   }
@@ -216,15 +208,15 @@ export class EndpointBuilder {
  * Represents a fluent mechanism for building a response context.
  */
 export class ContextBuilder {
-  private properties: PropState[] = []
+  private readonly properties: PropState[] = []
 
-  constructor(private parent: ResponseBuilder) {}
+  constructor (private readonly parent: ResponseBuilder) {}
 
   /**
    * Returns the {@link ResponseBuilder} that created this builder.
    * @returns The {@link ResponseBuilder} that created this builder.
    */
-  getResponseBuilder(): ResponseBuilder {
+  getResponseBuilder (): ResponseBuilder {
     return this.parent
   }
 
@@ -232,7 +224,7 @@ export class ContextBuilder {
    * Generates a {@link Context} based on the current configuration.
    * @returns The {@link Context}.
    */
-  getContext(): Context | undefined {
+  getContext (): Context | undefined {
     const context: Context = {}
 
     if (this.properties.length === 0) {
@@ -242,9 +234,7 @@ export class ContextBuilder {
     const duplicates = findPropStateDuplicates(this.properties)
 
     if (duplicates.length > 0) {
-      throw Error(
-        `The following unchanged properties are duplicated: ${duplicates}`
-      )
+      throw Error(`The following unchanged properties are duplicated: ${duplicates.join()}`)
     }
 
     context.properties = this.properties.map(prop => getPropertyState(prop))
@@ -262,14 +252,7 @@ export class ContextBuilder {
    * @param uncertaintyInMilliseconds The uncertainty of the value in milliseconds.
    * @returns This builder.
    */
-  withProperty(
-    namespace: string,
-    instance: string | undefined,
-    name: string,
-    value: unknown,
-    timeOfSample: Date,
-    uncertaintyInMilliseconds: number
-  ): this {
+  withProperty (namespace: string, instance: string | undefined, name: string, value: unknown, timeOfSample: Date, uncertaintyInMilliseconds: number): this {
     this.properties.push({
       namespace,
       instance,

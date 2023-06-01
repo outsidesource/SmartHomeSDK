@@ -1,7 +1,7 @@
+import { Context } from 'aws-lambda'
 import { expect } from 'chai'
 import 'mocha'
 import { AcceptGrantRequestPayload } from '../src/directives/acceptGrant/AcceptGrantRequestPayload'
-import { LambdaContext } from '../src/dispatcher/request/handler/LambdaContext'
 import { Request } from '../src/dispatcher/request/handler/Request'
 import { HandlerInputFactoryRepository } from '../src/dispatcher/request/handler/factory/HandlerInputFactoryRepository'
 import { getLambdaContext } from './fixtures'
@@ -9,8 +9,8 @@ import { getLambdaContext } from './fixtures'
 const request: Request<AcceptGrantRequestPayload> = require('./fixtures/acceptGrantRequest.json')
 
 const factory = {
-  canCreate: (request: Request<unknown>, context: LambdaContext) => true,
-  create: (request: Request<unknown>, context: LambdaContext) => undefined,
+  canCreate: (request: Request<unknown>, context: Context) => true,
+  create: (request: Request<unknown>, context: Context) => undefined,
 }
 const lambdaContext = getLambdaContext()
 

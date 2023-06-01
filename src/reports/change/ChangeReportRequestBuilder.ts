@@ -2,10 +2,10 @@ import { v4 as uuidv4 } from 'uuid'
 import { Request, RequestEndpoint } from '../../outboundRequest/Request'
 import {
   Context,
+  PropState,
   findPropStateDuplicates,
   getPropertyState,
-  isSamePropState,
-  PropState
+  isSamePropState
 } from '../../response/Response'
 import { ChangeCauseType, ChangeReportPayload } from './ChangeReportPayload'
 
@@ -20,15 +20,15 @@ export class ChangeReportRequestBuilder {
   private messageId: string
   private endpointBuilder?: EndpointBuilder
   private contextBuilder?: ContextBuilder
-  private unchangedProperties: PropState[] = []
-  private changedProperties: PropState[] = []
+  private readonly unchangedProperties: PropState[] = []
+  private readonly changedProperties: PropState[] = []
 
-  constructor(endpointId: string, private changeCause: ChangeCauseType) {
+  constructor (endpointId: string, private readonly changeCause: ChangeCauseType) {
     this.messageId = uuidv4()
     this.addEndpoint().withEndpointId(endpointId)
   }
 
-  getRequestBody(): Request<ChangeReportPayload> {
+  getRequestBody (): Request<ChangeReportPayload> {
     if (this.unchangedProperties.length > 0) {
       const contextBuilder = this.addContext()
       this.unchangedProperties.map(prop =>
@@ -46,9 +46,7 @@ export class ChangeReportRequestBuilder {
     const duplicates = findPropStateDuplicates(this.changedProperties)
 
     if (duplicates.length > 0) {
-      throw Error(
-        `The following changed properties are duplicated: ${duplicates}`
-      )
+      throw Error(`The following changed properties are duplicated: ${duplicates.join()}`)
     }
 
     const intersection = this.unchangedProperties.filter(x =>
@@ -56,11 +54,7 @@ export class ChangeReportRequestBuilder {
     )
 
     if (intersection.length > 0) {
-      throw Error(
-        `The following properties cannot be both changed and unchanged: ${JSON.stringify(
-          intersection
-        )}`
-      )
+      throw Error(`The following properties cannot be both changed and unchanged: ${JSON.stringify(intersection)}`)
     }
 
     if (this.changedProperties.length === 0) {
@@ -88,16 +82,16 @@ export class ChangeReportRequestBuilder {
       }
     }
 
-    if (this.endpointBuilder) {
+    if (this.endpointBuilder !== undefined) {
       const endpoint = this.endpointBuilder.getEndpoint()
-      if (endpoint) {
+      if (endpoint !== undefined) {
         request.event.endpoint = endpoint
       }
     }
 
-    if (this.contextBuilder) {
+    if (this.contextBuilder !== undefined) {
       const context = this.contextBuilder.getContext()
-      if (context) {
+      if (context !== undefined) {
         request.context = context
       }
     }
@@ -109,8 +103,8 @@ export class ChangeReportRequestBuilder {
    * Adds a builder for the endpoint.
    * @returns A fluent mechanism for building an endpoint.
    */
-  addEndpoint(): EndpointBuilder {
-    if (this.endpointBuilder) {
+  addEndpoint (): EndpointBuilder {
+    if (this.endpointBuilder !== undefined) {
       return this.endpointBuilder
     }
     return (this.endpointBuilder = new EndpointBuilder(this))
@@ -120,8 +114,8 @@ export class ChangeReportRequestBuilder {
    * Adds a builder for the context.
    * @returns A fluent mechanism for building a context.
    */
-  addContext(): ContextBuilder {
-    if (this.contextBuilder) {
+  addContext (): ContextBuilder {
+    if (this.contextBuilder !== undefined) {
       return this.contextBuilder
     }
     return (this.contextBuilder = new ContextBuilder(this))
@@ -132,7 +126,7 @@ export class ChangeReportRequestBuilder {
    * @param messageId The message ID to explicitly use.
    * @returns This builder.
    */
-  withMessageId(messageId: string): this {
+  withMessageId (messageId: string): this {
     this.messageId = messageId
     return this
   }
@@ -147,14 +141,7 @@ export class ChangeReportRequestBuilder {
    * @param uncertaintyInMilliseconds The uncertainty of the value in milliseconds.
    * @returns This builder.
    */
-  withUnchangedProperty(
-    namespace: string,
-    instance: string | undefined,
-    name: string,
-    value: unknown,
-    timeOfSample: Date,
-    uncertaintyInMilliseconds: number
-  ): this {
+  withUnchangedProperty (namespace: string, instance: string | undefined, name: string, value: unknown, timeOfSample: Date, uncertaintyInMilliseconds: number): this {
     this.unchangedProperties.push({
       namespace,
       instance,
@@ -176,14 +163,7 @@ export class ChangeReportRequestBuilder {
    * @param uncertaintyInMilliseconds The uncertainty of the value in milliseconds.
    * @returns This builder.
    */
-  withChangedProperty(
-    namespace: string,
-    instance: string | undefined,
-    name: string,
-    value: unknown,
-    timeOfSample: Date,
-    uncertaintyInMilliseconds: number
-  ): this {
+  withChangedProperty (namespace: string, instance: string | undefined, name: string, value: unknown, timeOfSample: Date, uncertaintyInMilliseconds: number): this {
     this.changedProperties.push({
       namespace,
       instance,
@@ -206,13 +186,13 @@ export class EndpointBuilder {
   private userId?: string
   private cookie: { [key: string]: string } = {}
 
-  constructor(private parent: ChangeReportRequestBuilder) {}
+  constructor (private readonly parent: ChangeReportRequestBuilder) {}
 
   /**
    * Returns the {@link ChangeReportRequestBuilder} that created this builder.
    * @returns The {@link ChangeReportRequestBuilder} that created this builder.
    */
-  getRequestBuilder(): ChangeReportRequestBuilder {
+  getRequestBuilder (): ChangeReportRequestBuilder {
     return this.parent
   }
 
@@ -220,8 +200,8 @@ export class EndpointBuilder {
    * Generates a {@link RequestEndpoint} based on the current configuration.
    * @returns The {@link RequestEndpoint}.
    */
-  getEndpoint(): RequestEndpoint | undefined {
-    if (!this.endpointId) {
+  getEndpoint (): RequestEndpoint | undefined {
+    if (this.endpointId === undefined || this.endpointId === '') {
       return undefined
     }
 
@@ -229,8 +209,8 @@ export class EndpointBuilder {
       endpointId: this.endpointId
     }
 
-    if (this.token) {
-      if (this.partition && this.userId) {
+    if (this.token !== undefined && this.token !== '') {
+      if (this.partition !== undefined && this.partition !== '' && this.userId !== undefined && this.userId !== '') {
         endpoint.scope = {
           type: 'BearerTokenWithPartition',
           token: this.token,
@@ -257,7 +237,7 @@ export class EndpointBuilder {
    * @param endpointId The endpoint ID.
    * @returns This builder.
    */
-  withEndpointId(endpointId: string): this {
+  withEndpointId (endpointId: string): this {
     this.endpointId = endpointId
     return this
   }
@@ -267,7 +247,7 @@ export class EndpointBuilder {
    * @param token The token for identifying and accessing a linked user account.
    * @returns This builder.
    */
-  withSimpleToken(token: string): this {
+  withSimpleToken (token: string): this {
     this.token = token
     this.partition = undefined
     this.userId = undefined
@@ -281,7 +261,7 @@ export class EndpointBuilder {
    * @param userId A unique identifier for the user who made the request. Don't rely on {@link userId} to identify users, use {@link token} instead.
    * @returns This builder.
    */
-  withPartitionedToken(token: string, partition: string, userId: string): this {
+  withPartitionedToken (token: string, partition: string, userId: string): this {
     this.token = token
     this.partition = partition
     this.userId = userId
@@ -294,7 +274,7 @@ export class EndpointBuilder {
    * @param value The value for the additional information.
    * @returns This builder.
    */
-  withCookie(name: string, value: string): this {
+  withCookie (name: string, value: string): this {
     this.cookie[name] = value
     return this
   }
@@ -304,15 +284,15 @@ export class EndpointBuilder {
  * Represents a fluent mechanism for building a request context.
  */
 export class ContextBuilder {
-  private properties: PropState[] = []
+  private readonly properties: PropState[] = []
 
-  constructor(private parent: ChangeReportRequestBuilder) {}
+  constructor (private readonly parent: ChangeReportRequestBuilder) {}
 
   /**
    * Returns the {@link ChangeReportRequestBuilder} that created this builder.
    * @returns The {@link ChangeReportRequestBuilder} that created this builder.
    */
-  getRequestBuilder(): ChangeReportRequestBuilder {
+  getRequestBuilder (): ChangeReportRequestBuilder {
     return this.parent
   }
 
@@ -320,7 +300,7 @@ export class ContextBuilder {
    * Generates a {@link Context} based on the current configuration.
    * @returns The {@link Context}.
    */
-  getContext(): Context | undefined {
+  getContext (): Context | undefined {
     const context: Context = {}
 
     if (this.properties.length === 0) {
@@ -330,7 +310,7 @@ export class ContextBuilder {
     const duplicates = findPropStateDuplicates(this.properties)
 
     if (duplicates.length > 0) {
-      throw Error(`The following properties are duplicated: ${duplicates}`)
+      throw Error(`The following properties are duplicated: ${duplicates.join()}`)
     }
 
     context.properties = this.properties.map(prop => getPropertyState(prop))
@@ -348,14 +328,7 @@ export class ContextBuilder {
    * @param uncertaintyInMilliseconds The uncertainty of the value in milliseconds.
    * @returns This builder.
    */
-  withProperty(
-    namespace: string,
-    instance: string | undefined,
-    name: string,
-    value: unknown,
-    timeOfSample: Date,
-    uncertaintyInMilliseconds: number
-  ): this {
+  withProperty (namespace: string, instance: string | undefined, name: string, value: unknown, timeOfSample: Date, uncertaintyInMilliseconds: number): this {
     this.properties.push({
       namespace,
       instance,

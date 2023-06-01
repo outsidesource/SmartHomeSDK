@@ -1,9 +1,5 @@
 import { DiscoveryEndpointBuilder } from './DiscoveryEndpointBuilder'
-import {
-  DiscoveryEndpoint,
-  DiscoveryPayload,
-  SemanticActionNames
-} from './DiscoveryPayload'
+import { DiscoveryEndpoint, DiscoveryPayload, SemanticActionNames } from './DiscoveryPayload'
 
 const maxEndpoints = 300
 
@@ -11,9 +7,9 @@ const maxEndpoints = 300
  * Represents a builder for a {@link DiscoveryPayload}.
  */
 export class DiscoveryPayloadBuilder {
-  private endpointBuilders: DiscoveryEndpointBuilder[] = []
+  private readonly endpointBuilders: DiscoveryEndpointBuilder[] = []
 
-  getPayload(): DiscoveryPayload {
+  getPayload (): DiscoveryPayload {
     if (this.endpointBuilders.length > maxEndpoints) {
       throw Error(`The number of endpoints cannot exceed ${maxEndpoints}.`)
     }
@@ -27,27 +23,20 @@ export class DiscoveryPayloadBuilder {
     )
 
     if (duplicateSematicActionNames.length > 0) {
-      throw Error(
-        `Duplicate semantic action names found for the following: ${JSON.stringify(
-          duplicateSematicActionNames
-        )}`
-      )
+      throw Error(`Duplicate semantic action names found for the following: ${JSON.stringify(duplicateSematicActionNames)}`)
     }
 
     return { endpoints }
   }
 
-  private getDuplicateSematicActionNames(
-    endpoints: DiscoveryEndpoint[]
-  ): SemanticActionNameUsage[] {
+  private getDuplicateSematicActionNames (endpoints: DiscoveryEndpoint[]): SemanticActionNameUsage[] {
     const histo: SemanticActionNameUsage[] = []
     for (const endpoint of endpoints) {
       for (const capability of endpoint.capabilities) {
-        for (const actionMapping of capability.semantics?.actionMappings ??
-          []) {
+        for (const actionMapping of capability.semantics?.actionMappings ?? []) {
           for (const actionName of actionMapping.actions) {
             let item = histo.find(x => x.action === actionName)
-            if (!item) {
+            if (item === undefined) {
               histo.push(
                 (item = {
                   action: actionName,
@@ -75,19 +64,8 @@ export class DiscoveryPayloadBuilder {
    * @param friendlyName The name used by the user to identify the device. You set an initial value, and later the user can change the friendly name by using the Alexa app. This value can contain up to 128 characters, and shouldn't contain special characters or punctuation.
    * @returns A builder for a {@link DiscoveryEndpoint}.
    */
-  addDiscoveryEndpoint(
-    endpointId: string,
-    manufacturerName: string,
-    description: string,
-    friendlyName: string
-  ): DiscoveryEndpointBuilder {
-    const endpointBuilder = new DiscoveryEndpointBuilder(
-      this,
-      endpointId,
-      manufacturerName,
-      description,
-      friendlyName
-    )
+  addDiscoveryEndpoint (endpointId: string, manufacturerName: string, description: string, friendlyName: string): DiscoveryEndpointBuilder {
+    const endpointBuilder = new DiscoveryEndpointBuilder(this, endpointId, manufacturerName, description, friendlyName)
     this.endpointBuilders.push(endpointBuilder)
     return endpointBuilder
   }

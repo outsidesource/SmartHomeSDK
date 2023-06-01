@@ -4,18 +4,19 @@ import { SemanticActionMapping, SemanticActionNames } from './DiscoveryPayload'
 /** Represents a builder for a {@link SemanticActionMapping}. */
 export class SemanticActionBuilder {
   private actions: SemanticActionNames[] = []
-  private payload?: unknown
+  private payload: unknown | undefined
 
-  constructor(
-    private parent: CapabilityBuilder,
-    private directiveName: string
-  ) {}
+  constructor (
+    private readonly parent: CapabilityBuilder,
+    private readonly directiveName: string
+  ) {
+  }
 
   /**
    * Gets the parent {@link CapabilityBuilder}.
    * @returns The parent {@link CapabilityBuilder}.
    */
-  getCapabilityBuilder(): CapabilityBuilder {
+  getCapabilityBuilder (): CapabilityBuilder {
     return this.parent
   }
 
@@ -23,7 +24,7 @@ export class SemanticActionBuilder {
    * Generates a {@link SemanticActionMapping} based on the current configuration.
    * @returns The {@link SemanticActionMapping}.
    */
-  getMapping(): SemanticActionMapping {
+  getMapping (): SemanticActionMapping {
     if (this.actions.length === 0) {
       throw Error('At least one semantic action must be specified.')
     }
@@ -37,10 +38,6 @@ export class SemanticActionBuilder {
       }
     }
 
-    if (!this.payload) {
-      delete result.directive.payload
-    }
-
     return result
   }
 
@@ -49,7 +46,7 @@ export class SemanticActionBuilder {
    * @param actions The list of action names.
    * @returns This builder.
    */
-  withActions(...actions: SemanticActionNames[]): this {
+  withActions (...actions: SemanticActionNames[]): this {
     this.actions = [...new Set([...this.actions, ...actions])]
     return this
   }
@@ -59,7 +56,7 @@ export class SemanticActionBuilder {
    * @param payload The payload to send to the directive.
    * @returns This builder.
    */
-  withDirectivePayload(payload?: unknown): this {
+  withDirectivePayload (payload?: unknown): this {
     this.payload = payload
     return this
   }

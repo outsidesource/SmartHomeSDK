@@ -7,25 +7,26 @@ import { SemanticStateBuilder } from './SemanticStateBuilder'
 
 /** Represents a builder for an {@link EndpointCapability}. */
 export class CapabilityBuilder {
-  private instance?: string
-  private propertiesBuilder?: PropertiesBuilder
-  private resourceFriendlyNames: ResourceLabel[] = []
-  private configuration?: unknown
-  private semanticActionBuilders: SemanticActionBuilder[] = []
-  private semanticStateBuilders: SemanticStateBuilder[] = []
-  private verifications: string[] = []
+  private instance: string | undefined
+  private propertiesBuilder: PropertiesBuilder | undefined
+  private readonly resourceFriendlyNames: ResourceLabel[] = []
+  private configuration: unknown | undefined
+  private readonly semanticActionBuilders: SemanticActionBuilder[] = []
+  private readonly semanticStateBuilders: SemanticStateBuilder[] = []
+  private readonly verifications: string[] = []
 
-  constructor(
-    private parent: DiscoveryEndpointBuilder,
-    private interfaceName: string,
-    private version: string
-  ) {}
+  constructor (
+    private readonly parent: DiscoveryEndpointBuilder,
+    private readonly interfaceName: string,
+    private readonly version: string
+  ) {
+  }
 
   /**
    * Gets the parent {@link DiscoveryEndpointBuilder}.
    * @returns The parent {@link DiscoveryEndpointBuilder}.
    */
-  getEndpointBuilder(): DiscoveryEndpointBuilder {
+  getEndpointBuilder (): DiscoveryEndpointBuilder {
     return this.parent
   }
 
@@ -33,7 +34,7 @@ export class CapabilityBuilder {
    * Generates an {@link EndpointCapability} based on the current configuration.
    * @returns The {@link EndpointCapability}.
    */
-  getCapability(): EndpointCapability {
+  getCapability (): EndpointCapability {
     const properties = this.propertiesBuilder?.getProperties()
 
     const capabilityResources =
@@ -58,13 +59,13 @@ export class CapabilityBuilder {
       this.verifications.length === 0
         ? undefined
         : this.verifications.map(directive => {
-            return {
-              directive,
-              methods: [{ '@type': 'Confirmation' as const }]
-            }
-          })
+          return {
+            directive,
+            methods: [{ '@type': 'Confirmation' as const }]
+          }
+        })
 
-    const result = {
+    return {
       type: 'AlexaInterface' as const,
       interface: this.interfaceName,
       instance: this.instance,
@@ -75,32 +76,6 @@ export class CapabilityBuilder {
       semantics,
       verificationsRequired
     }
-
-    if (!this.instance) {
-      delete result.instance
-    }
-
-    if (!properties) {
-      delete result.properties
-    }
-
-    if (!capabilityResources) {
-      delete result.capabilityResources
-    }
-
-    if (!this.configuration) {
-      delete result.configuration
-    }
-
-    if (!semantics) {
-      delete result.semantics
-    }
-
-    if (!verificationsRequired) {
-      delete result.verificationsRequired
-    }
-
-    return result
   }
 
   /**
@@ -108,7 +83,7 @@ export class CapabilityBuilder {
    * @param instance The instance name.
    * @returns This builder.
    */
-  withInstance(instance: string): this {
+  withInstance (instance: string): this {
     this.instance = instance
     return this
   }
@@ -117,8 +92,8 @@ export class CapabilityBuilder {
    * Adds a builder for setting properties for the interface.
    * @returns A builder for a {@link CapabilityProperties}.
    */
-  addProperties(): PropertiesBuilder {
-    if (!this.propertiesBuilder) {
+  addProperties (): PropertiesBuilder {
+    if (this.propertiesBuilder === undefined) {
       this.propertiesBuilder = new PropertiesBuilder(this)
     }
     return this.propertiesBuilder
@@ -129,7 +104,7 @@ export class CapabilityBuilder {
    * @param assetId The ID of the predefined friendly name.
    * @returns This builder.
    */
-  withAssetResource(assetId: string): this {
+  withAssetResource (assetId: string): this {
     this.resourceFriendlyNames.push({
       '@type': 'asset',
       value: {
@@ -139,7 +114,7 @@ export class CapabilityBuilder {
     return this
   }
 
-  //TODO: Possibly add method for custom asset IDs when a catalog is available
+  // TODO: Possibly add method for custom asset IDs when a catalog is available
 
   /**
    * Adds a custom friendly name that users can use to more naturally interact with an interface.
@@ -147,7 +122,7 @@ export class CapabilityBuilder {
    * @param locale The locale that the friendly name is defined for.
    * @returns This builder.
    */
-  withTextResource(text: string, locale: Locales): this {
+  withTextResource (text: string, locale: Locales): this {
     this.resourceFriendlyNames.push({
       '@type': 'text',
       value: {
@@ -163,7 +138,7 @@ export class CapabilityBuilder {
    * @param configuration An object that contains configuration data.
    * @returns This builder.
    */
-  withConfiguration(configuration: unknown): this {
+  withConfiguration (configuration: unknown): this {
     this.configuration = configuration
     return this
   }
@@ -172,7 +147,7 @@ export class CapabilityBuilder {
    * Adds a semantic mapping for invoking actions on an interface.
    * @returns A builder for a {@link SemanticActionMapping}.
    */
-  addSemanticAction(directiveName: string): SemanticActionBuilder {
+  addSemanticAction (directiveName: string): SemanticActionBuilder {
     const actionBuilder = new SemanticActionBuilder(this, directiveName)
     this.semanticActionBuilders.push(actionBuilder)
     return actionBuilder
@@ -182,7 +157,7 @@ export class CapabilityBuilder {
    * Adds a semantic mapping for inquiring about an interface's state.
    * @returns A builder for a {@link SemanticStateMapping}.
    */
-  addSemanticState(): SemanticStateBuilder {
+  addSemanticState (): SemanticStateBuilder {
     const stateBuilder = new SemanticStateBuilder(this)
     this.semanticStateBuilders.push(stateBuilder)
     return stateBuilder
@@ -193,7 +168,7 @@ export class CapabilityBuilder {
    * @param directive The name of the directive that requires verification.
    * @returns This builder.
    */
-  withVerification(directive: string): this {
+  withVerification (directive: string): this {
     this.verifications.push(directive)
     return this
   }

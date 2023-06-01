@@ -1,24 +1,27 @@
 import { CapabilityBuilder } from './CapabilityBuilder'
 import { SemanticStateMapping, SemanticStateNames } from './DiscoveryPayload'
 
-const semanticStateValueType = 'StatesToValue'
-const semanticStateRangeType = 'StatesToRange'
+enum SemanticType {
+  StatesToValue,
+  StatesToRange
+}
 
 /** Represents a builder for a {@link SemanticStateMapping}. */
 export class SemanticStateBuilder {
   private states: SemanticStateNames[] = []
-  private type = ''
-  private value?: number | string
-  private minimum?: number
-  private maximum?: number
+  private type: SemanticType | undefined
+  private value: number | string | undefined
+  private minimum: number | undefined
+  private maximum: number | undefined
 
-  constructor(private parent: CapabilityBuilder) {}
+  constructor (private readonly parent: CapabilityBuilder) {
+  }
 
   /**
    * Gets the parent {@link CapabilityBuilder}.
    * @returns The parent {@link CapabilityBuilder}.
    */
-  getCapabilityBuilder(): CapabilityBuilder {
+  getCapabilityBuilder (): CapabilityBuilder {
     return this.parent
   }
 
@@ -26,50 +29,53 @@ export class SemanticStateBuilder {
    * Generates a {@link SemanticStateMapping} based on the current configuration.
    * @returns The {@link SemanticStateMapping}.
    */
-  getMapping(): SemanticStateMapping {
+  getMapping (): SemanticStateMapping {
     if (this.states.length === 0) {
       throw Error('At least one semantic state must be specified.')
     }
 
-    if (
-      this.type !== semanticStateValueType &&
-      this.type !== semanticStateRangeType
-    ) {
-      throw Error('Either a value or range must be specified.')
-    }
+    switch (this.type) {
+      case SemanticType.StatesToValue: {
+        if (this.value === undefined) {
+          throw Error('The value is required.')
+        }
 
-    if (this.type === semanticStateValueType) {
-      if (this.value === undefined) {
-        throw Error('The value is required.')
-      }
-
-      return {
-        '@type': semanticStateValueType,
-        states: this.states,
-        value: this.value
-      }
-    }
-
-    if (this.type === semanticStateRangeType) {
-      if (this.minimum === undefined) {
-        throw Error('The minimum is required.')
-      }
-
-      if (this.maximum === undefined) {
-        throw Error('The maximum is required.')
-      }
-
-      return {
-        '@type': semanticStateRangeType,
-        states: this.states,
-        range: {
-          minimumValue: this.minimum,
-          maximumValue: this.maximum
+        return {
+          '@type': 'StatesToValue',
+          states: this.states,
+          value: this.value
         }
       }
-    }
 
-    throw Error(`State mapping type "${this.type}" is not recognized.`)
+      case SemanticType.StatesToRange: {
+        if (this.minimum === undefined) {
+          throw Error('The minimum is required.')
+        }
+
+        if (this.maximum === undefined) {
+          throw Error('The maximum is required.')
+        }
+
+        return {
+          '@type': 'StatesToRange',
+          states: this.states,
+          range: {
+            minimumValue: this.minimum,
+            maximumValue: this.maximum
+          }
+        }
+      }
+
+      case undefined: {
+        throw Error('Either a value or range must be specified.')
+      }
+
+      /* istanbul ignore next: just an exhaustive check at compile time */
+      default: {
+        const exhaustiveCheck: never = this.type
+        throw new Error(exhaustiveCheck)
+      }
+    }
   }
 
   /**
@@ -77,7 +83,7 @@ export class SemanticStateBuilder {
    * @param states The list of Alexa states.
    * @returns This builder.
    */
-  withStates(...states: SemanticStateNames[]): this {
+  withStates (...states: SemanticStateNames[]): this {
     this.states = [...new Set([...this.states, ...states])]
     return this
   }
@@ -87,8 +93,8 @@ export class SemanticStateBuilder {
    * @param value The value of your controller that corresponds to the specified Alexa states.
    * @returns This builder.
    */
-  withValue(value: number | string): this {
-    this.type = semanticStateValueType
+  withValue (value: number | string): this {
+    this.type = SemanticType.StatesToValue
     this.value = value
     return this
   }
@@ -99,8 +105,8 @@ export class SemanticStateBuilder {
    * @param maximum The maximum value of your controller that corresponds to the specified Alexa states.
    * @returns This builder.
    */
-  withRange(minimum: number, maximum: number): this {
-    this.type = semanticStateRangeType
+  withRange (minimum: number, maximum: number): this {
+    this.type = SemanticType.StatesToRange
     this.minimum = minimum
     this.maximum = maximum
     return this
