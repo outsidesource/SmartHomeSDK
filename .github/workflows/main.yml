@@ -23,20 +23,20 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
 
       - name: Run Tests
-        run: npm run test-check
+        run: yarn test-check
         env:
           CI: true
 
       - name: Build
         if: ${{ (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'publish') }}
-        run: npm run build
+        run: yarn build
 
       - name: Publish
         if: ${{ (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'publish') }}
-        run: npm publish
+        run: yarn publish
         working-directory: ./dist
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
