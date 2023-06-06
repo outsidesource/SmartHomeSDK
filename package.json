@@ -62,7 +62,9 @@
       ".tsx"
     ],
     "exclude": [
-      "**/*.d.ts"
+      "**/*.d.ts",
+      "**/*.spec.ts",
+      "test"
     ],
     "reporter": [
       "text"
