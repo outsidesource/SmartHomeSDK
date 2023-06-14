@@ -15,7 +15,7 @@ export interface DiscoveryEndpoint {
   /**
    * The identifier for the endpoint. The identifier must be unique
    * across all devices for the skill. The identifier must be consistent
-   * for all discovery requests for the same device.
+   * for all discovery, addOrUpdate, and delete requests for the same device.
    */
   endpointId: string
 
