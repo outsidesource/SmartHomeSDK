@@ -1,4 +1,5 @@
-import { Context, Scope } from '../response/types'
+import { Context, Scope } from '../util/types'
+
 /**
  * Contains the header, payload, and context for a request.
  */

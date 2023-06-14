@@ -18,9 +18,7 @@ export class DiscoveryPayloadBuilder {
       builder.getEndpoint()
     )
 
-    const duplicateSematicActionNames = this.getDuplicateSematicActionNames(
-      endpoints
-    )
+    const duplicateSematicActionNames = this.getDuplicateSematicActionNames(endpoints)
 
     if (duplicateSematicActionNames.length > 0) {
       throw Error(`Duplicate semantic action names found for the following: ${JSON.stringify(duplicateSematicActionNames)}`)

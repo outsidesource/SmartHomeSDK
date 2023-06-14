@@ -1,6 +1,8 @@
 import { Request } from '../dispatcher/request/handler/types'
+import { convertPropStateToPropertyState, findDuplicates, getPropStateKey } from '../util/helpers'
+import { Context, PropState } from '../util/types'
 import { ErrorResponsePayload } from './payloads/types'
-import { Context, Endpoint, PropState, PropertyState, Response } from './types'
+import { Endpoint, Response } from './types'
 
 /**
  * Represents a fluent mechanism for building a response.
@@ -218,13 +220,12 @@ export class ContextBuilder {
       return undefined
     }
 
-    const duplicates = findPropStateDuplicates(this.properties)
-
+    const duplicates = findDuplicates(this.properties, getPropStateKey)
     if (duplicates.length > 0) {
       throw Error(`The following unchanged properties are duplicated: ${duplicates.join()}`)
     }
 
-    context.properties = this.properties.map(prop => getPropertyState(prop))
+    context.properties = this.properties.map(convertPropStateToPropertyState)
 
     return context
   }
@@ -251,38 +252,4 @@ export class ContextBuilder {
 
     return this
   }
-}
-
-export const isSamePropState = (x: PropState, y: PropState): boolean => {
-  return x.namespace === y.namespace &&
-    x.instance === y.instance &&
-    x.name === y.name
-}
-
-export const findPropStateDuplicates = (arr: PropState[]): string[] => {
-  const histo = histogram(arr)
-  return Object.keys(histo).filter(key => histo[key] > 1)
-}
-
-const histogram = (arr: PropState[]): { [key: string]: number } => {
-  return arr.reduce((histo: { [key: string]: number }, prop) => {
-    const key = JSON.stringify({ namespace: prop.namespace, instance: prop.instance, name: prop.name })
-    return { ...histo, [key]: (histo[key] ?? 0) + 1 }
-  }, {})
-}
-
-export const getPropertyState = (prop: PropState): PropertyState => {
-  const result: PropertyState = {
-    namespace: prop.namespace,
-    name: prop.name,
-    value: prop.value,
-    timeOfSample: prop.timeOfSample.toISOString(),
-    uncertaintyInMilliseconds: prop.uncertaintyInMilliseconds
-  }
-
-  if (prop.instance !== undefined && prop.instance !== '') {
-    result.instance = prop.instance
-  }
-
-  return result
 }

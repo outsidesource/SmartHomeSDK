@@ -1,4 +1,4 @@
-import { Scope } from '../../response/types'
+import { Scope } from '../../util/types'
 
 /** Represents the payload for removing a collection of endpoints associated with the skill. */
 export interface DeleteReportPayload {

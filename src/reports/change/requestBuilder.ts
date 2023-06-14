@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { Request, RequestEndpoint } from '../../outboundRequest/types'
-import { findPropStateDuplicates, getPropertyState, isSamePropState } from '../../response/baseResponseBuilder'
-import { Context, PropState } from '../../response/types'
+import { convertPropStateToPropertyState, findDuplicates, findIntersection, getPropStateKey, isSamePropState } from '../../util/helpers'
+import { Context, PropState } from '../../util/types'
 import { ChangeCauseType, ChangeReportPayload } from './types'
 
 const namespace = 'Alexa'
@@ -38,16 +38,12 @@ export class ChangeReportRequestBuilder {
       )
     }
 
-    const duplicates = findPropStateDuplicates(this.changedProperties)
-
+    const duplicates = findDuplicates(this.changedProperties, getPropStateKey)
     if (duplicates.length > 0) {
       throw Error(`The following changed properties are duplicated: ${duplicates.join()}`)
     }
 
-    const intersection = this.unchangedProperties.filter(x =>
-      this.changedProperties.find(y => isSamePropState(x, y))
-    )
-
+    const intersection = findIntersection(this.unchangedProperties, this.changedProperties, isSamePropState)
     if (intersection.length > 0) {
       throw Error(`The following properties cannot be both changed and unchanged: ${JSON.stringify(intersection)}`)
     }
@@ -61,7 +57,7 @@ export class ChangeReportRequestBuilder {
         cause: {
           type: this.changeCause
         },
-        properties: this.changedProperties.map(prop => getPropertyState(prop))
+        properties: this.changedProperties.map(convertPropStateToPropertyState)
       }
     }
 
@@ -298,13 +294,12 @@ export class ContextBuilder {
       return undefined
     }
 
-    const duplicates = findPropStateDuplicates(this.properties)
-
+    const duplicates = findDuplicates(this.properties, getPropStateKey)
     if (duplicates.length > 0) {
       throw Error(`The following properties are duplicated: ${duplicates.join()}`)
     }
 
-    context.properties = this.properties.map(prop => getPropertyState(prop))
+    context.properties = this.properties.map(convertPropStateToPropertyState)
 
     return context
   }

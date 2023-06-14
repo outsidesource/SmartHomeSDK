@@ -1,4 +1,4 @@
-import { PropertyState } from '../../response/types'
+import { PropertyState } from '../../util/types'
 
 /** A payload representing one or more property changes. */
 export interface ChangeReportPayload {
