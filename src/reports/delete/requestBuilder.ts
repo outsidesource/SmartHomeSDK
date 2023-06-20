@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { Request } from '../../outboundRequest/types'
+import { findDuplicates } from '../../util/helpers'
 import { DeleteReportPayload } from './types'
 
 const namespace = 'Alexa.Discovery'
@@ -20,6 +21,11 @@ export class DeleteReportRequestBuilder {
   getRequestBody (): Request<DeleteReportPayload> {
     if (this.endpointIds.length === 0) {
       throw Error('At least one endpoint is required.')
+    }
+
+    const duplicates = findDuplicates(this.endpointIds, id => id)
+    if (duplicates.length > 0) {
+      throw new Error(`Duplicate endpoint ids found for the following: ${JSON.stringify(duplicates)}`)
     }
 
     const payload = this.getDeleteReportPayload(this.endpointIds)

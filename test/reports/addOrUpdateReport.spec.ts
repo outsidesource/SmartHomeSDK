@@ -145,6 +145,19 @@ describe('add or update report', function () {
 
         expect(() => sut.getRequestBody()).to.throw('At least one endpoint is required.')
       })
+
+      it('throws when duplicate endpoints have been added', function () {
+        const sut = new AddOrUpdateReportRequestBuilder()
+        sut.withSimpleToken('VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==')
+        sut.addDiscoveryEndpoint('WC:e889552c8a25', 'Sample Manufacturer', 'Smart Thermostat by Sample Manufacturer', 'My Home')
+          .withDisplayCategories(DisplayCategories.Thermostat)
+          .addCapability('Alexa', '3').getEndpointBuilder()
+        sut.addDiscoveryEndpoint('WC:e889552c8a25', 'Sample Manufacturer', 'Smart Thermostat by Sample Manufacturer', 'My Home')
+          .withDisplayCategories(DisplayCategories.Thermostat)
+          .addCapability('Alexa', '3').getEndpointBuilder()
+
+        expect(() => sut.getRequestBody()).to.throw('Duplicate endpoint ids found for the following: ["WC:e889552c8a25"]')
+      })
     })
 
 

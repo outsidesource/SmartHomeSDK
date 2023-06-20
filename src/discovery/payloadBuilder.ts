@@ -1,3 +1,4 @@
+import { findDuplicates } from '../util/helpers'
 import { DiscoveryEndpointBuilder } from './endpointBuilder'
 import { DiscoveryEndpoint, DiscoveryPayload, SemanticActionNames } from './payload'
 
@@ -17,6 +18,11 @@ export class DiscoveryPayloadBuilder {
     const endpoints = this.endpointBuilders.map(builder =>
       builder.getEndpoint()
     )
+
+    const duplicates = findDuplicates(endpoints, endpoint => endpoint.endpointId)
+    if (duplicates.length > 0) {
+      throw new Error(`Duplicate endpoint ids found for the following: ${JSON.stringify(duplicates)}`)
+    }
 
     const duplicateSematicActionNames = this.getDuplicateSematicActionNames(endpoints)
 

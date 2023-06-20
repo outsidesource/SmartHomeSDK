@@ -93,6 +93,18 @@ describe('discovery payload builder', function () {
       expect(() => sut.getPayload()).to.throw('The number of endpoints cannot exceed 300.')
     })
 
+    it('throws when duplicate endpoints have been added', function () {
+      const sut = new DiscoveryPayloadBuilder()
+      sut.addDiscoveryEndpoint(`endpointId`, 'manufacturerName', 'description', `friendly name`)
+        .withDisplayCategories(DisplayCategories.Other)
+        .addCapability('Alexa', '3')
+      sut.addDiscoveryEndpoint(`endpointId`, 'manufacturerName', 'description', `friendly name`)
+        .withDisplayCategories(DisplayCategories.Other)
+        .addCapability('Alexa', '3')
+
+      expect(() => sut.getPayload()).to.throw('Duplicate endpoint ids found for the following: ["endpointId"]')
+    })
+
     it('throws if semantic action names are used more than once in a single endpoint', function () {
       const sut = new DiscoveryPayloadBuilder()
       sut.addDiscoveryEndpoint('endpointId', 'manufacturerName', 'description', 'friendly name')
