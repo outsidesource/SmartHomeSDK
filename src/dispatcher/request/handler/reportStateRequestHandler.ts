@@ -1,14 +1,14 @@
-import { RequestHandler } from 'ask-sdk-runtime'
 import { isReportStateRequest } from '../../../directives/reportState/handlerInputFactory'
 import { ReportStateResponseBuilder } from '../../../directives/reportState/responseBuilder'
 import { EmptyResponsePayload, ErrorResponsePayload } from '../../../response/payloads/types'
 import { Response } from '../../../response/types'
+import { SmartHomeSkillRequestHandler } from './baseRequestHandler'
 import { HandlerInput } from './types'
 
 /**
  * A base implementation for user-created handler logic for report state requests.
  */
-export abstract class ReportStateRequestHandler implements RequestHandler<HandlerInput<unknown, ReportStateResponseBuilder>, Response<EmptyResponsePayload | ErrorResponsePayload>> {
+export abstract class ReportStateRequestHandler implements SmartHomeSkillRequestHandler<unknown, ReportStateResponseBuilder, EmptyResponsePayload | ErrorResponsePayload> {
   /**
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.

@@ -1,13 +1,13 @@
-import { RequestHandler } from 'ask-sdk-runtime'
 import { InterfaceCommandResponseBuilder } from '../../../directives/interfaceCommand/responseBuilder'
 import { ErrorResponsePayload } from '../../../response/payloads/types'
 import { Response } from '../../../response/types'
+import { SmartHomeSkillRequestHandler } from './baseRequestHandler'
 import { HandlerInput } from './types'
 
 /**
  * A base implementation for user-created handler logic for interface commands.
  */
-export abstract class InterfaceCommandRequestHandler implements RequestHandler<HandlerInput<unknown, InterfaceCommandResponseBuilder>, Response<unknown | ErrorResponsePayload>> {
+export abstract class InterfaceCommandRequestHandler implements SmartHomeSkillRequestHandler<unknown, InterfaceCommandResponseBuilder, unknown | ErrorResponsePayload> {
   /**
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
