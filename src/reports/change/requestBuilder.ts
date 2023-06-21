@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
+import { SmartHomeSkillRequestBuilder } from '../../outboundRequest/baseRequestBuilder'
 import { Request, RequestEndpoint } from '../../outboundRequest/types'
 import { convertPropStateToPropertyState, findDuplicates, findIntersection, getPropStateKey, isSamePropState } from '../../util/helpers'
 import { Context, PropState } from '../../util/types'
@@ -9,17 +9,16 @@ const name = 'ChangeReport'
 const payloadVersion = '3'
 
 /**
- * Represents a {@link RequestBuilder} for a ChangeReport request to the event gateway.
+ * Represents a {@link SmartHomeSkillRequestBuilder} for a ChangeReport request to the event gateway.
  */
-export class ChangeReportRequestBuilder {
-  private messageId: string
+export class ChangeReportRequestBuilder extends SmartHomeSkillRequestBuilder<ChangeReportPayload> {
   private endpointBuilder?: EndpointBuilder
   private contextBuilder?: ContextBuilder
   private readonly unchangedProperties: PropState[] = []
   private readonly changedProperties: PropState[] = []
 
   constructor (endpointId: string, private readonly changeCause: ChangeCauseType) {
-    this.messageId = uuidv4()
+    super()
     this.addEndpoint().withEndpointId(endpointId)
   }
 
@@ -52,26 +51,9 @@ export class ChangeReportRequestBuilder {
       throw Error('At least one property must have changed.')
     }
 
-    const payload = {
-      change: {
-        cause: {
-          type: this.changeCause
-        },
-        properties: this.changedProperties.map(convertPropStateToPropertyState)
-      }
-    }
+    const payload = this.getChangeReportPayload(this.changeCause, this.changedProperties)
 
-    const request: Request<ChangeReportPayload> = {
-      event: {
-        header: {
-          namespace,
-          name,
-          payloadVersion,
-          messageId: this.messageId
-        },
-        payload
-      }
-    }
+    const request: Request<ChangeReportPayload> = this.getPayloadEnvelope(namespace, name, payloadVersion, payload)
 
     /* istanbul ignore else: only here to satisfy the type checker. can't actually happen */
     if (this.endpointBuilder !== undefined) {
@@ -84,6 +66,17 @@ export class ChangeReportRequestBuilder {
     }
 
     return request
+  }
+
+  private getChangeReportPayload (changeCause: ChangeCauseType, changedProperties: PropState[]): ChangeReportPayload {
+    return {
+      change: {
+        cause: {
+          type: changeCause
+        },
+        properties: changedProperties.map(convertPropStateToPropertyState)
+      }
+    }
   }
 
   /**
@@ -106,16 +99,6 @@ export class ChangeReportRequestBuilder {
       return this.contextBuilder
     }
     return (this.contextBuilder = new ContextBuilder(this))
-  }
-
-  /**
-   * Explicitly sets the message ID. Otherwise, a random version 4 UUID is used.
-   * @param messageId The message ID to explicitly use.
-   * @returns This builder.
-   */
-  withMessageId (messageId: string): this {
-    this.messageId = messageId
-    return this
   }
 
   /**
