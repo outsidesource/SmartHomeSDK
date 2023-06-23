@@ -28,7 +28,7 @@ export class AddOrUpdateReportRequestBuilder extends ScopedSmartHomeSkillRequest
 
     const payload = this.getAddOrUpdateReportPayload(discoveryPayload.endpoints)
 
-    return this.getPayloadEnvelope(namespace, name, payloadVersion, payload)
+    return this.getPayloadEnvelope(namespace, name, payloadVersion, undefined, payload)
   }
 
   private getAddOrUpdateReportPayload (endpoints: DiscoveryEndpoint[]): AddOrUpdateReportPayload {
@@ -45,7 +45,7 @@ export class AddOrUpdateReportRequestBuilder extends ScopedSmartHomeSkillRequest
   getNoEndpointsRequestBody (): Request<AddOrUpdateReportPayload> {
     const payload = this.getAddOrUpdateReportPayload([])
 
-    return this.getPayloadEnvelope(namespace, name, payloadVersion, payload)
+    return this.getPayloadEnvelope(namespace, name, payloadVersion, undefined, payload)
   }
 
   /**

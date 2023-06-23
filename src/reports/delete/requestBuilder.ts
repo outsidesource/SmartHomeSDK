@@ -29,7 +29,7 @@ export class DeleteReportRequestBuilder extends ScopedSmartHomeSkillRequestBuild
 
     const payload = this.getDeleteReportPayload(this.endpointIds)
 
-    return this.getPayloadEnvelope(namespace, name, payloadVersion, payload)
+    return this.getPayloadEnvelope(namespace, name, payloadVersion, undefined, payload)
   }
 
   private getDeleteReportPayload (endpointIds: string[]): DeleteReportPayload {

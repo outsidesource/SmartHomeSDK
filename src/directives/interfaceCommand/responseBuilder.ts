@@ -1,9 +1,11 @@
 import { ResponseBuilder } from '../../response/baseResponseBuilder'
-import { ErrorResponsePayload } from '../../response/payloads/types'
+import { EmptyResponsePayload, ErrorResponsePayload } from '../../response/payloads/types'
 import { Response } from '../../response/types'
+import { DeferredResponsePayload } from './types'
 
 const defaultNamespace = 'Alexa'
 const defaultSucceedName = 'Response'
+const deferredName = 'DeferredResponse'
 const failName = 'ErrorResponse'
 const payloadVersion = '3'
 
@@ -22,6 +24,24 @@ export class InterfaceCommandResponseBuilder extends ResponseBuilder {
     if (endpointId === undefined || endpointId === '') {
       throw Error('An endpoint ID is required.')
     }
+
+    return envelope
+  }
+
+  /**
+   * Generates a response for a request that cannot be fulfilled immediately.
+   * @param correlationToken The opaque token used to correlate this response with an expected future request.
+   * @param estimatedDeferralInSeconds The optional estimated time (in seconds) until the corresponding request will be sent.
+   * @returns The compiled response.
+   */
+  getDeferredResponse (correlationToken: string, estimatedDeferralInSeconds?: number): Response<DeferredResponsePayload | EmptyResponsePayload> {
+    const payload = estimatedDeferralInSeconds === undefined
+      ? {}
+      : { estimatedDeferralInSeconds: Math.round(estimatedDeferralInSeconds) }
+
+    const envelope = this.getPayloadEnvelope(this.namespace, deferredName, payloadVersion, payload)
+
+    envelope.event.header.correlationToken = correlationToken
 
     return envelope
   }

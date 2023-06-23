@@ -11,8 +11,10 @@ import { getLambdaContext, } from '../fixtures'
 import { removeUndefinedProps } from '../helpers'
 
 const request: Request<unknown> = require('../fixtures/interfaceCommandRequest.json')
+const deferredRequest: Request<unknown> = require('../fixtures/deferredInterfaceCommandRequest.json')
 const context = getLambdaContext()
 const succeedResponse: Response<unknown> = require('../fixtures/interfaceCommandResponse.json')
+const deferredResponse: Response<unknown> = require('../fixtures/deferredInterfaceCommandResponse.json')
 const failResponse: Response<ErrorResponsePayload> = require('../fixtures/errorResponse.json')
 
 describe('interface command', function () {
@@ -96,6 +98,24 @@ describe('interface command', function () {
       const actual = sut.getSucceedResponse()
 
       expect(removeUndefinedProps(actual)).to.deep.equal(expected)
+    })
+
+    it('returns a deferred response for a request that cannot be fulfilled immediately', function () {
+      const sut = new InterfaceCommandResponseBuilder(deferredRequest)
+      const expected = _.cloneDeep(deferredResponse)
+      expected.event.payload = {}
+
+      const actual = sut.getDeferredResponse('VGhpcyBpcyBhIGNvcnJlbGF0aW9uIHRva2Vu')
+
+      expect(removeUndefinedProps(actual)).to.deep.equal(expected)
+    })
+
+    it('returns a deferred response with an estimated deferral time when given a number of seconds', function () {
+      const sut = new InterfaceCommandResponseBuilder(deferredRequest)
+
+      const actual = sut.getDeferredResponse('VGhpcyBpcyBhIGNvcnJlbGF0aW9uIHRva2Vu', 15)
+
+      expect(removeUndefinedProps(actual)).to.deep.equal(deferredResponse)
     })
 
     it('returns an error response for a failed request', function () {

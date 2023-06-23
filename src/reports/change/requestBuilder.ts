@@ -53,7 +53,7 @@ export class ChangeReportRequestBuilder extends SmartHomeSkillRequestBuilder<Cha
 
     const payload = this.getChangeReportPayload(this.changeCause, this.changedProperties)
 
-    const request: Request<ChangeReportPayload> = this.getPayloadEnvelope(namespace, name, payloadVersion, payload)
+    const request: Request<ChangeReportPayload> = this.getPayloadEnvelope(namespace, name, payloadVersion, undefined, payload)
 
     /* istanbul ignore else: only here to satisfy the type checker. can't actually happen */
     if (this.endpointBuilder !== undefined) {

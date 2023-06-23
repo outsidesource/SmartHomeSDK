@@ -22,10 +22,11 @@ export abstract class SmartHomeSkillRequestBuilder<TRequestPayload> {
    * @param namespace The namespace and interface for the operation.
    * @param name The name of the operation.
    * @param payloadVersion The version of the interface specified in the namespace field.
+   * @param correlationToken The token used in a prior deferred response, if applicable.
    * @param payload The request payload.
    * @returns The {@link Request}.
    */
-  protected getPayloadEnvelope (namespace: string, name: string, payloadVersion: string, payload: TRequestPayload): Request<TRequestPayload> {
+  protected getPayloadEnvelope (namespace: string, name: string, payloadVersion: string, correlationToken: string | undefined, payload: TRequestPayload): Request<TRequestPayload> {
     const request: Request<TRequestPayload> = {
       event: {
         header: {
@@ -36,6 +37,10 @@ export abstract class SmartHomeSkillRequestBuilder<TRequestPayload> {
         },
         payload
       }
+    }
+
+    if (correlationToken !== undefined && correlationToken !== '') {
+      request.event.header.correlationToken = correlationToken
     }
 
     return request
