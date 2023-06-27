@@ -6,12 +6,12 @@ import { InterfaceCommandResponseBuilder } from './responseBuilder'
 /**
  * A factory for {@link HandlerInput} when the request is an interface command.
  */
-export const InterfaceCommandHandlerInputFactory: HandlerInputFactory<unknown, InterfaceCommandResponseBuilder> = {
+export const InterfaceCommandHandlerInputFactory: HandlerInputFactory<unknown, InterfaceCommandResponseBuilder, unknown> = {
   canCreate (request: Request<unknown>, context: Context): boolean {
     return true
   },
 
-  create (request: Request<unknown>, context: Context): HandlerInput<unknown, InterfaceCommandResponseBuilder> | undefined {
+  create (request: Request<unknown>, context: Context): HandlerInput<unknown, InterfaceCommandResponseBuilder, unknown> | undefined {
     return {
       request,
       context,

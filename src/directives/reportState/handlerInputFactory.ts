@@ -1,17 +1,18 @@
 import { Context } from 'aws-lambda'
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
 import { HandlerInput, Request } from '../../dispatcher/request/handler/types'
+import { EmptyResponsePayload } from '../../response/payloads/types'
 import { ReportStateResponseBuilder } from './responseBuilder'
 
 /**
  * A factory for {@link HandlerInput} when the request is a ReportState.
  */
-export const ReportStateHandlerInputFactory: HandlerInputFactory<unknown, ReportStateResponseBuilder> = {
+export const ReportStateHandlerInputFactory: HandlerInputFactory<unknown, ReportStateResponseBuilder, EmptyResponsePayload> = {
   canCreate (request: Request<unknown>, context: Context): boolean {
     return isReportStateRequest(request)
   },
 
-  create (request: Request<unknown>, context: Context): HandlerInput<unknown, ReportStateResponseBuilder> | undefined {
+  create (request: Request<unknown>, context: Context): HandlerInput<unknown, ReportStateResponseBuilder, EmptyResponsePayload> | undefined {
     if (!isReportStateRequest(request)) {
       return undefined
     }

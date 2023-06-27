@@ -10,7 +10,7 @@ import { SmartHomeSkillConfiguration } from './configuration'
  * Top level container for request dispatcher.
  */
 export class SmartHomeSkill implements Skill<Request<unknown>, Response<unknown>> {
-  protected requestDispatcher: RequestDispatcher<HandlerInput<unknown, ResponseBuilder>, Response<unknown>>
+  protected requestDispatcher: RequestDispatcher<HandlerInput<unknown, ResponseBuilder<unknown>, unknown>, Response<unknown>>
 
   // protected persistenceAdapter: PersistenceAdapter;
   // protected apiClient: ApiClient;
@@ -27,7 +27,7 @@ export class SmartHomeSkill implements Skill<Request<unknown>, Response<unknown>
       ...skillConfiguration.handlerInputFactories
     )
 
-    this.requestDispatcher = new GenericRequestDispatcher<HandlerInput<unknown, ResponseBuilder>, Response<unknown>>({
+    this.requestDispatcher = new GenericRequestDispatcher<HandlerInput<unknown, ResponseBuilder<unknown>, unknown>, Response<unknown>>({
       requestMappers: skillConfiguration.requestMappers,
       handlerAdapters: skillConfiguration.handlerAdapters,
       errorMapper: skillConfiguration.errorMapper,

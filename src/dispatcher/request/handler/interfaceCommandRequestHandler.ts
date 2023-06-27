@@ -12,7 +12,7 @@ export abstract class InterfaceCommandRequestHandler implements SmartHomeSkillRe
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
    */
-  canHandle (input: HandlerInput<unknown, InterfaceCommandResponseBuilder>): boolean | Promise<boolean> {
+  canHandle (input: HandlerInput<unknown, InterfaceCommandResponseBuilder, unknown>): boolean | Promise<boolean> {
     return true
   }
 
@@ -20,5 +20,5 @@ export abstract class InterfaceCommandRequestHandler implements SmartHomeSkillRe
    * Fulfills the request and returns a valid response.
    * @param input Information about the request and executing context.
    */
-  abstract handle (input: HandlerInput<unknown, InterfaceCommandResponseBuilder>): Response<unknown | ErrorResponsePayload> | Promise<Response<unknown | ErrorResponsePayload>>
+  abstract handle (input: HandlerInput<unknown, InterfaceCommandResponseBuilder, unknown>): Response<unknown | ErrorResponsePayload> | Promise<Response<unknown | ErrorResponsePayload>>
 }

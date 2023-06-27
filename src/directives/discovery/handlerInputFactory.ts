@@ -1,4 +1,5 @@
 import { Context } from 'aws-lambda'
+import { DiscoveryPayload } from '../../discovery/payload'
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
 import { HandlerInput, Request } from '../../dispatcher/request/handler/types'
 import { DiscoveryResponseBuilder } from './responseBuilder'
@@ -7,12 +8,12 @@ import { DiscoveryRequestPayload } from './types'
 /**
  * A factory for {@link HandlerInput} when the request is a Discovery.
  */
-export const DiscoveryHandlerInputFactory: HandlerInputFactory<unknown, DiscoveryResponseBuilder> = {
+export const DiscoveryHandlerInputFactory: HandlerInputFactory<unknown, DiscoveryResponseBuilder, DiscoveryPayload> = {
   canCreate (request: Request<unknown>, context: Context): boolean {
     return isDiscoveryRequest(request)
   },
 
-  create (request: Request<unknown>, context: Context): HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder> | undefined {
+  create (request: Request<unknown>, context: Context): HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder, DiscoveryPayload> | undefined {
     if (!isDiscoveryRequest(request)) {
       return undefined
     }

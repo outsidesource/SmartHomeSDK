@@ -31,11 +31,11 @@ const testHandlerInputFactory = {
     responseBuilder: new TestResponseBuilder(request as Request<TestRequestPayload>)
   })
 }
-const testRequestInterceptor = (input: HandlerInput<unknown, ResponseBuilder>) => { }
-const testResponseInterceptor = (input: HandlerInput<unknown, ResponseBuilder>, response?: Response<unknown>) => { }
+const testRequestInterceptor = (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>) => { }
+const testResponseInterceptor = (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>, response?: Response<unknown>) => { }
 const testErrorHandler = {
-  canHandle: (input: HandlerInput<unknown, ResponseBuilder>, error: Error) => true,
-  handle: (input: HandlerInput<unknown, ResponseBuilder>, error: Error) => {
+  canHandle: (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>, error: Error) => true,
+  handle: (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>, error: Error) => {
     return {
       event: {
         header: {
@@ -50,8 +50,8 @@ const testErrorHandler = {
   }
 }
 const succeedRequestHandler = {
-  canHandle: (input: HandlerInput<unknown, TestResponseBuilder>) => true,
-  handle: (input: HandlerInput<unknown, TestResponseBuilder>) => {
+  canHandle: (input: HandlerInput<unknown, TestResponseBuilder, TestResponsePayload>) => true,
+  handle: (input: HandlerInput<unknown, TestResponseBuilder, TestResponsePayload>) => {
     const req = input.request as Request<TestRequestPayload>
 
     input.responseBuilder.setValue(req.directive.payload!.customInput)
@@ -60,16 +60,16 @@ const succeedRequestHandler = {
   }
 }
 const failRequestHandler = {
-  canHandle: (input: HandlerInput<unknown, TestResponseBuilder>) => true,
-  handle: (input: HandlerInput<unknown, TestResponseBuilder>) => {
+  canHandle: (input: HandlerInput<unknown, TestResponseBuilder, TestResponsePayload>) => true,
+  handle: (input: HandlerInput<unknown, TestResponseBuilder, TestResponsePayload>) => {
     const req = input.request as Request<TestRequestPayload>
 
     return input.responseBuilder.getFailResponse(ErrorTypes.InternalError, 'This is a test error')
   }
 }
 const errorRequestHandler = {
-  canHandle: (input: HandlerInput<unknown, TestResponseBuilder>) => true,
-  handle: (input: HandlerInput<unknown, TestResponseBuilder>) => {
+  canHandle: (input: HandlerInput<unknown, TestResponseBuilder, TestResponsePayload>) => true,
+  handle: (input: HandlerInput<unknown, TestResponseBuilder, TestResponsePayload>) => {
     throw new Error('This is a test error')
   }
 }
@@ -96,8 +96,8 @@ describe('smart home skill builder', function () {
   describe('addRequestHandler()', function () {
     it('creates an arbitrary handler when provided a matcher', function () {
       const sut = SmartHomeSkillFactory()
-      const matcher = (input: HandlerInput<unknown, ResponseBuilder>) => true
-      const executor = (input: HandlerInput<unknown, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
+      const matcher = (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>) => true
+      const executor = (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>) => { return input.responseBuilder.getSucceedResponse() }
 
       sut.addRequestHandler(matcher, executor)
       const actual = sut.getSkillConfiguration()
@@ -108,7 +108,7 @@ describe('smart home skill builder', function () {
     it('creates an arbitrary handler when provided a PayloadSignature', function () {
       const sut = SmartHomeSkillFactory()
       const payloadSignature: PayloadSignature = { namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion' }
-      const executor = (input: HandlerInput<unknown, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
+      const executor = (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>) => { return input.responseBuilder.getSucceedResponse() }
 
       sut.addRequestHandler(payloadSignature, executor)
       const actual = sut.getSkillConfiguration()
@@ -119,7 +119,7 @@ describe('smart home skill builder', function () {
     it('creates an arbitrary handler when provided a PayloadSignature with an instance name', function () {
       const sut = SmartHomeSkillFactory()
       const payloadSignature: PayloadSignature = { namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion', instance: 'instance' }
-      const executor = (input: HandlerInput<unknown, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
+      const executor = (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>) => { return input.responseBuilder.getSucceedResponse() }
 
       sut.addRequestHandler(payloadSignature, executor)
       const actual = sut.getSkillConfiguration()
@@ -130,10 +130,10 @@ describe('smart home skill builder', function () {
     describe('signature matcher', function () {
       const builder = SmartHomeSkillFactory()
       const payloadSignature: PayloadSignature = { namespace: 'namespace', name: 'name', payloadVersion: 'payloadVersion', instance: 'instance' }
-      const executor = (input: HandlerInput<unknown, ResponseBuilder>) => { return input.responseBuilder.getSucceedResponse() }
+      const executor = (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>) => { return input.responseBuilder.getSucceedResponse() }
       builder.addRequestHandler(payloadSignature, executor)
       const config = builder.getSkillConfiguration()
-      const sut = (config.requestMappers[0] as any).requestHandlerChains[0].requestHandler.canHandle as (input: HandlerInput<unknown, ResponseBuilder>) => boolean
+      const sut = (config.requestMappers[0] as any).requestHandlerChains[0].requestHandler.canHandle as (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>) => boolean
 
       it('returns true when the signature matches the specified signature', function () {
         const req = _.cloneDeep(request)

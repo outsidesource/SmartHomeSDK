@@ -15,7 +15,7 @@ export abstract class DiscoveryRequestHandler implements SmartHomeSkillRequestHa
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
    */
-  canHandle (input: HandlerInput<unknown, DiscoveryResponseBuilder>): boolean | Promise<boolean> {
+  canHandle (input: HandlerInput<unknown, DiscoveryResponseBuilder, DiscoveryPayload>): boolean | Promise<boolean> {
     return isDiscoveryRequest(input.request)
   }
 
@@ -23,5 +23,5 @@ export abstract class DiscoveryRequestHandler implements SmartHomeSkillRequestHa
    * Fulfills the request and returns a valid response.
    * @param input Information about the request and executing context.
    */
-  abstract handle (input: HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>): Response<DiscoveryPayload | ErrorResponsePayload> | Promise<Response<DiscoveryPayload | ErrorResponsePayload>>
+  abstract handle (input: HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder, DiscoveryPayload>): Response<DiscoveryPayload | ErrorResponsePayload> | Promise<Response<DiscoveryPayload | ErrorResponsePayload>>
 }

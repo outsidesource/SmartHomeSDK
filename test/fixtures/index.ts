@@ -38,7 +38,7 @@ export interface TestResponsePayload {
   customOutput: number
 }
 
-export class TestResponseBuilder extends ResponseBuilder {
+export class TestResponseBuilder extends ResponseBuilder<TestResponsePayload> {
   private value = 0
 
   constructor(request: Request<TestRequestPayload>) {
@@ -60,7 +60,7 @@ export class TestResponseBuilder extends ResponseBuilder {
 }
 
 export class TestSmartHomeSkill extends SmartHomeSkill {
-  overwriteHandlerInputFactories (...newFactories: Array<HandlerInputFactory<unknown, ResponseBuilder>>) {
+  overwriteHandlerInputFactories (...newFactories: Array<HandlerInputFactory<unknown, ResponseBuilder<TestResponsePayload>, TestResponsePayload>>) {
     this.handlerInputFactoryRepository = new HandlerInputFactoryRepository(...newFactories)
   }
 }

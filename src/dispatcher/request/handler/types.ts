@@ -4,7 +4,7 @@ import { ResponseBuilder } from '../../../response/baseResponseBuilder'
 /**
  * An interface that represents components passed into {@link RequestHandler} and {@link SmartHomeSkillErrorHandler}.
  */
-export interface HandlerInput<TRequestPayload, TResponseBuilder extends ResponseBuilder> {
+export interface HandlerInput<TRequestPayload, TResponseBuilder extends ResponseBuilder<TResponsePayload>, TResponsePayload> {
   /**
    * The directive and payload for the request.
    */

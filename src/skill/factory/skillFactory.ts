@@ -19,10 +19,10 @@ import { InlineErrorExecutor, InlineErrorMatcher, InlineRequestExecutor, InlineR
  * Provider for {@link SmartHomeSkillBuilder}
  */
 export default function (): SmartHomeSkillBuilder {
-  const runtimeConfigurationBuilder = new RuntimeConfigurationBuilder<HandlerInput<unknown, ResponseBuilder>, Response<unknown>>()
+  const runtimeConfigurationBuilder = new RuntimeConfigurationBuilder<HandlerInput<unknown, ResponseBuilder<unknown>, unknown>, Response<unknown>>()
   let thisCustomUserAgent: string
   let thisSkillId: string
-  const thisHandlerInputFactories: Array<HandlerInputFactory<unknown, ResponseBuilder>> = [
+  const thisHandlerInputFactories: Array<HandlerInputFactory<unknown, ResponseBuilder<unknown>, unknown>> = [
     AcceptGrantHandlerInputFactory,
     DiscoveryHandlerInputFactory,
     ReportStateHandlerInputFactory,
@@ -35,7 +35,7 @@ export default function (): SmartHomeSkillBuilder {
       executor: InlineRequestExecutor
     ): SmartHomeSkillBuilder {
       const canHandle = isPayloadSignature(matcher)
-        ? (input: HandlerInput<unknown, ResponseBuilder>) =>
+        ? (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>) =>
             input.request.directive.header.namespace === matcher.namespace &&
             input.request.directive.header.name === matcher.name &&
             input.request.directive.header.payloadVersion === matcher.payloadVersion &&
@@ -47,7 +47,7 @@ export default function (): SmartHomeSkillBuilder {
       return this
     },
     addRequestHandlers (
-      ...requestHandlers: Array<RequestHandler<HandlerInput<unknown, ResponseBuilder>, Response<unknown>>>
+      ...requestHandlers: Array<RequestHandler<HandlerInput<unknown, ResponseBuilder<unknown>, unknown>, Response<unknown>>>
     ): SmartHomeSkillBuilder {
       runtimeConfigurationBuilder.addRequestHandlers(...requestHandlers)
 
@@ -93,7 +93,7 @@ export default function (): SmartHomeSkillBuilder {
       return this
     },
 
-    withHandlerInputFactories (...handlerInputFactories: Array<HandlerInputFactory<unknown, ResponseBuilder>>): SmartHomeSkillBuilder {
+    withHandlerInputFactories (...handlerInputFactories: Array<HandlerInputFactory<unknown, ResponseBuilder<unknown>, unknown>>): SmartHomeSkillBuilder {
       thisHandlerInputFactories.unshift(...handlerInputFactories)
 
       return this

@@ -7,9 +7,9 @@ import { Endpoint, Response } from './types'
 /**
  * Represents a fluent mechanism for building a response.
  */
-export abstract class ResponseBuilder {
-  private endpointBuilder?: EndpointBuilder
-  private contextBuilder?: ContextBuilder
+export abstract class ResponseBuilder<TPayload> {
+  private endpointBuilder?: EndpointBuilder<TPayload>
+  private contextBuilder?: ContextBuilder<TPayload>
 
   constructor (protected request: Request<unknown>) {}
 
@@ -17,7 +17,7 @@ export abstract class ResponseBuilder {
    * Generates a response for a request that was successfully handled.
    * @returns The compiled response.
    */
-  abstract getSucceedResponse (): Response<unknown>
+  abstract getSucceedResponse (): Response<TPayload>
 
   /**
    * Generates a response for a request that failed.
@@ -31,7 +31,7 @@ export abstract class ResponseBuilder {
    * Adds a builder for the endpoint.
    * @returns A fluent mechanism for building an endpoint.
    */
-  addEndpoint (): EndpointBuilder {
+  addEndpoint (): EndpointBuilder<TPayload> {
     return (this.endpointBuilder = new EndpointBuilder(this))
   }
 
@@ -39,7 +39,7 @@ export abstract class ResponseBuilder {
    * Adds a builder for the context.
    * @returns A fluent mechanism for building a context.
    */
-  addContext (): ContextBuilder {
+  addContext (): ContextBuilder<TPayload> {
     if (this.contextBuilder !== undefined) {
       return this.contextBuilder
     }
@@ -86,20 +86,20 @@ export abstract class ResponseBuilder {
 /**
  * Represents a fluent mechanism for building an endpoint.
  */
-export class EndpointBuilder {
+export class EndpointBuilder<TPayload> {
   private endpointId?: string
   private token?: string
   private partition?: string
   private userId?: string
   private cookie: { [key: string]: string } = {}
 
-  constructor (private readonly parent: ResponseBuilder) {}
+  constructor (private readonly parent: ResponseBuilder<TPayload>) {}
 
   /**
    * Returns the {@link ResponseBuilder} that created this builder.
    * @returns The {@link ResponseBuilder} that created this builder.
    */
-  getResponseBuilder (): ResponseBuilder {
+  getResponseBuilder (): ResponseBuilder<TPayload> {
     return this.parent
   }
 
@@ -196,16 +196,16 @@ export class EndpointBuilder {
 /**
  * Represents a fluent mechanism for building a response context.
  */
-export class ContextBuilder {
+export class ContextBuilder<TPayload> {
   private readonly properties: PropState[] = []
 
-  constructor (private readonly parent: ResponseBuilder) {}
+  constructor (private readonly parent: ResponseBuilder<TPayload>) {}
 
   /**
    * Returns the {@link ResponseBuilder} that created this builder.
    * @returns The {@link ResponseBuilder} that created this builder.
    */
-  getResponseBuilder (): ResponseBuilder {
+  getResponseBuilder (): ResponseBuilder<TPayload> {
     return this.parent
   }
 

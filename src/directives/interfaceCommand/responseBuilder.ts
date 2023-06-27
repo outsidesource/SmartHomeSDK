@@ -12,7 +12,7 @@ const payloadVersion = '3'
 /**
  * Represents a {@link ResponseBuilder} for an interface command.
  */
-export class InterfaceCommandResponseBuilder extends ResponseBuilder {
+export class InterfaceCommandResponseBuilder extends ResponseBuilder<unknown> {
   private namespace: string = defaultNamespace
   private name: string = defaultSucceedName
   private payload: unknown = {}

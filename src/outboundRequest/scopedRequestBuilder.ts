@@ -4,7 +4,7 @@ import { SmartHomeSkillRequestBuilder } from './baseRequestBuilder'
 /**
  * A base implementation for request builders that require a {@link Scope}.
  */
-export abstract class ScopedSmartHomeSkillRequestBuilder<TRequestPayload> extends SmartHomeSkillRequestBuilder<TRequestPayload> {
+export abstract class ScopedSmartHomeSkillRequestBuilder<TPayload> extends SmartHomeSkillRequestBuilder<TPayload> {
   private token?: string
   private partition?: string
   private userId?: string

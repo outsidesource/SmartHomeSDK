@@ -11,7 +11,7 @@ const payloadVersion = '3'
 /**
  * Represents a {@link ResponseBuilder} for the ReportState directive.
  */
-export class ReportStateResponseBuilder extends ResponseBuilder {
+export class ReportStateResponseBuilder extends ResponseBuilder<EmptyResponsePayload> {
   private readonly properties: PropState[] = []
 
   getSucceedResponse (): Response<EmptyResponsePayload> {

@@ -71,25 +71,25 @@ describe('abstract handlers', function () {
 })
 
 class AcceptGrantHandler extends AcceptGrantRequestHandler {
-  handle(input: HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder>): Response<EmptyResponsePayload | ErrorResponsePayload> | Promise<Response<EmptyResponsePayload | ErrorResponsePayload>> {
+  handle(input: HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder, EmptyResponsePayload>): Response<EmptyResponsePayload | ErrorResponsePayload> | Promise<Response<EmptyResponsePayload | ErrorResponsePayload>> {
     return input.responseBuilder.getSucceedResponse()
   }
 }
 
 class DiscoveryHandler extends DiscoveryRequestHandler {
-  handle(input: HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder>): Response<DiscoveryPayload | ErrorResponsePayload> | Promise<Response<DiscoveryPayload | ErrorResponsePayload>> {
+  handle(input: HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder, DiscoveryPayload>): Response<DiscoveryPayload | ErrorResponsePayload> | Promise<Response<DiscoveryPayload | ErrorResponsePayload>> {
     return input.responseBuilder.getSucceedResponse()
   }
 }
 
 class InterfaceCommandHandler extends InterfaceCommandRequestHandler {
-  handle(input: HandlerInput<unknown, InterfaceCommandResponseBuilder>): Response<unknown | ErrorResponsePayload> | Promise<Response<unknown | ErrorResponsePayload>> {
+  handle(input: HandlerInput<unknown, InterfaceCommandResponseBuilder, unknown>): Response<unknown | ErrorResponsePayload> | Promise<Response<unknown | ErrorResponsePayload>> {
     return input.responseBuilder.getSucceedResponse()
   }
 }
 
 class ReportStateHandler extends ReportStateRequestHandler {
-  handle(input: HandlerInput<unknown, ReportStateResponseBuilder>): Response<EmptyResponsePayload | ErrorResponsePayload> | Promise<Response<EmptyResponsePayload | ErrorResponsePayload>> {
+  handle(input: HandlerInput<unknown, ReportStateResponseBuilder, unknown>): Response<EmptyResponsePayload | ErrorResponsePayload> | Promise<Response<EmptyResponsePayload | ErrorResponsePayload>> {
     return input.responseBuilder.getSucceedResponse()
   }
 }

@@ -32,8 +32,8 @@ const testHandlerInputFactory = {
   })
 }
 const requestHandler = {
-  canHandle: (input: HandlerInput<unknown, TestResponseBuilder>) => true,
-  handle: (input: HandlerInput<unknown, TestResponseBuilder>) => {
+  canHandle: (input: HandlerInput<unknown, TestResponseBuilder, TestResponsePayload>) => true,
+  handle: (input: HandlerInput<unknown, TestResponseBuilder, TestResponsePayload>) => {
     const req = input.request as Request<TestRequestPayload>
 
     input.responseBuilder.setValue(req.directive.payload!.customInput)

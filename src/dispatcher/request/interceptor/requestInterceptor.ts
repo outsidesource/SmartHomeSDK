@@ -5,10 +5,10 @@ import { HandlerInput } from '../handler/types'
 /**
  * An interface for user-created logic that can evaluate and modify the request before being handled.
  */
-export interface SmartHomeSkillRequestInterceptor extends RequestInterceptor<HandlerInput<unknown, ResponseBuilder>> {
+export interface SmartHomeSkillRequestInterceptor extends RequestInterceptor<HandlerInput<unknown, ResponseBuilder<unknown>, unknown>> {
   /**
    * Executes the user-created logic.
    * @param input Information about the request and executing context.
    */
-  process: (input: HandlerInput<unknown, ResponseBuilder>) => Promise<void> | void
+  process: (input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>) => Promise<void> | void
 }

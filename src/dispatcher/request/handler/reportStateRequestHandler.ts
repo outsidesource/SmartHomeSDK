@@ -13,7 +13,7 @@ export abstract class ReportStateRequestHandler implements SmartHomeSkillRequest
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
    */
-  canHandle (input: HandlerInput<unknown, ReportStateResponseBuilder>): boolean | Promise<boolean> {
+  canHandle (input: HandlerInput<unknown, ReportStateResponseBuilder, unknown>): boolean | Promise<boolean> {
     return isReportStateRequest(input.request)
   }
 
@@ -21,5 +21,5 @@ export abstract class ReportStateRequestHandler implements SmartHomeSkillRequest
    * Fulfills the request and returns a valid response.
    * @param input Information about the request and executing context.
    */
-  abstract handle (input: HandlerInput<unknown, ReportStateResponseBuilder>): Response<EmptyResponsePayload | ErrorResponsePayload> | Promise<Response<EmptyResponsePayload | ErrorResponsePayload>>
+  abstract handle (input: HandlerInput<unknown, ReportStateResponseBuilder, unknown>): Response<EmptyResponsePayload | ErrorResponsePayload> | Promise<Response<EmptyResponsePayload | ErrorResponsePayload>>
 }

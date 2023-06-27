@@ -7,9 +7,9 @@ import { HandlerInputFactory } from './baseHandlerInputFactory'
  * An in-memory repository for storing and locating {@link HandlerInputFactory}.
  */
 export class HandlerInputFactoryRepository {
-  private readonly factories: Array<HandlerInputFactory<unknown, ResponseBuilder>>
+  private readonly factories: Array<HandlerInputFactory<unknown, ResponseBuilder<unknown>, unknown>>
 
-  constructor (...handlerInputFactories: Array<HandlerInputFactory<unknown, ResponseBuilder>>) {
+  constructor (...handlerInputFactories: Array<HandlerInputFactory<unknown, ResponseBuilder<unknown>, unknown>>) {
     this.factories = handlerInputFactories
   }
 
@@ -19,7 +19,7 @@ export class HandlerInputFactoryRepository {
    * @param context The context that the lambda is running in.
    * @returns The first registered {@link HandlerInputFactory} that can create a {@link HandlerInput} or {@code undefined}.
    */
-  getHandlerInputFactory (request: Request<unknown>, context: Context): HandlerInputFactory<unknown, ResponseBuilder> | undefined {
+  getHandlerInputFactory (request: Request<unknown>, context: Context): HandlerInputFactory<unknown, ResponseBuilder<unknown>, unknown> | undefined {
     return this.factories.find(f => f.canCreate(request, context))
   }
 }

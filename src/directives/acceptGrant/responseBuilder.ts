@@ -10,7 +10,7 @@ const payloadVersion = '3'
 /**
  * Represents a {@link ResponseBuilder} for the AcceptGrant directive.
  */
-export class AcceptGrantResponseBuilder extends ResponseBuilder {
+export class AcceptGrantResponseBuilder extends ResponseBuilder<EmptyResponsePayload> {
   getSucceedResponse (): Response<EmptyResponsePayload> {
     return this.getPayloadEnvelope(namespace, succeedName, payloadVersion, {})
   }

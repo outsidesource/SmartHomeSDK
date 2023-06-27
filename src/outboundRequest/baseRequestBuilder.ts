@@ -4,7 +4,7 @@ import { Request } from './types'
 /**
  * A base implementation for outbound request builders.
  */
-export abstract class SmartHomeSkillRequestBuilder<TRequestPayload> {
+export abstract class SmartHomeSkillRequestBuilder<TPayload> {
   private messageId: string
 
   constructor () {
@@ -15,7 +15,7 @@ export abstract class SmartHomeSkillRequestBuilder<TRequestPayload> {
    * Generates an outbound request.
    * @returns The compiled request.
    */
-  abstract getRequestBody (): Request<TRequestPayload>
+  abstract getRequestBody (): Request<TPayload>
 
   /**
    * Generates a {@link Request} based on the current configuration.
@@ -26,8 +26,8 @@ export abstract class SmartHomeSkillRequestBuilder<TRequestPayload> {
    * @param payload The request payload.
    * @returns The {@link Request}.
    */
-  protected getPayloadEnvelope (namespace: string, name: string, payloadVersion: string, correlationToken: string | undefined, payload: TRequestPayload): Request<TRequestPayload> {
-    const request: Request<TRequestPayload> = {
+  protected getPayloadEnvelope (namespace: string, name: string, payloadVersion: string, correlationToken: string | undefined, payload: TPayload): Request<TPayload> {
+    const request: Request<TPayload> = {
       event: {
         header: {
           namespace,

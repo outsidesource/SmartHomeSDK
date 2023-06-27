@@ -14,7 +14,7 @@ export abstract class AcceptGrantRequestHandler implements SmartHomeSkillRequest
    * A predicate that determines if this handler can handle this type of request.
    * @param input Information about the request and executing context.
    */
-  canHandle (input: HandlerInput<unknown, AcceptGrantResponseBuilder>): boolean | Promise<boolean> {
+  canHandle (input: HandlerInput<unknown, AcceptGrantResponseBuilder, EmptyResponsePayload>): boolean | Promise<boolean> {
     return isAcceptGrantRequest(input.request)
   }
 
@@ -22,5 +22,5 @@ export abstract class AcceptGrantRequestHandler implements SmartHomeSkillRequest
    * Fulfills the request and returns a valid response.
    * @param input Information about the request and executing context.
    */
-  abstract handle (input: HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder>): Response<EmptyResponsePayload | ErrorResponsePayload> | Promise<Response<EmptyResponsePayload | ErrorResponsePayload>>
+  abstract handle (input: HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder, EmptyResponsePayload>): Response<EmptyResponsePayload | ErrorResponsePayload> | Promise<Response<EmptyResponsePayload | ErrorResponsePayload>>
 }

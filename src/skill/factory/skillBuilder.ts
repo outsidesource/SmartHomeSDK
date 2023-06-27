@@ -19,7 +19,7 @@ export interface SmartHomeSkillBuilder {
     executor: InlineRequestExecutor
   ) => this
   addRequestHandlers: (
-    ...requestHandlers: Array<RequestHandler<HandlerInput<unknown, ResponseBuilder>, Response<unknown>>>
+    ...requestHandlers: Array<RequestHandler<HandlerInput<unknown, ResponseBuilder<unknown>, unknown>, Response<unknown>>>
   ) => this
   addRequestInterceptors: (
     ...executors: Array<SmartHomeSkillRequestInterceptor | InlineRequestInterceptor>
@@ -41,7 +41,7 @@ export interface SmartHomeSkillBuilder {
     skillId: string
   ) => this
   withHandlerInputFactories: (
-    ...handlerInputFactories: Array<HandlerInputFactory<unknown, ResponseBuilder>>
+    ...handlerInputFactories: Array<HandlerInputFactory<unknown, ResponseBuilder<unknown>, unknown>>
   ) => this
   getSkillConfiguration: () => SmartHomeSkillConfiguration
   create: () => SmartHomeSkill
@@ -49,28 +49,28 @@ export interface SmartHomeSkillBuilder {
 }
 
 export type InlineRequestMatcher = (
-  input: HandlerInput<unknown, ResponseBuilder>
+  input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>
 ) => Promise<boolean> | boolean
 
 export type InlineRequestExecutor = (
-  input: HandlerInput<unknown, ResponseBuilder>
+  input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>
 ) => Promise<Response<unknown>> | Response<unknown>
 
 export type InlineRequestInterceptor = (
-  input: HandlerInput<unknown, ResponseBuilder>
+  input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>
 ) => Promise<void> | void
 
 export type InlineResponseInterceptor = (
-  input: HandlerInput<unknown, ResponseBuilder>,
+  input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>,
   response?: Response<unknown>
 ) => Promise<void> | void
 
 export type InlineErrorMatcher = (
-  input: HandlerInput<unknown, ResponseBuilder>,
+  input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>,
   error: Error
 ) => Promise<boolean> | boolean
 
 export type InlineErrorExecutor = (
-  input: HandlerInput<unknown, ResponseBuilder>,
+  input: HandlerInput<unknown, ResponseBuilder<unknown>, unknown>,
   error: Error
 ) => Promise<Response<unknown>> | Response<unknown>

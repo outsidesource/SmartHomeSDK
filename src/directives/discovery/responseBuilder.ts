@@ -15,7 +15,7 @@ const payloadVersion = '3'
 /**
  * Represents a {@link ResponseBuilder} for the Discovery directive.
  */
-export class DiscoveryResponseBuilder extends ResponseBuilder {
+export class DiscoveryResponseBuilder extends ResponseBuilder<DiscoveryPayload> {
   private readonly payloadBuilder: DiscoveryPayloadBuilder = new DiscoveryPayloadBuilder()
 
   getSucceedResponse (): Response<DiscoveryPayload> {
