@@ -3,9 +3,9 @@ import _ from 'lodash'
 import 'mocha'
 import { DisplayCategories, SemanticActionNames, SemanticStateNames } from '../../src/discovery/payload'
 import { Locales } from '../../src/discovery/resourceLabel'
-import { Request } from '../../src/outboundRequest/types'
-import { AddOrUpdateReportRequestBuilder } from '../../src/reports/addOrUpdate/requestBuilder'
-import { AddOrUpdateReportPayload } from '../../src/reports/addOrUpdate/types'
+import { AddOrUpdateReportRequestBuilder } from '../../src/requests/addOrUpdate/requestBuilder'
+import { AddOrUpdateReportPayload } from '../../src/requests/addOrUpdate/types'
+import { Request } from '../../src/requests/types'
 import { removeUndefinedProps } from '../helpers'
 
 const filledRequest: Request<AddOrUpdateReportPayload> = require('../fixtures/addOrUpdateReportRequest.json')

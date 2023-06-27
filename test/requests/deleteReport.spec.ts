@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
-import { Request } from '../../src/outboundRequest/types'
-import { DeleteReportRequestBuilder } from '../../src/reports/delete/requestBuilder'
-import { DeleteReportPayload } from '../../src/reports/delete/types'
+import { DeleteReportRequestBuilder } from '../../src/requests/delete/requestBuilder'
+import { DeleteReportPayload } from '../../src/requests/delete/types'
+import { Request } from '../../src/requests/types'
 import { removeUndefinedProps } from '../helpers'
 
 const request: Request<DeleteReportPayload> = require('../fixtures/deleteReportRequest.json')

@@ -5,8 +5,8 @@ import { AcceptGrantHandlerInputFactory, isAcceptGrantRequest } from '../../src/
 import { AcceptGrantResponseBuilder } from '../../src/directives/acceptGrant/responseBuilder'
 import { AcceptGrantErrorTypes, AcceptGrantRequestPayload } from '../../src/directives/acceptGrant/types'
 import { Request } from '../../src/dispatcher/request/handler/types'
-import { EmptyResponsePayload, ErrorResponsePayload } from '../../src/response/payloads/types'
-import { Response } from '../../src/response/types'
+import { EmptyResponsePayload, ErrorResponsePayload } from '../../src/responses/payloads/types'
+import { Response } from '../../src/responses/types'
 import { getLambdaContext, } from '../fixtures'
 import { removeUndefinedProps } from '../helpers'
 

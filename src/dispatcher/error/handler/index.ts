@@ -1,6 +1,6 @@
 import { ErrorHandler } from 'ask-sdk-runtime'
-import { ResponseBuilder } from '../../../response/baseResponseBuilder'
-import { Response } from '../../../response/types'
+import { ResponseBuilder } from '../../../responses/baseResponseBuilder'
+import { Response } from '../../../responses/types'
 import { HandlerInput } from '../../request/handler/types'
 
 /**

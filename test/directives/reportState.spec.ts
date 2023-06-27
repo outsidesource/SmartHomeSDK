@@ -4,9 +4,9 @@ import 'mocha'
 import { ReportStateHandlerInputFactory, isReportStateRequest } from '../../src/directives/reportState/handlerInputFactory'
 import { ReportStateResponseBuilder } from '../../src/directives/reportState/responseBuilder'
 import { Request } from '../../src/dispatcher/request/handler/types'
-import { ErrorTypes } from '../../src/response/errorTypes'
-import { EmptyResponsePayload, ErrorResponsePayload } from '../../src/response/payloads/types'
-import { Response } from '../../src/response/types'
+import { ErrorTypes } from '../../src/responses/errorTypes'
+import { EmptyResponsePayload, ErrorResponsePayload } from '../../src/responses/payloads/types'
+import { Response } from '../../src/responses/types'
 import { getLambdaContext } from '../fixtures'
 
 const request: Request<unknown> = require('../fixtures/reportStateRequest.json')

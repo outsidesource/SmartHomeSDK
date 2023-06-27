@@ -12,8 +12,8 @@ import { DiscoveryRequestHandler } from '../../src/dispatcher/request/handler/di
 import { InterfaceCommandRequestHandler } from '../../src/dispatcher/request/handler/interfaceCommandRequestHandler'
 import { ReportStateRequestHandler } from '../../src/dispatcher/request/handler/reportStateRequestHandler'
 import { HandlerInput, Request } from '../../src/dispatcher/request/handler/types'
-import { EmptyResponsePayload, ErrorResponsePayload } from '../../src/response/payloads/types'
-import { Response } from '../../src/response/types'
+import { EmptyResponsePayload, ErrorResponsePayload } from '../../src/responses/payloads/types'
+import { Response } from '../../src/responses/types'
 import { getLambdaContext } from '../fixtures'
 
 const context = getLambdaContext()

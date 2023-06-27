@@ -1,5 +1,5 @@
 import { Context } from 'aws-lambda'
-import { ResponseBuilder } from '../../../../response/baseResponseBuilder'
+import { ResponseBuilder } from '../../../../responses/baseResponseBuilder'
 import { HandlerInput, Request } from '../types'
 
 /**

@@ -1,5 +1,5 @@
 import { RequestInterceptor } from 'ask-sdk-runtime'
-import { ResponseBuilder } from '../../../response/baseResponseBuilder'
+import { ResponseBuilder } from '../../../responses/baseResponseBuilder'
 import { HandlerInput } from '../handler/types'
 
 /**

@@ -2,8 +2,8 @@ import { isDiscoveryRequest } from '../../../directives/discovery/handlerInputFa
 import { DiscoveryResponseBuilder } from '../../../directives/discovery/responseBuilder'
 import { DiscoveryRequestPayload } from '../../../directives/discovery/types'
 import { DiscoveryPayload } from '../../../discovery/payload'
-import { ErrorResponsePayload } from '../../../response/payloads/types'
-import { Response } from '../../../response/types'
+import { ErrorResponsePayload } from '../../../responses/payloads/types'
+import { Response } from '../../../responses/types'
 import { SmartHomeSkillRequestHandler } from './baseRequestHandler'
 import { HandlerInput } from './types'
 

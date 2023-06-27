@@ -1,7 +1,7 @@
 import { Context } from 'aws-lambda'
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
 import { HandlerInput, Request } from '../../dispatcher/request/handler/types'
-import { EmptyResponsePayload } from '../../response/payloads/types'
+import { EmptyResponsePayload } from '../../responses/payloads/types'
 import { ReportStateResponseBuilder } from './responseBuilder'
 
 /**

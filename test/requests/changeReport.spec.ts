@@ -2,9 +2,9 @@ import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
 import sinon from 'sinon'
-import { Request } from '../../src/outboundRequest/types'
-import { ChangeReportRequestBuilder, ContextBuilder, EndpointBuilder } from '../../src/reports/change/requestBuilder'
-import { ChangeCauseType, ChangeReportPayload } from '../../src/reports/change/types'
+import { ChangeReportRequestBuilder, ContextBuilder, EndpointBuilder } from '../../src/requests/change/requestBuilder'
+import { ChangeCauseType, ChangeReportPayload } from '../../src/requests/change/types'
+import { Request } from '../../src/requests/types'
 import { createSinonStubInstance, removeUndefinedProps } from '../helpers'
 
 const request: Request<ChangeReportPayload> = require('../fixtures/changeReportRequest.json')

@@ -1,8 +1,8 @@
 import { isAcceptGrantRequest } from '../../../directives/acceptGrant/handlerInputFactory'
 import { AcceptGrantResponseBuilder } from '../../../directives/acceptGrant/responseBuilder'
 import { AcceptGrantRequestPayload } from '../../../directives/acceptGrant/types'
-import { EmptyResponsePayload, ErrorResponsePayload } from '../../../response/payloads/types'
-import { Response } from '../../../response/types'
+import { EmptyResponsePayload, ErrorResponsePayload } from '../../../responses/payloads/types'
+import { Response } from '../../../responses/types'
 import { SmartHomeSkillRequestHandler } from './baseRequestHandler'
 import { HandlerInput } from './types'
 

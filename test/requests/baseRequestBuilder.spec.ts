@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
-import { SmartHomeSkillRequestBuilder } from '../../src/outboundRequest/baseRequestBuilder'
-import { Request } from '../../src/outboundRequest/types'
+import { SmartHomeSkillRequestBuilder } from '../../src/requests/baseRequestBuilder'
+import { Request } from '../../src/requests/types'
 import { removeUndefinedProps } from '../helpers'
 
 const request: Request<{}> = {

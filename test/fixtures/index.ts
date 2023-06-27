@@ -3,9 +3,9 @@ import _ from 'lodash'
 import { HandlerInputFactory } from '../../src/dispatcher/request/handler/factory/baseHandlerInputFactory'
 import { HandlerInputFactoryRepository } from '../../src/dispatcher/request/handler/factory/repository'
 import { Request } from '../../src/dispatcher/request/handler/types'
-import { ResponseBuilder } from '../../src/response/baseResponseBuilder'
-import { ErrorResponsePayload } from '../../src/response/payloads/types'
-import { Response } from '../../src/response/types'
+import { ResponseBuilder } from '../../src/responses/baseResponseBuilder'
+import { ErrorResponsePayload } from '../../src/responses/payloads/types'
+import { Response } from '../../src/responses/types'
 import { SmartHomeSkill } from '../../src/skill'
 
 export function getLambdaContext(): Context {

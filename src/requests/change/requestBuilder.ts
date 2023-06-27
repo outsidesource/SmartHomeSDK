@@ -1,5 +1,5 @@
-import { SmartHomeSkillRequestBuilder } from '../../outboundRequest/baseRequestBuilder'
-import { Request, RequestEndpoint } from '../../outboundRequest/types'
+import { SmartHomeSkillRequestBuilder } from '../../requests/baseRequestBuilder'
+import { Request, RequestEndpoint } from '../../requests/types'
 import { convertPropStateToPropertyState, findDuplicates, findIntersection, getPropStateKey, isSamePropState } from '../../util/helpers'
 import { Context, PropState } from '../../util/types'
 import { ChangeCauseType, ChangeReportPayload } from './types'

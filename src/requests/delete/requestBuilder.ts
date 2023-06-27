@@ -1,5 +1,5 @@
-import { ScopedSmartHomeSkillRequestBuilder } from '../../outboundRequest/scopedRequestBuilder'
-import { Request } from '../../outboundRequest/types'
+import { ScopedSmartHomeSkillRequestBuilder } from '../../requests/scopedRequestBuilder'
+import { Request } from '../../requests/types'
 import { findDuplicates } from '../../util/helpers'
 import { DeleteReportPayload } from './types'
 

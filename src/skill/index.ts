@@ -2,8 +2,8 @@ import { createAskSdkUserAgent, GenericRequestDispatcher, RequestDispatcher, Ski
 import { Context } from 'aws-lambda'
 import { HandlerInputFactoryRepository } from '../dispatcher/request/handler/factory/repository'
 import { HandlerInput, Request } from '../dispatcher/request/handler/types'
-import { ResponseBuilder } from '../response/baseResponseBuilder'
-import { Response } from '../response/types'
+import { ResponseBuilder } from '../responses/baseResponseBuilder'
+import { Response } from '../responses/types'
 import { SmartHomeSkillConfiguration } from './configuration'
 
 /**

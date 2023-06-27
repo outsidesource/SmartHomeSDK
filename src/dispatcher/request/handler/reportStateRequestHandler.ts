@@ -1,7 +1,7 @@
 import { isReportStateRequest } from '../../../directives/reportState/handlerInputFactory'
 import { ReportStateResponseBuilder } from '../../../directives/reportState/responseBuilder'
-import { EmptyResponsePayload, ErrorResponsePayload } from '../../../response/payloads/types'
-import { Response } from '../../../response/types'
+import { EmptyResponsePayload, ErrorResponsePayload } from '../../../responses/payloads/types'
+import { Response } from '../../../responses/types'
 import { SmartHomeSkillRequestHandler } from './baseRequestHandler'
 import { HandlerInput } from './types'
 

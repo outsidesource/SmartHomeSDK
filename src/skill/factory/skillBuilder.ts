@@ -6,8 +6,8 @@ import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/ba
 import { HandlerInput, PayloadSignature } from '../../dispatcher/request/handler/types'
 import { SmartHomeSkillRequestInterceptor } from '../../dispatcher/request/interceptor/requestInterceptor'
 import { SmartHomeSkillResponseInterceptor } from '../../dispatcher/request/interceptor/responseInterceptor'
-import { ResponseBuilder } from '../../response/baseResponseBuilder'
-import { Response } from '../../response/types'
+import { ResponseBuilder } from '../../responses/baseResponseBuilder'
+import { Response } from '../../responses/types'
 import { SmartHomeSkillConfiguration } from '../configuration'
 
 /**
