@@ -101,6 +101,8 @@ describe('discovery', function () {
 
 
   describe('response builder', function () {
+    //TODO: Change these component tests to unit tests (using stubs), not just here, but globally. Some component tests could be retained, but unit tests are still needed
+
     it('returns a successful response for a successful request', function () {
       const sut = new DiscoveryResponseBuilder(request)
       sut.addDiscoveryEndpoint('WC:e889552c8a25', 'Sample Manufacturer', 'Smart Thermostat by Sample Manufacturer', 'My Home')
