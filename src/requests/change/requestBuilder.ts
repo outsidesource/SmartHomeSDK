@@ -39,16 +39,16 @@ export class ChangeReportRequestBuilder extends SmartHomeSkillRequestBuilder<Cha
 
     const duplicates = findDuplicates(this.changedProperties, getPropStateKey)
     if (duplicates.length > 0) {
-      throw Error(`The following changed properties are duplicated: ${duplicates.join()}`)
+      throw new Error(`The following changed properties are duplicated: ${duplicates.join()}`)
     }
 
     const intersection = findIntersection(this.unchangedProperties, this.changedProperties, isSamePropState)
     if (intersection.length > 0) {
-      throw Error(`The following properties cannot be both changed and unchanged: ${JSON.stringify(intersection)}`)
+      throw new Error(`The following properties cannot be both changed and unchanged: ${JSON.stringify(intersection)}`)
     }
 
     if (this.changedProperties.length === 0) {
-      throw Error('At least one property must have changed.')
+      throw new Error('At least one property must have changed.')
     }
 
     const payload = this.getChangeReportPayload(this.changeCause, this.changedProperties)

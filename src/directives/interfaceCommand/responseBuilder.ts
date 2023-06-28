@@ -22,7 +22,7 @@ export class InterfaceCommandResponseBuilder extends ResponseBuilder<unknown> {
 
     const endpointId = envelope.event.endpoint?.endpointId
     if (endpointId === undefined || endpointId === '') {
-      throw Error('An endpoint ID is required.')
+      throw new Error('An endpoint ID is required.')
     }
 
     return envelope

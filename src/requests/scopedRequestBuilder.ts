@@ -30,7 +30,7 @@ export abstract class ScopedSmartHomeSkillRequestBuilder<TPayload> extends Smart
       }
     }
 
-    throw Error('A token is required.')
+    throw new Error('A token is required.')
   }
 
   /**

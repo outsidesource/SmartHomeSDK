@@ -19,7 +19,7 @@ export class DeleteReportRequestBuilder extends ScopedSmartHomeSkillRequestBuild
    */
   getRequestBody (): Request<DeleteReportPayload> {
     if (this.endpointIds.length === 0) {
-      throw Error('At least one endpoint is required.')
+      throw new Error('At least one endpoint is required.')
     }
 
     const duplicates = findDuplicates(this.endpointIds, id => id)

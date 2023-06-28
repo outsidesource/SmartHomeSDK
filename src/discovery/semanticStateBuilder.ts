@@ -31,7 +31,7 @@ export class SemanticStateBuilder {
    */
   getMapping (): SemanticStateMapping {
     if (this.states.length === 0) {
-      throw Error('At least one semantic state must be specified.')
+      throw new Error('At least one semantic state must be specified.')
     }
 
     switch (this.type) {
@@ -55,7 +55,7 @@ export class SemanticStateBuilder {
       }
 
       case undefined: {
-        throw Error('Either a value or range must be specified.')
+        throw new Error('Either a value or range must be specified.')
       }
 
       /* istanbul ignore next: just an exhaustive check at compile time */

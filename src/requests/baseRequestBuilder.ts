@@ -192,7 +192,7 @@ export class ContextBuilder<TParentRequestBuilder extends SmartHomeSkillRequestB
 
     const duplicates = findDuplicates(this.properties, getPropStateKey)
     if (duplicates.length > 0) {
-      throw Error(`The following properties are duplicated: ${duplicates.join()}`)
+      throw new Error(`The following properties are duplicated: ${duplicates.join()}`)
     }
 
     context.properties = this.properties.map(convertPropStateToPropertyState)

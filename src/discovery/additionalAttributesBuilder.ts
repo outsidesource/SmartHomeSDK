@@ -35,27 +35,27 @@ export class AdditionalAttributesBuilder {
     const customIdentifier = sanitize(this.customIdentifier)
 
     if (manufacturer !== undefined && manufacturer.length > additionalAttributesFieldMaxSize) {
-      throw Error(`The manufacturer "${manufacturer}" is too long.`)
+      throw new Error(`The manufacturer "${manufacturer}" is too long.`)
     }
 
     if (model !== undefined && model.length > additionalAttributesFieldMaxSize) {
-      throw Error(`The model "${model}" is too long.`)
+      throw new Error(`The model "${model}" is too long.`)
     }
 
     if (serialNumber !== undefined && serialNumber.length > additionalAttributesFieldMaxSize) {
-      throw Error(`The serial number "${serialNumber}" is too long.`)
+      throw new Error(`The serial number "${serialNumber}" is too long.`)
     }
 
     if (firmwareVersion !== undefined && firmwareVersion.length > additionalAttributesFieldMaxSize) {
-      throw Error(`The firmware version "${firmwareVersion}" is too long.`)
+      throw new Error(`The firmware version "${firmwareVersion}" is too long.`)
     }
 
     if (softwareVersion !== undefined && softwareVersion.length > additionalAttributesFieldMaxSize) {
-      throw Error(`The software version "${softwareVersion}" is too long.`)
+      throw new Error(`The software version "${softwareVersion}" is too long.`)
     }
 
     if (customIdentifier !== undefined && customIdentifier.length > additionalAttributesFieldMaxSize) {
-      throw Error(`The custom identifier "${customIdentifier}" is too long.`)
+      throw new Error(`The custom identifier "${customIdentifier}" is too long.`)
     }
 
     const atts = {

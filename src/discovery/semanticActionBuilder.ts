@@ -26,7 +26,7 @@ export class SemanticActionBuilder {
    */
   getMapping (): SemanticActionMapping {
     if (this.actions.length === 0) {
-      throw Error('At least one semantic action must be specified.')
+      throw new Error('At least one semantic action must be specified.')
     }
 
     const result = {

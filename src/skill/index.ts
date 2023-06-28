@@ -53,12 +53,12 @@ export class SmartHomeSkill implements Skill<Request<unknown>, Response<unknown>
   async invoke (request: Request<unknown>, context: Context): Promise<Response<unknown>> {
     const handlerInputFactory = this.handlerInputFactoryRepository.getHandlerInputFactory(request, context)
     if (handlerInputFactory === undefined) {
-      throw Error(`No handler input factory for request: ${JSON.stringify(request.directive.header)}`)
+      throw new Error(`No handler input factory for request: ${JSON.stringify(request.directive.header)}`)
     }
 
     const input = handlerInputFactory.create(request, context)
     if (input === undefined) {
-      throw Error(`Unable to create handler input for request: ${JSON.stringify(request.directive.header)}`)
+      throw new Error(`Unable to create handler input for request: ${JSON.stringify(request.directive.header)}`)
     }
 
     return await this.requestDispatcher.dispatch(input)

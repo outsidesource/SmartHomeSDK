@@ -12,7 +12,7 @@ export class DiscoveryPayloadBuilder {
 
   getPayload (): DiscoveryPayload {
     if (this.endpointBuilders.length > maxEndpoints) {
-      throw Error(`The number of endpoints cannot exceed ${maxEndpoints}.`)
+      throw new Error(`The number of endpoints cannot exceed ${maxEndpoints}.`)
     }
 
     const endpoints = this.endpointBuilders.map(builder =>
@@ -27,7 +27,7 @@ export class DiscoveryPayloadBuilder {
     const duplicateSematicActionNames = this.getDuplicateSematicActionNames(endpoints)
 
     if (duplicateSematicActionNames.length > 0) {
-      throw Error(`Duplicate semantic action names found for the following: ${JSON.stringify(duplicateSematicActionNames)}`)
+      throw new Error(`Duplicate semantic action names found for the following: ${JSON.stringify(duplicateSematicActionNames)}`)
     }
 
     return { endpoints }

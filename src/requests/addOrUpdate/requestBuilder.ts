@@ -23,7 +23,7 @@ export class AddOrUpdateReportRequestBuilder extends ScopedSmartHomeSkillRequest
     const discoveryPayload = this.payloadBuilder.getPayload()
 
     if (discoveryPayload.endpoints.length === 0) {
-      throw Error('At least one endpoint is required.')
+      throw new Error('At least one endpoint is required.')
     }
 
     const payload = this.getAddOrUpdateReportPayload(discoveryPayload.endpoints)

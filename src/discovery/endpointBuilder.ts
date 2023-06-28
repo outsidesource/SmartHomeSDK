@@ -46,43 +46,43 @@ export class DiscoveryEndpointBuilder {
    */
   getEndpoint (): DiscoveryEndpoint {
     if (!endpointIdRegex.test(this.endpointId)) {
-      throw Error(`The endpoint ID "${this.endpointId}" does not match the expected format.`)
+      throw new Error(`The endpoint ID "${this.endpointId}" does not match the expected format.`)
     }
 
     if (this.manufacturerName.length === 0) {
-      throw Error('The manufacturer name cannot be empty.')
+      throw new Error('The manufacturer name cannot be empty.')
     }
 
     if (this.manufacturerName.length > manufacturerNameMaxSize) {
-      throw Error(`The manufacturer name "${this.manufacturerName}" is too long.`)
+      throw new Error(`The manufacturer name "${this.manufacturerName}" is too long.`)
     }
 
     if (this.description.length === 0) {
-      throw Error('The description cannot be empty.')
+      throw new Error('The description cannot be empty.')
     }
 
     if (this.description.length > descriptionMaxSize) {
-      throw Error(`The description "${this.description}" is too long.`)
+      throw new Error(`The description "${this.description}" is too long.`)
     }
 
     if (!friendlyNameRegex.test(this.friendlyName)) {
-      throw Error(`The friendly name "${this.friendlyName}" does not match the expected format.`)
+      throw new Error(`The friendly name "${this.friendlyName}" does not match the expected format.`)
     }
 
     if (this.displayCategories.length === 0) {
-      throw Error('At least one display category is required.')
+      throw new Error('At least one display category is required.')
     }
 
     if (this.capabilityBuilders.length === 0) {
-      throw Error('At least one capability is required.')
+      throw new Error('At least one capability is required.')
     }
 
     if (this.capabilityBuilders.length > maxCapabilitiesPerEndpoint) {
-      throw Error(`The number of capabilities cannot exceed ${maxCapabilitiesPerEndpoint}.`)
+      throw new Error(`The number of capabilities cannot exceed ${maxCapabilitiesPerEndpoint}.`)
     }
 
     if (JSON.stringify(this.cookies).length > maxCookiesSize) {
-      throw Error(`The cookie cannot be larger than ${maxCookiesSize} bytes.`)
+      throw new Error(`The cookie cannot be larger than ${maxCookiesSize} bytes.`)
     }
 
     const connections = this.connections.length === 0 ? undefined : this.connections
@@ -171,11 +171,11 @@ export class DiscoveryEndpointBuilder {
    */
   withZWaveConnection (homeId?: string, nodeId?: string): this {
     if (homeId !== undefined && !zwaveHomeIdRegex.test(homeId)) {
-      throw Error(`The ZWave home ID "${homeId}" does not match the expected format.`)
+      throw new Error(`The ZWave home ID "${homeId}" does not match the expected format.`)
     }
 
     if (nodeId !== undefined && !zwaveNodeIdRegex.test(nodeId)) {
-      throw Error(`The ZWave node ID "${nodeId}" does not match the expected format.`)
+      throw new Error(`The ZWave node ID "${nodeId}" does not match the expected format.`)
     }
 
     this.connections.push({ type: 'ZWAVE', homeId, nodeId })
@@ -189,7 +189,7 @@ export class DiscoveryEndpointBuilder {
    */
   withUnknownConnection (value: string): this {
     if (!unknownConnectionRegex.test(value)) {
-      throw Error(`The unknown connection value "${value}" does not match the expected format.`)
+      throw new Error(`The unknown connection value "${value}" does not match the expected format.`)
     }
 
     this.connections.push({ type: 'UNKNOWN', value })
