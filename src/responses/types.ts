@@ -23,7 +23,7 @@ export interface Response<TPayload = unknown> {
     }
 
     /** Contains information about the endpoint that handled the request. */
-    endpoint?: Endpoint
+    endpoint?: ResponseEndpoint
 
     /** The response payload. */
     payload: TPayload
@@ -36,7 +36,7 @@ export interface Response<TPayload = unknown> {
 /**
  * Contains information about the endpoint that handled the request.
  */
-export interface Endpoint {
+export interface ResponseEndpoint {
   /** The Bearer token information associated with the request. */
   scope?: Scope
 

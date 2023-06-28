@@ -2,7 +2,7 @@ import { Request } from '../dispatcher/request/handler/types'
 import { convertPropStateToPropertyState, findDuplicates, getPropStateKey } from '../util/helpers'
 import { Context, PropState } from '../util/types'
 import { ErrorResponsePayload } from './payloads/types'
-import { Endpoint, Response } from './types'
+import { Response, ResponseEndpoint } from './types'
 
 /**
  * Represents a fluent mechanism for building a response.
@@ -104,10 +104,10 @@ export class EndpointBuilder<TPayload> {
   }
 
   /**
-   * Generates a {@link Endpoint} based on the current configuration.
-   * @returns The {@link Endpoint}.
+   * Generates a {@link ResponseEndpoint} based on the current configuration.
+   * @returns The {@link ResponseEndpoint}.
    */
-  getEndpoint (): Endpoint | undefined {
+  getEndpoint (): ResponseEndpoint | undefined {
     if (
       (this.endpointId === undefined || this.endpointId === '') &&
       (this.token === undefined || this.token === '') &&
@@ -116,7 +116,7 @@ export class EndpointBuilder<TPayload> {
       return undefined
     }
 
-    const endpoint: Endpoint = {}
+    const endpoint: ResponseEndpoint = {}
 
     if (this.endpointId !== undefined && this.endpointId !== '') {
       endpoint.endpointId = this.endpointId

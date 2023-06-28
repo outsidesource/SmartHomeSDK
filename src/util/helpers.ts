@@ -1,6 +1,6 @@
 import { PropState, PropertyState } from './types'
 
-export interface Histogram {
+interface Histogram {
   [key: string]: number
 }
 

@@ -443,9 +443,7 @@ export enum SemanticActionNames {
 }
 
 /** Represents a state mapping. */
-export type SemanticStateMapping =
-  | SemanticStateValueMapping
-  | SemanticStateRangeMapping
+export type SemanticStateMapping = SemanticStateValueMapping | SemanticStateRangeMapping
 
 /** Represents a state value mapping. */
 export interface SemanticStateValueMapping {
@@ -481,10 +479,7 @@ export enum SemanticStateNames {
 }
 
 /** Represents a connection method for the device(s) represented. */
-export type DiscoveryConnection =
-  | StandardDiscoveryConnection
-  | ZWaveDiscoverConnection
-  | UnknownDiscoveryConnection
+export type DiscoveryConnection = StandardDiscoveryConnection | ZWaveDiscoverConnection | UnknownDiscoveryConnection
 
 /** Represents a standard NIC or Zigbee. */
 export interface StandardDiscoveryConnection {
