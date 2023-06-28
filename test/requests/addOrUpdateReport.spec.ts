@@ -14,7 +14,7 @@ const emptyRequest: Request<AddOrUpdateReportPayload> = require('../fixtures/add
 describe('add or update report', function () {
   describe('request builder', function () {
     describe('when adding or updating devices', function () {
-      it('returns a successful request when messageId, discovery details, and token specified', function () {
+      it('returns a request when messageId, discovery details, and token specified', function () {
         const sut = new AddOrUpdateReportRequestBuilder()
         sut.withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
         sut.addDiscoveryEndpoint('WC:e889552c8a25', 'Sample Manufacturer', 'Smart Thermostat by Sample Manufacturer', 'My Home')
@@ -68,7 +68,7 @@ describe('add or update report', function () {
         expect(removeUndefinedProps(actual)).to.deep.equal(filledRequest)
       })
 
-      it('returns a successful request with a partitioned token', function () {
+      it('returns a request with a partitioned token', function () {
         const req = _.cloneDeep(filledRequest)
         req.event.payload.scope = {
           type: 'BearerTokenWithPartition' as const,
@@ -163,7 +163,7 @@ describe('add or update report', function () {
 
 
     describe('when there are no devices', function () {
-      it('returns a successful request when messageId and token specified', function () {
+      it('returns a request when messageId and token specified', function () {
         const sut = new AddOrUpdateReportRequestBuilder()
         sut.withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
         sut.withSimpleToken('VGhpcyBpcyBhIEJlYXJlciB0b2tlbg==')
@@ -173,7 +173,7 @@ describe('add or update report', function () {
         expect(actual).to.deep.equal(emptyRequest)
       })
 
-      it('returns a successful request when an irrelevant endpoint is specified', function () {
+      it('returns a request when an irrelevant endpoint is specified', function () {
         const sut = new AddOrUpdateReportRequestBuilder()
         sut.withMessageId('4b409868-dc4b-ce7f-5ec9-0d6410e74f20')
         sut.addDiscoveryEndpoint('endpointId0', 'manufacturerName', 'description', 'friendly name 0')

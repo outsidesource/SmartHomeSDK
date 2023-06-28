@@ -2,10 +2,10 @@ import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
 import sinon from 'sinon'
-import { ChangeReportRequestBuilder, ContextBuilder, EndpointBuilder } from '../../src/requests/change/requestBuilder'
+import { ChangeReportRequestBuilder } from '../../src/requests/change/requestBuilder'
 import { ChangeCauseType, ChangeReportPayload } from '../../src/requests/change/types'
 import { Request } from '../../src/requests/types'
-import { createSinonStubInstance, removeUndefinedProps } from '../helpers'
+import { removeUndefinedProps } from '../helpers'
 
 const request: Request<ChangeReportPayload> = require('../fixtures/changeReportRequest.json')
 
@@ -17,7 +17,7 @@ describe('change report', function () {
 
 
   describe('request builder', function () {
-    it('returns a successful request when messageId, endpointId, and change cause specified', function () {
+    it('returns a request when messageId, endpointId, and change cause specified', function () {
       const sut = new ChangeReportRequestBuilder(
         'endpointId',
         ChangeCauseType.PhysicalInteraction)
@@ -37,7 +37,7 @@ describe('change report', function () {
       expect(removeUndefinedProps(actual)).to.deep.equal(request)
     })
 
-    it('returns a successful partitioned token request when messageId, endpointId, and change cause specified', function () {
+    it('returns a partitioned token request when messageId, endpointId, and change cause specified', function () {
       const req = _.cloneDeep(request)
       req.event.endpoint!.scope = {
         type: 'BearerTokenWithPartition',
@@ -64,7 +64,7 @@ describe('change report', function () {
       expect(removeUndefinedProps(actual)).to.deep.equal(req)
     })
 
-    it('returns a successful request when multiple properties have the same instance but different namespaces', function () {
+    it('returns a request when multiple properties have the same instance but different namespaces', function () {
       const req = _.cloneDeep(request)
       req.context!.properties!.push({
         namespace: 'Alexa.InventoryUsageSensor',
@@ -94,7 +94,7 @@ describe('change report', function () {
       expect(removeUndefinedProps(actual)).to.deep.equal(req)
     })
 
-    it('returns a successful request when multiple properties have the same namespace but different instances', function () {
+    it('returns a request when multiple properties have the same namespace but different instances', function () {
       const req = _.cloneDeep(request)
       req.context!.properties!.push({
         namespace: 'Alexa.InventoryLevelSensor',
@@ -200,41 +200,6 @@ describe('change report', function () {
       const actual2 = sut.addContext()
 
       expect(actual1).to.equal(actual2)
-    })
-  })
-
-
-
-  describe('endpoint builder', function () {
-    it('returns undefined when given no endpoint id', function () {
-      const parentBuilderStub = createSinonStubInstance(ChangeReportRequestBuilder)
-      const sut = new EndpointBuilder(parentBuilderStub)
-
-      const actual = sut.getEndpoint()
-
-      expect(actual).to.be.undefined
-    })
-
-    it('returns the parent builder when invoked', function () {
-      const parentBuilderStub = createSinonStubInstance(ChangeReportRequestBuilder)
-      const sut = new EndpointBuilder(parentBuilderStub)
-
-      const actual = sut.getRequestBuilder()
-
-      expect(actual).to.equal(parentBuilderStub)
-    })
-  })
-
-
-
-  describe('context builder', function () {
-    it('returns the parent builder when invoked', function () {
-      const parentBuilderStub = createSinonStubInstance(ChangeReportRequestBuilder)
-      const sut = new ContextBuilder(parentBuilderStub)
-
-      const actual = sut.getRequestBuilder()
-
-      expect(actual).to.equal(parentBuilderStub)
     })
   })
 })

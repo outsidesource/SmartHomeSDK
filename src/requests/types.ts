@@ -46,3 +46,9 @@ export interface RequestEndpoint {
   /** Additional information about the endpoint. */
   cookie?: { [key: string]: string }
 }
+
+/**
+ * A payload that has no need to send data.
+ */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+export interface EmptyRequestPayload {}
