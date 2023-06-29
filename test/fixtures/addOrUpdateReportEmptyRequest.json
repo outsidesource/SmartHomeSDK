@@ -1,0 +1,17 @@
+{
+  "event": {
+    "header": {
+      "namespace": "Alexa.Discovery",
+      "name": "AddOrUpdateReport",
+      "payloadVersion": "3",
+      "messageId": "4b409868-dc4b-ce7f-5ec9-0d6410e74f20"
+    },
+    "payload": {
+      "endpoints": [],
+      "scope": {
+        "type": "BearerToken",
+        "token": "VGhpcyBpcyBhIEJlYXJlciB0b2tlbg=="
+      }
+    }
+  }
+}

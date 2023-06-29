@@ -429,7 +429,11 @@
             }
           }
         }
-      ]
+      ],
+      "scope": {
+        "type": "BearerToken",
+        "token": "VGhpcyBpcyBhIEJlYXJlciB0b2tlbg=="
+      }
     }
   }
 }
