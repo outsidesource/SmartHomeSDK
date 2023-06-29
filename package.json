@@ -1,6 +1,6 @@
 {
   "name": "@outsidesource/smart-home-sdk",
-  "version": "1.6.3",
+  "version": "2.0.0",
   "description": "Alexa Smart Home Skill SDK",
   "main": "index.js",
   "types": "index.d.ts",
