@@ -14,29 +14,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Use Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '18.x'
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
 
       - name: Run Tests
-        run: npm run test-check
+        run: yarn test-check
         env:
           CI: true
 
       - name: Build
         if: ${{ (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'publish') }}
-        run: npm run build
+        run: yarn build
 
       - name: Publish
         if: ${{ (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && github.event.inputs.runMode == 'publish') }}
-        run: npm publish
+        run: yarn publish
         working-directory: ./dist
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

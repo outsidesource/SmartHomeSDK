@@ -7,13 +7,13 @@
   "scripts": {
     "clean": "rimraf dist",
     "compile": "tsc --build tsconfig.json --pretty",
-    "test": "npm run compile && NODE_ENV=test nyc mocha -r ts-node/register 'test/**/*.spec.ts'",
+    "test": "yarn compile && NODE_ENV=test nyc mocha -r ts-node/register 'test/**/*.spec.ts'",
     "lint-check": "gts check",
     "lint-clean": "gts clean",
     "lint-fix": "gts fix",
-    "version": "npm version -no-git-tag-version",
-    "test-check": "npm run clean && npm run test && npm run lint-check && npm run compile",
-    "build": "npm run clean && npm run compile && cpy package.json dist && cd dist/ && npm install --production"
+    "version": "yarn version --no-git-tag-version",
+    "test-check": "yarn clean && yarn test && yarn lint-check",
+    "build": "yarn clean && yarn compile && cpy package.json dist && cd dist/ && yarn install --production"
   },
   "repository": {
     "type": "git",
@@ -26,33 +26,35 @@
   "license": "UNLICENSED",
   "dependencies": {
     "ask-sdk-runtime": "^2.10.2",
-    "aws-sdk": "^2.890.0",
-    "axios": "^0.21.1",
-    "indefinite": "2.3.2",
-    "js-levenshtein": "1.1.6",
-    "lodash": "^4.17.19",
-    "moment": "^2.27.0",
-    "util": "^0.12.3",
+    "aws-lambda": "^1.0.7",
+    "lodash": "^4.17.21",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/chai": "4.2.12",
-    "@types/js-levenshtein": "^1.1.0",
-    "@types/lodash": "^4.14.159",
-    "@types/mocha": "8.0.1",
-    "@types/node": "^14.0.27",
-    "@types/sinon": "^10.0.0",
+    "@types/aws-lambda": "^8.10.115",
+    "@types/chai": "^4.3.3",
+    "@types/lodash": "^4.14.185",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^20.2.5",
+    "@types/sinon": "^10.0.13",
     "@types/uuid": "^8.3.1",
-    "chai": "4.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "chai": "^4.3.6",
     "check-error": "^1.0.2",
-    "cpy-cli": "3.1.1",
-    "gts": "^1.1.2",
-    "mocha": "8.1.1",
+    "cpy-cli": "^4.2.0",
+    "eslint": "^8.24.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.3.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.1",
+    "gts": "^3.1.1",
+    "mocha": "^10.0.0",
     "nyc": "15.1.0",
     "rimraf": "3.0.2",
-    "sinon": "^10.0.0",
-    "ts-node": "8.10.2",
-    "typescript": "3.9.7"
+    "sinon": "^14.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.3"
   },
   "nyc": {
     "extension": [
@@ -60,7 +62,9 @@
       ".tsx"
     ],
     "exclude": [
-      "**/*.d.ts"
+      "**/*.d.ts",
+      "**/*.spec.ts",
+      "test"
     ],
     "reporter": [
       "text"
