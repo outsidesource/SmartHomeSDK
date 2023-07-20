@@ -68,3 +68,5 @@ typings/
 # builds
 dist/
 *.zip
+
+src/prebuild-output.ts

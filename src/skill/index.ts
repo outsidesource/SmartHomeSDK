@@ -2,6 +2,7 @@ import { createAskSdkUserAgent, GenericRequestDispatcher, RequestDispatcher, Ski
 import { Context } from 'aws-lambda'
 import { HandlerInputFactoryRepository } from '../dispatcher/request/handler/factory/repository'
 import { HandlerInput, Request } from '../dispatcher/request/handler/types'
+import { PKG_VERSION } from '../prebuild-output'
 import { ResponseBuilder } from '../responses/baseResponseBuilder'
 import { Response } from '../responses/types'
 import { SmartHomeSkillConfiguration } from './configuration'
@@ -35,11 +36,7 @@ export class SmartHomeSkill implements Skill<Request<unknown>, Response<unknown>
       responseInterceptors: skillConfiguration.responseInterceptors
     })
 
-    /* istanbul ignore next */
-    const packageInfo = process.env.NODE_ENV === 'test'
-      ? require('../../package.json')
-      : require('../package.json')
-    UserAgentManager.registerComponent(createAskSdkUserAgent(packageInfo.version))
+    UserAgentManager.registerComponent(createAskSdkUserAgent(PKG_VERSION))
     if (this.customUserAgent !== undefined && this.customUserAgent !== '') {
       UserAgentManager.registerComponent(this.customUserAgent)
     }
