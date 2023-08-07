@@ -1,5 +1,6 @@
 /* istanbul ignore file */
 
+export { AttributesManager, PersistenceAdapter } from './attributes/types'
 export { isAcceptGrantRequest } from './directives/acceptGrant/handlerInputFactory'
 export { AcceptGrantResponseBuilder } from './directives/acceptGrant/responseBuilder'
 export { AcceptGrantErrorTypes, AcceptGrantRequestPayload } from './directives/acceptGrant/types'

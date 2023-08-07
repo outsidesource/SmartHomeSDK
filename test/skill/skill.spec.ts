@@ -4,6 +4,7 @@ import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
 import sinon from 'sinon'
+import { AttributesManager } from '../../src/attributes/types'
 import { HandlerInput, Request } from '../../src/dispatcher/request/handler/types'
 import { Response } from '../../src/responses/types'
 import { SmartHomeSkill } from '../../src/skill'
@@ -25,9 +26,10 @@ const request: Request<TestRequestPayload> = {
 const lambdaContext = getLambdaContext()
 const testHandlerInputFactory = {
   canCreate: (request: Request<unknown>, context: Context) => true,
-  create: (request: Request<unknown>, context: Context) => ({
+  create: (request: Request<unknown>, context: Context, attributesManager: AttributesManager) => ({
     request,
     context,
+    attributesManager,
     responseBuilder: new TestResponseBuilder(request as Request<TestRequestPayload>)
   })
 }

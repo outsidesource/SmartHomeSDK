@@ -10,7 +10,7 @@ import { Request } from '../../src/dispatcher/request/handler/types'
 import { ErrorTypes } from '../../src/responses/errorTypes'
 import { ErrorResponsePayload } from '../../src/responses/payloads/types'
 import { Response } from '../../src/responses/types'
-import { getLambdaContext, } from '../fixtures'
+import { FauxAttributesManager, getLambdaContext, } from '../fixtures'
 import { removeUndefinedProps } from '../helpers'
 
 const request: Request<DiscoveryRequestPayload> = require('../fixtures/discoveryRequest.json')
@@ -80,7 +80,9 @@ describe('discovery', function () {
 
     describe('create()', function () {
       it('returns a handler input when the request can be handled', function () {
-        const actual = sut.create(request, context)
+        const attributesManager = new FauxAttributesManager()
+
+        const actual = sut.create(request, context, attributesManager)
 
         expect(actual?.request).to.equal(request)
         expect(actual?.context).to.equal(context)
@@ -90,8 +92,9 @@ describe('discovery', function () {
       it('returns undefined when the request cannot be handled', function () {
         const req = _.cloneDeep(request)
         req.directive.header.namespace = 'faux'
+        const attributesManager = new FauxAttributesManager()
 
-        const actual = sut.create(req, context)
+        const actual = sut.create(req, context, attributesManager)
 
         expect(actual).to.be.undefined
       })

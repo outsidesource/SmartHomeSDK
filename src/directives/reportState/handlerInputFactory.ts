@@ -1,4 +1,5 @@
 import { Context } from 'aws-lambda'
+import { AttributesManager } from '../../attributes/types'
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
 import { HandlerInput, Request } from '../../dispatcher/request/handler/types'
 import { EmptyResponsePayload } from '../../responses/payloads/types'
@@ -12,7 +13,7 @@ export const ReportStateHandlerInputFactory: HandlerInputFactory<unknown, Report
     return isReportStateRequest(request)
   },
 
-  create (request: Request<unknown>, context: Context): HandlerInput<unknown, ReportStateResponseBuilder, EmptyResponsePayload> | undefined {
+  create (request: Request<unknown>, context: Context, attributesManager: AttributesManager): HandlerInput<unknown, ReportStateResponseBuilder, EmptyResponsePayload> | undefined {
     if (!isReportStateRequest(request)) {
       return undefined
     }
@@ -20,6 +21,7 @@ export const ReportStateHandlerInputFactory: HandlerInputFactory<unknown, Report
     return {
       request,
       context,
+      attributesManager,
       responseBuilder: new ReportStateResponseBuilder(request)
     }
   }

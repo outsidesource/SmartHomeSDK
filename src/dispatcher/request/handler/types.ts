@@ -1,4 +1,5 @@
 import { Context } from 'aws-lambda'
+import { AttributesManager } from '../../../attributes/types'
 import { ResponseBuilder } from '../../../responses/baseResponseBuilder'
 
 /**
@@ -19,6 +20,11 @@ export interface HandlerInput<TRequestPayload, TResponseBuilder extends Response
    * The builder to create a response.
    */
   responseBuilder: TResponseBuilder
+
+  /**
+   * The manager for attributes that can be stored/retrieved during requests.
+   */
+  attributesManager: AttributesManager
 }
 
 /**

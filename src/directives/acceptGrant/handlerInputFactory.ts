@@ -1,4 +1,5 @@
 import { Context } from 'aws-lambda'
+import { AttributesManager } from '../../attributes/types'
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
 import { HandlerInput, Request } from '../../dispatcher/request/handler/types'
 import { EmptyResponsePayload } from '../../responses/payloads/types'
@@ -13,7 +14,7 @@ export const AcceptGrantHandlerInputFactory: HandlerInputFactory<unknown, Accept
     return isAcceptGrantRequest(request)
   },
 
-  create (request: Request<unknown>, context: Context): HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder, EmptyResponsePayload> | undefined {
+  create (request: Request<unknown>, context: Context, attributesManager: AttributesManager): HandlerInput<AcceptGrantRequestPayload, AcceptGrantResponseBuilder, EmptyResponsePayload> | undefined {
     if (!isAcceptGrantRequest(request)) {
       return undefined
     }
@@ -21,6 +22,7 @@ export const AcceptGrantHandlerInputFactory: HandlerInputFactory<unknown, Accept
     return {
       request,
       context,
+      attributesManager,
       responseBuilder: new AcceptGrantResponseBuilder(request)
     }
   }

@@ -1,6 +1,7 @@
 import { RequestHandler, RuntimeConfigurationBuilder } from 'ask-sdk-runtime'
 import { Context, Handler } from 'aws-lambda'
 import { SmartHomeSkill } from '..'
+import { PersistenceAdapter } from '../../attributes/types'
 import { AcceptGrantHandlerInputFactory } from '../../directives/acceptGrant/handlerInputFactory'
 import { DiscoveryHandlerInputFactory } from '../../directives/discovery/handlerInputFactory'
 import { InterfaceCommandHandlerInputFactory } from '../../directives/interfaceCommand/handlerInputFactory'
@@ -20,8 +21,9 @@ import { InlineErrorExecutor, InlineErrorMatcher, InlineRequestExecutor, InlineR
  */
 export default function (): SmartHomeSkillBuilder {
   const runtimeConfigurationBuilder = new RuntimeConfigurationBuilder<HandlerInput<unknown, ResponseBuilder<unknown>, unknown>, Response<unknown>>()
-  let thisCustomUserAgent: string
-  let thisSkillId: string
+  let thisCustomUserAgent: string | undefined
+  let thisPersistenceAdapter: PersistenceAdapter | undefined
+  let thisSkillId: string | undefined
   const thisHandlerInputFactories: Array<HandlerInputFactory<unknown, ResponseBuilder<unknown>, unknown>> = [
     AcceptGrantHandlerInputFactory,
     DiscoveryHandlerInputFactory,
@@ -87,6 +89,12 @@ export default function (): SmartHomeSkillBuilder {
       return this
     },
 
+    withPersistenceAdapter (adapter: PersistenceAdapter) {
+      thisPersistenceAdapter = adapter
+
+      return this
+    },
+
     withSkillId (skillId: string): SmartHomeSkillBuilder {
       thisSkillId = skillId
 
@@ -105,6 +113,7 @@ export default function (): SmartHomeSkillBuilder {
       return {
         ...runtimeConfiguration,
         customUserAgent: thisCustomUserAgent,
+        persistenceAdapter: thisPersistenceAdapter,
         skillId: thisSkillId,
         handlerInputFactories: Array.from(new Set(thisHandlerInputFactories))
       }
