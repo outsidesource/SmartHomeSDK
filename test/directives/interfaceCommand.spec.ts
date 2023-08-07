@@ -7,7 +7,7 @@ import { Request } from '../../src/dispatcher/request/handler/types'
 import { ErrorTypes } from '../../src/responses/errorTypes'
 import { ErrorResponsePayload } from '../../src/responses/payloads/types'
 import { Response } from '../../src/responses/types'
-import { getLambdaContext, } from '../fixtures'
+import { FauxAttributesManager, getLambdaContext, } from '../fixtures'
 import { removeUndefinedProps } from '../helpers'
 
 const request: Request<unknown> = require('../fixtures/interfaceCommandRequest.json')
@@ -42,7 +42,9 @@ describe('interface command', function () {
 
     describe('create()', function () {
       it('returns a handler input when the request can be handled', function () {
-        const actual = sut.create(request, context)
+        const attributesManager = new FauxAttributesManager()
+
+        const actual = sut.create(request, context, attributesManager)
 
         expect(actual?.request).to.equal(request)
         expect(actual?.context).to.equal(context)
@@ -52,8 +54,9 @@ describe('interface command', function () {
       it('returns a handler input when the request type is not recognized', function () {
         const req = _.cloneDeep(request)
         req.directive.header.namespace = 'faux'
+        const attributesManager = new FauxAttributesManager()
 
-        const actual = sut.create(request, context)
+        const actual = sut.create(request, context, attributesManager)
 
         expect(actual?.request).to.equal(request)
         expect(actual?.context).to.equal(context)

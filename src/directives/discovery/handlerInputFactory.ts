@@ -1,4 +1,5 @@
 import { Context } from 'aws-lambda'
+import { AttributesManager } from '../../attributes/types'
 import { DiscoveryPayload } from '../../discovery/payload'
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
 import { HandlerInput, Request } from '../../dispatcher/request/handler/types'
@@ -13,7 +14,7 @@ export const DiscoveryHandlerInputFactory: HandlerInputFactory<unknown, Discover
     return isDiscoveryRequest(request)
   },
 
-  create (request: Request<unknown>, context: Context): HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder, DiscoveryPayload> | undefined {
+  create (request: Request<unknown>, context: Context, attributesManager: AttributesManager): HandlerInput<DiscoveryRequestPayload, DiscoveryResponseBuilder, DiscoveryPayload> | undefined {
     if (!isDiscoveryRequest(request)) {
       return undefined
     }
@@ -21,6 +22,7 @@ export const DiscoveryHandlerInputFactory: HandlerInputFactory<unknown, Discover
     return {
       request,
       context,
+      attributesManager,
       responseBuilder: new DiscoveryResponseBuilder(request)
     }
   }

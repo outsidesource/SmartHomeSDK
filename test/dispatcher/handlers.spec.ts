@@ -14,7 +14,7 @@ import { ReportStateRequestHandler } from '../../src/dispatcher/request/handler/
 import { HandlerInput, Request } from '../../src/dispatcher/request/handler/types'
 import { EmptyResponsePayload, ErrorResponsePayload } from '../../src/responses/payloads/types'
 import { Response } from '../../src/responses/types'
-import { getLambdaContext } from '../fixtures'
+import { FauxAttributesManager, getLambdaContext } from '../fixtures'
 
 const context = getLambdaContext()
 
@@ -24,7 +24,7 @@ describe('abstract handlers', function () {
       const request: Request<AcceptGrantRequestPayload> = require('../fixtures/acceptGrantRequest.json')
       const sut = new AcceptGrantHandler()
 
-      const actual = sut.canHandle({ request, context, responseBuilder: new AcceptGrantResponseBuilder(request) })
+      const actual = sut.canHandle({ request, context, attributesManager: new FauxAttributesManager(), responseBuilder: new AcceptGrantResponseBuilder(request) })
 
       expect(actual).to.be.true
     })
@@ -37,7 +37,7 @@ describe('abstract handlers', function () {
       const request: Request<DiscoveryRequestPayload> = require('../fixtures/discoveryRequest.json')
       const sut = new DiscoveryHandler()
 
-      const actual = sut.canHandle({ request, context, responseBuilder: new DiscoveryResponseBuilder(request) })
+      const actual = sut.canHandle({ request, context, attributesManager: new FauxAttributesManager(), responseBuilder: new DiscoveryResponseBuilder(request) })
 
       expect(actual).to.be.true
     })
@@ -50,7 +50,7 @@ describe('abstract handlers', function () {
       const request: Request<unknown> = require('../fixtures/interfaceCommandRequest.json')
       const sut = new InterfaceCommandHandler()
 
-      const actual = sut.canHandle({ request, context, responseBuilder: new InterfaceCommandResponseBuilder(request) })
+      const actual = sut.canHandle({ request, context, attributesManager: new FauxAttributesManager(), responseBuilder: new InterfaceCommandResponseBuilder(request) })
 
       expect(actual).to.be.true
     })
@@ -63,7 +63,7 @@ describe('abstract handlers', function () {
       const request: Request<unknown> = require('../fixtures/reportStateRequest.json')
       const sut = new ReportStateHandler()
 
-      const actual = sut.canHandle({ request, context, responseBuilder: new ReportStateResponseBuilder(request) })
+      const actual = sut.canHandle({ request, context, attributesManager: new FauxAttributesManager(), responseBuilder: new ReportStateResponseBuilder(request) })
 
       expect(actual).to.be.true
     })

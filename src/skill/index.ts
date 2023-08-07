@@ -1,5 +1,7 @@
 import { createAskSdkUserAgent, GenericRequestDispatcher, RequestDispatcher, Skill, UserAgentManager } from 'ask-sdk-runtime'
 import { Context } from 'aws-lambda'
+import AttributesManagerFactory from '../attributes/attributesManagerFactory'
+import { PersistenceAdapter } from '../attributes/types'
 import { HandlerInputFactoryRepository } from '../dispatcher/request/handler/factory/repository'
 import { HandlerInput, Request } from '../dispatcher/request/handler/types'
 import { PKG_VERSION } from '../prebuild-output'
@@ -13,14 +15,14 @@ import { SmartHomeSkillConfiguration } from './configuration'
 export class SmartHomeSkill implements Skill<Request<unknown>, Response<unknown>> {
   protected requestDispatcher: RequestDispatcher<HandlerInput<unknown, ResponseBuilder<unknown>, unknown>, Response<unknown>>
 
-  // protected persistenceAdapter: PersistenceAdapter;
-  // protected apiClient: ApiClient;
+  protected persistenceAdapter?: PersistenceAdapter
+  // protected apiClient: ApiClient
   protected customUserAgent?: string
   protected skillId?: string
   protected handlerInputFactoryRepository: HandlerInputFactoryRepository
 
   constructor (skillConfiguration: SmartHomeSkillConfiguration) {
-    // this.persistenceAdapter = skillConfiguration.persistenceAdapter;
+    this.persistenceAdapter = skillConfiguration.persistenceAdapter
     // this.apiClient = skillConfiguration.apiClient;
     this.customUserAgent = skillConfiguration.customUserAgent
     this.skillId = skillConfiguration.skillId
@@ -53,7 +55,13 @@ export class SmartHomeSkill implements Skill<Request<unknown>, Response<unknown>
       throw new Error(`No handler input factory for request: ${JSON.stringify(request.directive.header)}`)
     }
 
-    const input = handlerInputFactory.create(request, context)
+    const attributesManager = AttributesManagerFactory({
+      persistenceAdapter: this.persistenceAdapter,
+      request,
+      context
+    })
+
+    const input = handlerInputFactory.create(request, context, attributesManager)
     if (input === undefined) {
       throw new Error(`Unable to create handler input for request: ${JSON.stringify(request.directive.header)}`)
     }

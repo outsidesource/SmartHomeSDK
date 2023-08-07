@@ -1,4 +1,5 @@
 import { Context } from 'aws-lambda'
+import { AttributesManager } from '../../../../attributes/types'
 import { ResponseBuilder } from '../../../../responses/baseResponseBuilder'
 import { HandlerInput, Request } from '../types'
 
@@ -17,6 +18,7 @@ export interface HandlerInputFactory<TRequestPayload, TResponseBuilder extends R
    * Fulfills the request and returns a valid response.
    * @param request The directive and payload for the request.
    * @param context The context that the lambda is running in.
+   * @param attributesManager The service that stores/retrieves attributes.
    */
-  create: (request: Request<TRequestPayload>, context: Context) => HandlerInput<TRequestPayload, TResponseBuilder, TResponsePayload> | undefined
+  create: (request: Request<TRequestPayload>, context: Context, attributesManager: AttributesManager) => HandlerInput<TRequestPayload, TResponseBuilder, TResponsePayload> | undefined
 }

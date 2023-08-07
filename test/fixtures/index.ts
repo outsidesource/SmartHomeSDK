@@ -1,5 +1,6 @@
 import { Context } from 'aws-lambda'
 import _ from 'lodash'
+import { AttributesManager, PersistenceAdapter } from '../../src/attributes/types'
 import { HandlerInputFactory } from '../../src/dispatcher/request/handler/factory/baseHandlerInputFactory'
 import { HandlerInputFactoryRepository } from '../../src/dispatcher/request/handler/factory/repository'
 import { Request } from '../../src/dispatcher/request/handler/types'
@@ -28,7 +29,54 @@ export function getLambdaCallback(
   }
 }
 
+export class FauxAttributesManager implements AttributesManager {
+  requestData: { [key: string]: unknown } = {}
+  persistentData: { [key: string]: unknown } = {}
 
+  getRequestAttributes = (): { [key: string]: unknown } => this.requestData
+  setRequestAttributes = (requestAttributes: { [key: string]: unknown }): void => {
+    this.requestData = requestAttributes
+  }
+
+  getPersistentAttributes = (useCache?: boolean | undefined, defaultAttributes?: { [key: string]: unknown } | undefined): Promise<{ [key: string]: unknown }> => Promise.resolve(this.persistentData)
+  setPersistentAttributes = (persistentAttributes: { [key: string]: unknown }): void => {
+    this.persistentData = persistentAttributes
+  }
+  savePersistentAttributes = (): Promise<void> => Promise.resolve()
+  deletePersistentAttributes = (): Promise<void> => {
+    this.persistentData = {}
+    return Promise.resolve()
+  }
+}
+
+export function getPersistenceAdapter(forceError: boolean = false, withDelete: boolean = true): PersistenceAdapter {
+  let thisPersistentAttributes: { [key: string]: unknown } = {}
+
+  return {
+    getAttributes: function (request: Request<unknown>, context: Context): Promise<{ [key: string]: unknown }> {
+      return forceError
+        ? Promise.reject(new Error('Intentionally rejecting'))
+        : Promise.resolve(thisPersistentAttributes)
+    },
+
+    saveAttributes: function (request: Request<unknown>, context: Context, attributes: { [key: string]: unknown }): Promise<void> {
+      thisPersistentAttributes = attributes
+      return forceError
+        ? Promise.reject(new Error('Intentionally rejecting'))
+        : Promise.resolve()
+    },
+
+    deleteAttributes:
+      withDelete
+        ? function (request: Request<unknown>, context: Context): Promise<void> {
+          thisPersistentAttributes = {}
+          return forceError
+            ? Promise.reject(new Error('Intentionally rejecting'))
+            : Promise.resolve()
+        }
+        : undefined
+  }
+}
 
 export interface TestRequestPayload {
   customInput: number
@@ -60,7 +108,7 @@ export class TestResponseBuilder extends ResponseBuilder<TestResponsePayload> {
 }
 
 export class TestSmartHomeSkill extends SmartHomeSkill {
-  overwriteHandlerInputFactories (...newFactories: Array<HandlerInputFactory<unknown, ResponseBuilder<TestResponsePayload>, TestResponsePayload>>) {
+  overwriteHandlerInputFactories(...newFactories: Array<HandlerInputFactory<unknown, ResponseBuilder<TestResponsePayload>, TestResponsePayload>>) {
     this.handlerInputFactoryRepository = new HandlerInputFactoryRepository(...newFactories)
   }
 }

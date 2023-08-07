@@ -3,13 +3,14 @@ import { expect } from 'chai'
 import _ from 'lodash'
 import 'mocha'
 import sinon from 'sinon'
+import { AttributesManager } from '../../src/attributes/types'
 import { HandlerInput, PayloadSignature, Request } from '../../src/dispatcher/request/handler/types'
 import { ResponseBuilder } from '../../src/responses/baseResponseBuilder'
 import { ErrorTypes } from '../../src/responses/errorTypes'
 import { Response } from '../../src/responses/types'
 import SmartHomeSkillFactory from '../../src/skill/factory/skillFactory'
 import { SkillBuilders } from '../../src/skill/skillBuilders'
-import { TestRequestPayload, TestResponseBuilder, TestResponsePayload, getLambdaCallback, getLambdaContext } from '../fixtures'
+import { FauxAttributesManager, TestRequestPayload, TestResponseBuilder, TestResponsePayload, getLambdaCallback, getLambdaContext, getPersistenceAdapter } from '../fixtures'
 
 const request: Request<TestRequestPayload> = {
   directive: {
@@ -25,9 +26,10 @@ const request: Request<TestRequestPayload> = {
 const lambdaContext = getLambdaContext()
 const testHandlerInputFactory = {
   canCreate: (request: Request<unknown>, context: Context) => true,
-  create: (request: Request<unknown>, context: Context) => ({
+  create: (request: Request<unknown>, context: Context, attributesManager: AttributesManager) => ({
     request,
     context,
+    attributesManager,
     responseBuilder: new TestResponseBuilder(request as Request<TestRequestPayload>)
   })
 }
@@ -144,6 +146,7 @@ describe('smart home skill builder', function () {
         const handlerInput = {
           request: req,
           context: lambdaContext,
+          attributesManager: new FauxAttributesManager(),
           responseBuilder: new TestResponseBuilder(req)
         }
 
@@ -161,6 +164,7 @@ describe('smart home skill builder', function () {
         const handlerInput = {
           request: req,
           context: lambdaContext,
+          attributesManager: new FauxAttributesManager(),
           responseBuilder: new TestResponseBuilder(req)
         }
 
@@ -178,6 +182,7 @@ describe('smart home skill builder', function () {
         const handlerInput = {
           request: req,
           context: lambdaContext,
+          attributesManager: new FauxAttributesManager(),
           responseBuilder: new TestResponseBuilder(req)
         }
 
@@ -195,6 +200,7 @@ describe('smart home skill builder', function () {
         const handlerInput = {
           request: req,
           context: lambdaContext,
+          attributesManager: new FauxAttributesManager(),
           responseBuilder: new TestResponseBuilder(req)
         }
 
@@ -212,6 +218,7 @@ describe('smart home skill builder', function () {
         const handlerInput = {
           request: req,
           context: lambdaContext,
+          attributesManager: new FauxAttributesManager(),
           responseBuilder: new TestResponseBuilder(req)
         }
 
@@ -297,6 +304,20 @@ describe('smart home skill builder', function () {
       const actual = sut.getSkillConfiguration()
 
       expect(actual.customUserAgent).to.equal('customUserAgent')
+    })
+  })
+
+
+
+  describe('withPersistenceAdapter()', function () {
+    it('sets the persistence adapter', function () {
+      const sut = SmartHomeSkillFactory()
+      const persistenceAdapter = getPersistenceAdapter()
+
+      sut.withPersistenceAdapter(persistenceAdapter)
+      const actual = sut.getSkillConfiguration()
+
+      expect(actual.persistenceAdapter).to.equal(persistenceAdapter)
     })
   })
 

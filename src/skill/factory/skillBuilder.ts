@@ -1,6 +1,7 @@
 import { RequestHandler } from 'ask-sdk-runtime'
 import { Handler } from 'aws-lambda'
 import { SmartHomeSkill } from '..'
+import { PersistenceAdapter } from '../../attributes/types'
 import { SmartHomeSkillErrorHandler } from '../../dispatcher/error/handler'
 import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
 import { HandlerInput, PayloadSignature } from '../../dispatcher/request/handler/types'
@@ -39,6 +40,9 @@ export interface SmartHomeSkillBuilder {
   ) => this
   withSkillId: (
     skillId: string
+  ) => this
+  withPersistenceAdapter: (
+    adapter: PersistenceAdapter
   ) => this
   withHandlerInputFactories: (
     ...handlerInputFactories: Array<HandlerInputFactory<unknown, ResponseBuilder<unknown>, unknown>>
