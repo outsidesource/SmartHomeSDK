@@ -32,7 +32,7 @@ export default function (options: Options): AttributesManager {
         thisHasPersistentCache = true
       }
 
-      if (defaultAttributes !== undefined && Object.keys(thisPersistentAttributes ?? {}).length === 0) {
+      if (defaultAttributes !== undefined && Object.keys(thisPersistentAttributes).length === 0) {
         thisPersistentAttributes = defaultAttributes
       }
 
