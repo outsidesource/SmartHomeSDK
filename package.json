@@ -24,6 +24,12 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
+  "keywords": [
+    "alexa",
+    "smart",
+    "home",
+    "smarthome"
+  ],
   "author": "Outside Source",
   "license": "MIT",
   "dependencies": {
