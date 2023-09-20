@@ -15,7 +15,7 @@
     "version-minor": "yarn version --no-git-tag-version --minor && yarn output-prebuild-vars",
     "version-patch": "yarn version --no-git-tag-version --patch && yarn output-prebuild-vars",
     "test-check": "yarn clean && yarn test && yarn lint-check",
-    "build": "yarn clean && yarn compile && cpy package.json dist && cd dist/ && yarn install --production"
+    "build": "yarn clean && yarn compile"
   },
   "repository": {
     "type": "git",
