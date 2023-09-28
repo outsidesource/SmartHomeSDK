@@ -1,6 +1,6 @@
 import { ResponseBuilder } from '../../responses/baseResponseBuilder'
-import { EmptyResponsePayload, ErrorResponsePayload } from '../../responses/payloads/types'
-import { Response } from '../../responses/types'
+import { type EmptyResponsePayload, type ErrorResponsePayload } from '../../responses/payloads/types'
+import { type Response } from '../../responses/types'
 
 const namespace = 'Alexa.Authorization'
 const succeedName = 'AcceptGrant.Response'

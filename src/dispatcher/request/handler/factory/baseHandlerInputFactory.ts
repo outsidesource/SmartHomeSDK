@@ -1,7 +1,7 @@
-import { Context } from 'aws-lambda'
-import { AttributesManager } from '../../../../attributes/types'
-import { ResponseBuilder } from '../../../../responses/baseResponseBuilder'
-import { HandlerInput, Request } from '../types'
+import { type Context } from 'aws-lambda'
+import { type AttributesManager } from '../../../../attributes/types'
+import { type ResponseBuilder } from '../../../../responses/baseResponseBuilder'
+import { type HandlerInput, type Request } from '../types'
 
 /**
  * Provides a strategy for creating {@link HandlerInput} for a given request and context.

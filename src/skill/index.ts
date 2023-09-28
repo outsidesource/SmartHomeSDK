@@ -1,13 +1,13 @@
-import { createAskSdkUserAgent, GenericRequestDispatcher, RequestDispatcher, Skill, UserAgentManager } from 'ask-sdk-runtime'
-import { Context } from 'aws-lambda'
+import { createAskSdkUserAgent, GenericRequestDispatcher, type RequestDispatcher, type Skill, UserAgentManager } from 'ask-sdk-runtime'
+import { type Context } from 'aws-lambda'
 import AttributesManagerFactory from '../attributes/attributesManagerFactory'
-import { PersistenceAdapter } from '../attributes/types'
+import { type PersistenceAdapter } from '../attributes/types'
 import { HandlerInputFactoryRepository } from '../dispatcher/request/handler/factory/repository'
-import { HandlerInput, Request } from '../dispatcher/request/handler/types'
+import { type HandlerInput, type Request } from '../dispatcher/request/handler/types'
 import { PKG_VERSION } from '../prebuild-output'
-import { ResponseBuilder } from '../responses/baseResponseBuilder'
-import { Response } from '../responses/types'
-import { SmartHomeSkillConfiguration } from './configuration'
+import { type ResponseBuilder } from '../responses/baseResponseBuilder'
+import { type Response } from '../responses/types'
+import { type SmartHomeSkillConfiguration } from './configuration'
 
 /**
  * Top level container for request dispatcher.

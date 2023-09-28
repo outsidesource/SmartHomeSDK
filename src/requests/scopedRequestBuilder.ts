@@ -1,4 +1,4 @@
-import { Scope } from '../util/types'
+import { type Scope } from '../util/types'
 import { SmartHomeSkillRequestBuilder } from './baseRequestBuilder'
 
 /**

@@ -1,7 +1,7 @@
 import { ScopedSmartHomeSkillRequestBuilder } from '../../requests/scopedRequestBuilder'
-import { Request } from '../../requests/types'
+import { type Request } from '../../requests/types'
 import { findDuplicates } from '../../util/helpers'
-import { DeleteReportPayload } from './types'
+import { type DeleteReportPayload } from './types'
 
 const namespace = 'Alexa.Discovery'
 const name = 'DeleteReport'

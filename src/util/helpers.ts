@@ -1,8 +1,6 @@
-import { PropState, PropertyState } from './types'
+import { type PropState, type PropertyState } from './types'
 
-interface Histogram {
-  [key: string]: number
-}
+type Histogram = Record<string, number>
 
 export function getHistogram<T> (items: T[], getKey: (item: T) => string): Histogram {
   return items.reduce((histo: Histogram, item: T) => {

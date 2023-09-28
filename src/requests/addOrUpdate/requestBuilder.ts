@@ -1,9 +1,9 @@
-import { DiscoveryEndpointBuilder } from '../../discovery/endpointBuilder'
-import { DiscoveryEndpoint } from '../../discovery/payload'
+import { type DiscoveryEndpointBuilder } from '../../discovery/endpointBuilder'
+import { type DiscoveryEndpoint } from '../../discovery/payload'
 import { DiscoveryPayloadBuilder } from '../../discovery/payloadBuilder'
 import { ScopedSmartHomeSkillRequestBuilder } from '../../requests/scopedRequestBuilder'
-import { Request } from '../../requests/types'
-import { AddOrUpdateReportPayload } from './types'
+import { type Request } from '../../requests/types'
+import { type AddOrUpdateReportPayload } from './types'
 
 const namespace = 'Alexa.Discovery'
 const name = 'AddOrUpdateReport'

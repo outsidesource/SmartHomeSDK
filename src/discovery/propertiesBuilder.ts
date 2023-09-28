@@ -1,5 +1,5 @@
-import { CapabilityBuilder } from './capabilityBuilder'
-import { CapabilityProperties } from './payload'
+import { type CapabilityBuilder } from './capabilityBuilder'
+import { type CapabilityProperties } from './payload'
 
 /** Represents a builder for a {@link CapabilityProperties}. */
 export class PropertiesBuilder {

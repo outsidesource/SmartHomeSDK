@@ -1,5 +1,5 @@
-import { CapabilityBuilder } from './capabilityBuilder'
-import { SemanticStateMapping, SemanticStateNames } from './payload'
+import { type CapabilityBuilder } from './capabilityBuilder'
+import { type SemanticStateMapping, type SemanticStateNames } from './payload'
 
 enum SemanticType {
   StatesToValue,

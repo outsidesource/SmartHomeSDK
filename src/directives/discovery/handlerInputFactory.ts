@@ -1,10 +1,10 @@
-import { Context } from 'aws-lambda'
-import { AttributesManager } from '../../attributes/types'
-import { DiscoveryPayload } from '../../discovery/payload'
-import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
-import { HandlerInput, Request } from '../../dispatcher/request/handler/types'
+import { type Context } from 'aws-lambda'
+import { type AttributesManager } from '../../attributes/types'
+import { type DiscoveryPayload } from '../../discovery/payload'
+import { type HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
+import { type HandlerInput, type Request } from '../../dispatcher/request/handler/types'
 import { DiscoveryResponseBuilder } from './responseBuilder'
-import { DiscoveryRequestPayload } from './types'
+import { type DiscoveryRequestPayload } from './types'
 
 /**
  * A factory for {@link HandlerInput} when the request is a Discovery.

@@ -1,7 +1,7 @@
-import { Context } from 'aws-lambda'
-import { ResponseBuilder } from '../../../../responses/baseResponseBuilder'
-import { Request } from '../types'
-import { HandlerInputFactory } from './baseHandlerInputFactory'
+import { type Context } from 'aws-lambda'
+import { type ResponseBuilder } from '../../../../responses/baseResponseBuilder'
+import { type Request } from '../types'
+import { type HandlerInputFactory } from './baseHandlerInputFactory'
 
 /**
  * An in-memory repository for storing and locating {@link HandlerInputFactory}.

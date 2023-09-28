@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { convertPropStateToPropertyState, findDuplicates, getPropStateKey } from '../util/helpers'
-import { Context, PropState } from '../util/types'
-import { Request, RequestEndpoint } from './types'
+import { type Context, type PropState } from '../util/types'
+import { type Request, type RequestEndpoint } from './types'
 
 /**
  * A base implementation for outbound request builders.
@@ -67,7 +67,7 @@ export class EndpointBuilder<TParentRequestBuilder extends SmartHomeSkillRequest
   private token?: string
   private partition?: string
   private userId?: string
-  private cookie: { [key: string]: string } = {}
+  private cookie: Record<string, string> = {}
 
   constructor (private readonly parent: TParentRequestBuilder) {}
 

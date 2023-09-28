@@ -1,7 +1,7 @@
-import { DiscoveryEndpointBuilder } from './endpointBuilder'
-import { EndpointCapability } from './payload'
+import { type DiscoveryEndpointBuilder } from './endpointBuilder'
+import { type EndpointCapability } from './payload'
 import { PropertiesBuilder } from './propertiesBuilder'
-import { Locales, ResourceLabel } from './resourceLabel'
+import { type Locales, type ResourceLabel } from './resourceLabel'
 import { SemanticActionBuilder } from './semanticActionBuilder'
 import { SemanticStateBuilder } from './semanticStateBuilder'
 

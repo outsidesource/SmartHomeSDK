@@ -1,7 +1,7 @@
 import { ResponseBuilder } from '../../responses/baseResponseBuilder'
-import { EmptyResponsePayload, ErrorResponsePayload } from '../../responses/payloads/types'
-import { Response } from '../../responses/types'
-import { DeferredResponsePayload } from './types'
+import { type EmptyResponsePayload, type ErrorResponsePayload } from '../../responses/payloads/types'
+import { type Response } from '../../responses/types'
+import { type DeferredResponsePayload } from './types'
 
 const defaultNamespace = 'Alexa'
 const defaultSucceedName = 'Response'

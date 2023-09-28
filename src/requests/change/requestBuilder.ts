@@ -1,8 +1,8 @@
 import { ContextBuilder, EndpointBuilder, SmartHomeSkillRequestBuilder } from '../../requests/baseRequestBuilder'
-import { Request } from '../../requests/types'
+import { type Request } from '../../requests/types'
 import { convertPropStateToPropertyState, findDuplicates, findIntersection, getPropStateKey, isSamePropState } from '../../util/helpers'
-import { PropState } from '../../util/types'
-import { ChangeCauseType, ChangeReportPayload } from './types'
+import { type PropState } from '../../util/types'
+import { type ChangeCauseType, type ChangeReportPayload } from './types'
 
 const namespace = 'Alexa'
 const name = 'ChangeReport'
