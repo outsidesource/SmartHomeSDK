@@ -1,4 +1,4 @@
-import { ResourceLabel } from './resourceLabel'
+import { type ResourceLabel } from './resourceLabel'
 
 /** Represents the payload for a collection of endpoints associated with the skill. */
 export interface DiscoveryPayload {
@@ -54,16 +54,12 @@ export interface DiscoveryEndpoint {
    * The endpoints that an endpoint is connected to. For example,
    * a computer endpoint might be connected to a home network endpoint.
    */
-  relationships?: {
-    [key: string]: {
-      endpointId: string
-    }
-  }
+  relationships?: Record<string, {
+    endpointId: string
+  }>
 
   /** Information about the device that your skill uses. */
-  cookie?: {
-    [key: string]: string
-  }
+  cookie?: Record<string, string>
 }
 
 /** Additional information to identify very similar devices. */

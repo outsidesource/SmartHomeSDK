@@ -1,4 +1,4 @@
-import { Context, Scope } from '../util/types'
+import { type Context, type Scope } from '../util/types'
 
 /**
  * Contains the header, payload, and context for a request.
@@ -44,7 +44,7 @@ export interface RequestEndpoint {
   endpointId: string
 
   /** Additional information about the endpoint. */
-  cookie?: { [key: string]: string }
+  cookie?: Record<string, string>
 }
 
 /**

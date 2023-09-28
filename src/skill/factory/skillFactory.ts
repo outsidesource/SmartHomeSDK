@@ -1,20 +1,20 @@
-import { RequestHandler, RuntimeConfigurationBuilder } from 'ask-sdk-runtime'
-import { Context, Handler } from 'aws-lambda'
+import { type RequestHandler, RuntimeConfigurationBuilder } from 'ask-sdk-runtime'
+import { type Context, type Handler } from 'aws-lambda'
 import { SmartHomeSkill } from '..'
-import { PersistenceAdapter } from '../../attributes/types'
+import { type PersistenceAdapter } from '../../attributes/types'
 import { AcceptGrantHandlerInputFactory } from '../../directives/acceptGrant/handlerInputFactory'
 import { DiscoveryHandlerInputFactory } from '../../directives/discovery/handlerInputFactory'
 import { InterfaceCommandHandlerInputFactory } from '../../directives/interfaceCommand/handlerInputFactory'
 import { ReportStateHandlerInputFactory } from '../../directives/reportState/handlerInputFactory'
-import { SmartHomeSkillErrorHandler } from '../../dispatcher/error/handler'
-import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
-import { HandlerInput, PayloadSignature, Request } from '../../dispatcher/request/handler/types'
-import { SmartHomeSkillRequestInterceptor } from '../../dispatcher/request/interceptor/requestInterceptor'
-import { SmartHomeSkillResponseInterceptor } from '../../dispatcher/request/interceptor/responseInterceptor'
-import { ResponseBuilder } from '../../responses/baseResponseBuilder'
-import { Response } from '../../responses/types'
-import { SmartHomeSkillConfiguration } from '../configuration'
-import { InlineErrorExecutor, InlineErrorMatcher, InlineRequestExecutor, InlineRequestInterceptor, InlineRequestMatcher, InlineResponseInterceptor, SmartHomeSkillBuilder } from './skillBuilder'
+import { type SmartHomeSkillErrorHandler } from '../../dispatcher/error/handler'
+import { type HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
+import { type HandlerInput, type PayloadSignature, type Request } from '../../dispatcher/request/handler/types'
+import { type SmartHomeSkillRequestInterceptor } from '../../dispatcher/request/interceptor/requestInterceptor'
+import { type SmartHomeSkillResponseInterceptor } from '../../dispatcher/request/interceptor/responseInterceptor'
+import { type ResponseBuilder } from '../../responses/baseResponseBuilder'
+import { type Response } from '../../responses/types'
+import { type SmartHomeSkillConfiguration } from '../configuration'
+import { type InlineErrorExecutor, type InlineErrorMatcher, type InlineRequestExecutor, type InlineRequestInterceptor, type InlineRequestMatcher, type InlineResponseInterceptor, type SmartHomeSkillBuilder } from './skillBuilder'
 
 /**
  * Provider for {@link SmartHomeSkillBuilder}
@@ -134,8 +134,8 @@ export default function (): SmartHomeSkillBuilder {
         skill
           .invoke(request, context)
           .then(
-            response => callback(undefined, response),
-            err => callback(err)
+            response => { callback(undefined, response) },
+            err => { callback(err) }
           )
       }
     }

@@ -1,7 +1,7 @@
 import { ResponseBuilder } from '../../responses/baseResponseBuilder'
-import { EmptyResponsePayload, ErrorResponsePayload } from '../../responses/payloads/types'
-import { Response } from '../../responses/types'
-import { PropState } from '../../util/types'
+import { type EmptyResponsePayload, type ErrorResponsePayload } from '../../responses/payloads/types'
+import { type Response } from '../../responses/types'
+import { type PropState } from '../../util/types'
 
 const namespace = 'Alexa'
 const succeedName = 'StateReport'

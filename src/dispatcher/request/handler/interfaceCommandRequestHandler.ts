@@ -1,8 +1,8 @@
-import { InterfaceCommandResponseBuilder } from '../../../directives/interfaceCommand/responseBuilder'
-import { ErrorResponsePayload } from '../../../responses/payloads/types'
-import { Response } from '../../../responses/types'
-import { SmartHomeSkillRequestHandler } from './baseRequestHandler'
-import { HandlerInput } from './types'
+import { type InterfaceCommandResponseBuilder } from '../../../directives/interfaceCommand/responseBuilder'
+import { type ErrorResponsePayload } from '../../../responses/payloads/types'
+import { type Response } from '../../../responses/types'
+import { type SmartHomeSkillRequestHandler } from './baseRequestHandler'
+import { type HandlerInput } from './types'
 
 /**
  * A base implementation for user-created handler logic for interface commands.

@@ -1,10 +1,10 @@
 import { isAcceptGrantRequest } from '../../../directives/acceptGrant/handlerInputFactory'
-import { AcceptGrantResponseBuilder } from '../../../directives/acceptGrant/responseBuilder'
-import { AcceptGrantRequestPayload } from '../../../directives/acceptGrant/types'
-import { EmptyResponsePayload, ErrorResponsePayload } from '../../../responses/payloads/types'
-import { Response } from '../../../responses/types'
-import { SmartHomeSkillRequestHandler } from './baseRequestHandler'
-import { HandlerInput } from './types'
+import { type AcceptGrantResponseBuilder } from '../../../directives/acceptGrant/responseBuilder'
+import { type AcceptGrantRequestPayload } from '../../../directives/acceptGrant/types'
+import { type EmptyResponsePayload, type ErrorResponsePayload } from '../../../responses/payloads/types'
+import { type Response } from '../../../responses/types'
+import { type SmartHomeSkillRequestHandler } from './baseRequestHandler'
+import { type HandlerInput } from './types'
 
 /**
  * A base implementation for user-created handler logic for accept grant requests.

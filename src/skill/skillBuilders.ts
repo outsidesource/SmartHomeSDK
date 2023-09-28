@@ -1,4 +1,4 @@
-import { SmartHomeSkillBuilder } from './factory/skillBuilder'
+import { type SmartHomeSkillBuilder } from './factory/skillBuilder'
 import SmartHomeSkillFactory from './factory/skillFactory'
 
 /**

@@ -1,7 +1,7 @@
 import { AdditionalAttributesBuilder } from './additionalAttributesBuilder'
 import { CapabilityBuilder } from './capabilityBuilder'
-import { DiscoveryConnection, DiscoveryEndpoint, DisplayCategories } from './payload'
-import { DiscoveryPayloadBuilder } from './payloadBuilder'
+import { type DiscoveryConnection, type DiscoveryEndpoint, type DisplayCategories } from './payload'
+import { type DiscoveryPayloadBuilder } from './payloadBuilder'
 
 const maxCapabilitiesPerEndpoint = 100
 const maxCookiesSize = 5000

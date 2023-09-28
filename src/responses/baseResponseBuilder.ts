@@ -1,8 +1,8 @@
-import { Request } from '../dispatcher/request/handler/types'
+import { type Request } from '../dispatcher/request/handler/types'
 import { convertPropStateToPropertyState, findDuplicates, getPropStateKey } from '../util/helpers'
-import { Context, PropState } from '../util/types'
-import { ErrorResponsePayload } from './payloads/types'
-import { Response, ResponseEndpoint } from './types'
+import { type Context, type PropState } from '../util/types'
+import { type ErrorResponsePayload } from './payloads/types'
+import { type Response, type ResponseEndpoint } from './types'
 
 /**
  * Represents a fluent mechanism for building a response.
@@ -91,7 +91,7 @@ export class EndpointBuilder<TPayload> {
   private token?: string
   private partition?: string
   private userId?: string
-  private cookie: { [key: string]: string } = {}
+  private cookie: Record<string, string> = {}
 
   constructor (private readonly parent: ResponseBuilder<TPayload>) {}
 
