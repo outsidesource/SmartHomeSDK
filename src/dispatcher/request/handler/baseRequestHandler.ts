@@ -1,9 +1,9 @@
 /* istanbul ignore file */
 
-import { RequestHandler } from 'ask-sdk-runtime'
-import { ResponseBuilder } from '../../../responses/baseResponseBuilder'
-import { Response } from '../../../responses/types'
-import { HandlerInput } from './types'
+import { type RequestHandler } from 'ask-sdk-runtime'
+import { type ResponseBuilder } from '../../../responses/baseResponseBuilder'
+import { type Response } from '../../../responses/types'
+import { type HandlerInput } from './types'
 
 /**
  * A base implementation for request handler logic.

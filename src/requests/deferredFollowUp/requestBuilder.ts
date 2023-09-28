@@ -1,5 +1,5 @@
 import { ContextBuilder } from '../../requests/baseRequestBuilder'
-import { Request } from '../../requests/types'
+import { type Request } from '../../requests/types'
 import { ScopedSmartHomeSkillRequestBuilder } from '../scopedRequestBuilder'
 
 const namespace = 'Alexa'

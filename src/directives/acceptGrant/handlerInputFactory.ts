@@ -1,10 +1,10 @@
-import { Context } from 'aws-lambda'
-import { AttributesManager } from '../../attributes/types'
-import { HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
-import { HandlerInput, Request } from '../../dispatcher/request/handler/types'
-import { EmptyResponsePayload } from '../../responses/payloads/types'
+import { type Context } from 'aws-lambda'
+import { type AttributesManager } from '../../attributes/types'
+import { type HandlerInputFactory } from '../../dispatcher/request/handler/factory/baseHandlerInputFactory'
+import { type HandlerInput, type Request } from '../../dispatcher/request/handler/types'
+import { type EmptyResponsePayload } from '../../responses/payloads/types'
 import { AcceptGrantResponseBuilder } from './responseBuilder'
-import { AcceptGrantRequestPayload } from './types'
+import { type AcceptGrantRequestPayload } from './types'
 
 /**
  * A factory for {@link HandlerInput} when the request is an AcceptGrant.

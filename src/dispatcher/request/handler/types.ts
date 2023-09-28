@@ -1,6 +1,6 @@
-import { Context } from 'aws-lambda'
-import { AttributesManager } from '../../../attributes/types'
-import { ResponseBuilder } from '../../../responses/baseResponseBuilder'
+import { type Context } from 'aws-lambda'
+import { type AttributesManager } from '../../../attributes/types'
+import { type ResponseBuilder } from '../../../responses/baseResponseBuilder'
 
 /**
  * An interface that represents components passed into {@link RequestHandler} and {@link SmartHomeSkillErrorHandler}.
@@ -58,9 +58,7 @@ export interface Request<TPayload = unknown> {
       endpointId: string
 
       /** Contains additional data associated with the endpoint. */
-      cookie?: {
-        [key: string]: string
-      }
+      cookie?: Record<string, string>
 
       /** Contains credentials that can be used with the request. */
       scope?: {

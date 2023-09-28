@@ -1,7 +1,7 @@
-import { ErrorHandler } from 'ask-sdk-runtime'
-import { ResponseBuilder } from '../../../responses/baseResponseBuilder'
-import { Response } from '../../../responses/types'
-import { HandlerInput } from '../../request/handler/types'
+import { type ErrorHandler } from 'ask-sdk-runtime'
+import { type ResponseBuilder } from '../../../responses/baseResponseBuilder'
+import { type Response } from '../../../responses/types'
+import { type HandlerInput } from '../../request/handler/types'
 
 /**
  * An interface for user-created error handling logic.

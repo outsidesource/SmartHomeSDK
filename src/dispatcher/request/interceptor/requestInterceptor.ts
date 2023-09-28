@@ -1,6 +1,6 @@
-import { RequestInterceptor } from 'ask-sdk-runtime'
-import { ResponseBuilder } from '../../../responses/baseResponseBuilder'
-import { HandlerInput } from '../handler/types'
+import { type RequestInterceptor } from 'ask-sdk-runtime'
+import { type ResponseBuilder } from '../../../responses/baseResponseBuilder'
+import { type HandlerInput } from '../handler/types'
 
 /**
  * An interface for user-created logic that can evaluate and modify the request before being handled.

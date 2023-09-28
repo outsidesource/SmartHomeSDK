@@ -1,9 +1,9 @@
 import { isReportStateRequest } from '../../../directives/reportState/handlerInputFactory'
-import { ReportStateResponseBuilder } from '../../../directives/reportState/responseBuilder'
-import { EmptyResponsePayload, ErrorResponsePayload } from '../../../responses/payloads/types'
-import { Response } from '../../../responses/types'
-import { SmartHomeSkillRequestHandler } from './baseRequestHandler'
-import { HandlerInput } from './types'
+import { type ReportStateResponseBuilder } from '../../../directives/reportState/responseBuilder'
+import { type EmptyResponsePayload, type ErrorResponsePayload } from '../../../responses/payloads/types'
+import { type Response } from '../../../responses/types'
+import { type SmartHomeSkillRequestHandler } from './baseRequestHandler'
+import { type HandlerInput } from './types'
 
 /**
  * A base implementation for user-created handler logic for report state requests.

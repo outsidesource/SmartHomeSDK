@@ -1,6 +1,6 @@
 import { findDuplicates } from '../util/helpers'
 import { DiscoveryEndpointBuilder } from './endpointBuilder'
-import { DiscoveryEndpoint, DiscoveryPayload, SemanticActionNames } from './payload'
+import { type DiscoveryEndpoint, type DiscoveryPayload, type SemanticActionNames } from './payload'
 
 const maxEndpoints = 300
 

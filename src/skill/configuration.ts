@@ -1,9 +1,9 @@
-import { RuntimeConfiguration } from 'ask-sdk-runtime'
-import { PersistenceAdapter } from '../attributes/types'
-import { HandlerInputFactory } from '../dispatcher/request/handler/factory/baseHandlerInputFactory'
-import { HandlerInput } from '../dispatcher/request/handler/types'
-import { ResponseBuilder } from '../responses/baseResponseBuilder'
-import { Response } from '../responses/types'
+import { type RuntimeConfiguration } from 'ask-sdk-runtime'
+import { type PersistenceAdapter } from '../attributes/types'
+import { type HandlerInputFactory } from '../dispatcher/request/handler/factory/baseHandlerInputFactory'
+import { type HandlerInput } from '../dispatcher/request/handler/types'
+import { type ResponseBuilder } from '../responses/baseResponseBuilder'
+import { type Response } from '../responses/types'
 
 /**
  * An interfaces that represents the standard components needed to build {@link SmartHomeSkill}.
