@@ -1,0 +1,38 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: "**"
+  pull_request:
+    branches: "**"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@main
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: yarn
+
+      - name: Install Dependencies
+        run: yarn install --immutable --immutable-cache --check-cache
+
+      - name: Run Tests
+        run: yarn test-check
+        env:
+          CI: true
