@@ -9,14 +9,12 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "declaration": true,
-    "outDir": "./dist/",
-    "rootDir": "src",
+    "outDir": "dist",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "allowSyntheticDefaultImports": true,
-    "typeRoots": ["node_modules/@types", "src/types"],
     "lib": ["es2021"]
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/index.ts"],
   "exclude": ["**/*.spec.ts"]
 }
