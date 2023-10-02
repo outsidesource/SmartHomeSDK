@@ -27,14 +27,15 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Install Dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Get NPM Version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@main
 
       - name: Publish to NPM
-        run: npm publish
+        run: yarn publish --new-version ${{ steps.package-version.outputs.current-version }} --access public
+        working-directory: ./dist
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -45,6 +46,7 @@ jobs:
           registry-url: https://npm.pkg.github.com/
 
       - name: Publish to GPR
-        run: npm publish
+        run: yarn publish --new-version ${{ steps.package-version.outputs.current-version }} --access public
+        working-directory: ./dist
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
