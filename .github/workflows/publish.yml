@@ -29,6 +29,9 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Build
+        run: yarn build
+
       - name: Get NPM Version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@main
