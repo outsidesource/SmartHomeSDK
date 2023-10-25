@@ -33,6 +33,7 @@
   ],
   "author": "Outside Source",
   "license": "MIT",
+  "packageManager": "yarn@4.0.0",
   "dependencies": {
     "ask-sdk-runtime": "^2.10.2",
     "aws-lambda": "^1.0.7",
